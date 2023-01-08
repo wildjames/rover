@@ -1,0 +1,14 @@
+:root {
+	/* CSS HEX */
+	--yellow-green: #85cb33ff;
+	--alice-blue: #e3f2fdff;
+	--indian-red: #db5461ff;
+	--jet: #2A2A28;
+	--morning-blue: #8aa29eff;
+	--crimson: #CA2B3B;
+}
+
+body {
+	background: var(--morning-blue);
+	color: var(--jet);
+}
