@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request
 from datetime import datetime
-from multiprocessing.connection import Listener
 
 
 num_leds = 3
 
+
 # Flask app setup
 app = Flask(__name__)
 
-
 @app.route("/")
 def index():
-    # Read Sensors Status
+    # Get LED status
+	# This should be read via a subscription to the rover's rabbitMQ broker
     leds = [0, 1, 1]
 
     templateData = {
@@ -47,6 +47,7 @@ def led_instruction():
         state = 0
 
     # Send request to change state here
+	# This should be sent via a publish to the rover's MQTT broker
 
     return {"message": "success"}
 
