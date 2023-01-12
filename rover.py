@@ -46,7 +46,7 @@ app = Flask(__name__)
 def index():
     # Get LED status
     # This should be read via a subscription to the rover's rabbitMQ broker
-    leds = state.leds
+    leds = state["leds"]
 
     templateData = {
         "title": "Rover Server",
@@ -82,7 +82,7 @@ def led_instruction():
 
     # Send request to change state here
     # This should be sent via a publish to the rover's MQTT broker
-    new_state = state.leds
+    new_state = state["leds"]
     new_state[data["led"]] = new_led_state
     client.publish("leds", new_state)
 
