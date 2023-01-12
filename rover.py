@@ -53,9 +53,9 @@ def index():
         "time": datetime.now().ctime(),
     }
 
-    for led, state in enumerate(leds):
+    for led, led_state in enumerate(leds):
         name = "led{}".format(led)
-        templateData[name] = state
+        templateData[name] = led_state
 
     return render_template("index.html", **templateData)
 
