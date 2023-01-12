@@ -78,7 +78,7 @@ def led_instruction():
         return {"message": "Invalid LED index"}
 
     new_led_state = new_led_state
-    if not new_led_state.isnumeric():
+    if type(new_led_state) not in [int, float, bool]:
         return {"message": "Invalid LED state"}
 
     # Send request to change state here
