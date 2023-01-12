@@ -3,7 +3,7 @@ from datetime import datetime
 import paho.mqtt.client as mqtt
 import json
 import logging
-logging.basicConfig(filename="/var/log/apache2/rover_app.log", level=logging.DEBUG)
+logging.basicConfig(filename="/home/rover/rover_app.log", level=logging.DEBUG)
 
 # MQTT setup
 mqtt_broker = "localhost"
