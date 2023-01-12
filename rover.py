@@ -77,14 +77,9 @@ def led_instruction():
     if (led >= num_leds) or (led < 0):
         return {"message": "Invalid LED index"}
 
-    new_led_state = new_led_state.lower()
-    if new_led_state not in ["on", "off"] or new_led_state.isnumeric():
+    new_led_state = new_led_state
+    if not new_led_state.isnumeric():
         return {"message": "Invalid LED state"}
-
-    if new_led_state == "on":
-        new_led_state = 1
-    elif new_led_state == "off":
-        new_led_state = 0
 
     # Send request to change state here
     # This should be sent via a publish to the rover's MQTT broker
