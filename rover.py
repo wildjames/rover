@@ -28,7 +28,7 @@ def on_message(client, userdata, msg):
     print("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
     global state
 
-    state[msg.topic] = msg.payload
+    state[msg.topic] = json.loads(msg.payload)
 
 
 # Create the client
