@@ -86,7 +86,7 @@ def led_instruction():
     new_state[data["led"]] = new_led_state
     client.publish("leds", new_state)
 
-    return {"message": "success"}
+    return {"message": "success", "state": state}
 
 
 if __name__ == "__main__":
