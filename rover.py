@@ -85,6 +85,7 @@ def led_instruction():
     # This should be sent via a publish to the rover's MQTT broker
     new_led_state = state["leds"]
     new_led_state[data["led"]] = new_led_state
+    print(new_led_state)
     payload = json.dumps(new_led_state)
     client.publish("leds", payload)
 
