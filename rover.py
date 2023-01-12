@@ -91,7 +91,7 @@ def led_instruction():
     new_led_state = state["leds"]
     new_led_state[data["led"]] = new_led_state
     payload = json.dumps(new_led_state)
-    client.publish("leds", new_led_state)
+    client.publish("leds", payload)
 
     return {"message": "success", "state": state}
 
