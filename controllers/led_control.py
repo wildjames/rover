@@ -29,8 +29,10 @@ def on_message(client, userdata, msg):
 
     if topic == "leds":
         states = json.loads(msg.payload)
-        for i, state in enumerate(states):
-            set_led_state(i, state)
+        
+        print("States: {}".format(states))
+        for index, state in states.items():
+            set_led_state(index, state)
 
 
 client = mqtt.Client("GPIO Interface")
