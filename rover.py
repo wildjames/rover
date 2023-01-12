@@ -2,7 +2,8 @@ from flask import Flask, render_template, request
 from datetime import datetime
 import paho.mqtt.client as mqtt
 import json
-
+import logging
+logging.basicConfig(filename="/var/log/apache2/rover_app.log", level=logging.DEBUG)
 
 # MQTT setup
 mqtt_broker = "localhost"
@@ -15,7 +16,7 @@ state = {"leds": [0] * num_leds}
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client: mqtt.Client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
+    logging.info("Connected with result code " + str(rc))
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
@@ -25,7 +26,7 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
 
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
+    logging.info("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
     global state
 
     state[msg.topic] = json.loads(msg.payload)
@@ -66,6 +67,8 @@ def led_instruction():
     """Recieves a JSON packet in the request form, with two keys: an LED index (1-indexed), and a state to set it to."""
     data = request.get_json()
 
+    logging.debug("Recieved data: {}".format(data))
+
     led = data["led"]
     new_led_state = data["state"]
 
@@ -77,17 +80,19 @@ def led_instruction():
     if (led >= num_leds) or (led < 0):
         return {"message": "Invalid LED index"}
 
-    new_led_state = new_led_state
     if type(new_led_state) not in [int, float, bool]:
+        logging.info("Invalid LED state: {} (type {})".format(new_led_state, type(new_led_state)))
         return {"message": "Invalid LED state"}
 
     # Send request to change state here
     # This should be sent via a publish to the rover's MQTT broker
     modified_state = state["leds"]
     modified_state[data["led"]] = new_led_state
-    print(modified_state)
+    
     payload = json.dumps(modified_state)
+    logging.info("Publishing payload: {}".format(payload))
     client.publish("leds", payload)
+    logging.info("OK")
 
     return {"message": "success", "state": state}
 

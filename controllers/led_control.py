@@ -26,6 +26,7 @@ def on_message(client, userdata, msg):
     print("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
 
     topic = msg.topic
+
     if topic == "leds":
         states = json.loads(msg.payload)
         for i, state in enumerate(states):
@@ -75,6 +76,7 @@ if __name__ in "__main__":
     sleep(1)
     set_led_state(0, 0)
 
+    client.loop_start()
     while True:
         states = json.dumps(get_led_state())
         print("Publishing: {}".format(states))
