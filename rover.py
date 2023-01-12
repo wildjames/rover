@@ -68,9 +68,11 @@ def led_instruction():
     led = data["led"]
     new_led_state = data["state"]
 
-    if not led.isnumeric():
+    try:
+        led = int(led)
+    except:
         return {"message": "Invalid LED index"}
-    led = int(led)
+
     if (led >= num_leds) or (led < 0):
         return {"message": "Invalid LED index"}
 
