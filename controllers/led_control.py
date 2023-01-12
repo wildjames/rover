@@ -18,6 +18,7 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
     for topic in topics:
         client.subscribe(topic)
+        print(f"   Subscribed to {topic}")
 
 
 # The callback for when a PUBLISH message is received from the server.
