@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt
 from time import sleep
+import json
 
 
 # MQTT setup
@@ -58,9 +59,9 @@ def set_led_state(index, state):
 
 def get_led_state():
     """Returns a list of the states of all LEDs."""
-    led_states = []
-    for led in leds:
-        led_states.append(GPIO.input(led))
+    led_states = {
+        index: GPIO.input(led) for index, led in enumerate(leds)
+    }
     return led_states
 
 
@@ -74,7 +75,7 @@ if __name__ in "__main__":
     set_led_state(0, 0)
 
     while True:
-        states = get_led_state()
+        states = json.dumps(get_led_state())
         client.publish("leds", states)
 
         client.loop()
