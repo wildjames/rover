@@ -26,7 +26,7 @@ def on_message(client, userdata, msg):
 
     topic = msg.topic
     if topic == "leds":
-        states = msg.payload
+        states = json.loads(msg.payload)
         for i, state in enumerate(states):
             set_led_state(i, state)
 
