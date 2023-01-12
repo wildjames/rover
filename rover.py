@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from datetime import datetime
 import paho.mqtt.client as mqtt
+import json
 
 
 # MQTT setup
@@ -87,9 +88,10 @@ def led_instruction():
 
     # Send request to change state here
     # This should be sent via a publish to the rover's MQTT broker
-    new_state = state["leds"]
-    new_state[data["led"]] = new_led_state
-    client.publish("leds", new_state)
+    new_led_state = state["leds"]
+    new_led_state[data["led"]] = new_led_state
+    payload = json.dumps(new_led_state)
+    client.publish("leds", new_led_state)
 
     return {"message": "success", "state": state}
 
