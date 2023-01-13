@@ -79,7 +79,6 @@ if __name__ in "__main__":
     client.loop_start()
     while True:
         states = get_led_state()
-        states[1] = 132
         payload = json.dumps(states)
         print("Publishing: {}".format(payload))
         client.publish("led_state", payload)
