@@ -82,7 +82,5 @@ if __name__ in "__main__":
         states[1] = 132
         print("Publishing: {}".format(states))
         client.publish("led_state", states)
-
-        client.loop()
-
         sleep(1)
+        
