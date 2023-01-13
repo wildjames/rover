@@ -84,6 +84,8 @@ def led_instruction():
         logging.info("Invalid LED state: {} (type {})".format(new_led_state, type(new_led_state)))
         return {"message": "Invalid LED state"}
 
+    logging.info("Altering led {} to state {}".format(led, new_led_state))
+
     # Send request to change state here
     # This should be sent via a publish to the rover's MQTT broker
     modified_state = state["leds"]
