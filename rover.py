@@ -27,6 +27,7 @@ app.config['MQTT_USERNAME'] = ''  # Set this item when you need to verify userna
 app.config['MQTT_PASSWORD'] = ''  # Set this item when you need to verify username and password
 app.config['MQTT_KEEPALIVE'] = 5  # Set KeepAlive time in seconds
 app.config['MQTT_TLS_ENABLED'] = False  # If your server supports TLS, set it True
+app.config['MQTT_REFRESH_TIME'] = 0.1  # refresh time in seconds
 
 
 # The callback for when the client receives a CONNACK response from the server.
@@ -105,4 +106,4 @@ def led_instruction():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, debug=True)
+    app.run(host="0.0.0.0", port=80, use_reloader=False, debug=True)
