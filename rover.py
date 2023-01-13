@@ -48,7 +48,7 @@ app = Flask(__name__)
 def index():
     # Get LED status
     # This should be read via a subscription to the rover's rabbitMQ broker
-    leds = state["leds"]
+    leds = state["led_state"]
 
     templateData = {
         "title": "Rover Server",
@@ -91,7 +91,7 @@ def led_instruction():
     
     payload = json.dumps(modified_state)
     logging.info("Publishing payload: {}".format(payload))
-    
+
     client.publish("led_command", payload)
 
     return {"message": "success", "state": state}
