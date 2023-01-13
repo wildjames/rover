@@ -78,4 +78,4 @@ if __name__ in "__main__":
         payload = json.dumps(states)
         print("Publishing: {}".format(payload))
         client.publish("led_state", payload)
-
+        sleep(0.1)
