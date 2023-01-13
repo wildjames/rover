@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime
-import paho.mqtt.client as mqtt
+from flask_mqtt import Mqtt
 import json
 import logging
 
@@ -15,7 +15,22 @@ num_leds = 3
 # State is only modified when an MQTT message is recieved. Otherwise, it should be read-only.
 state = {"led_state": [0] * num_leds}
 
+
+# Flask app setup
+app = Flask(__name__)
+
+# Set up the MQTT client
+client = Mqtt(app, mqtt_logging=True)
+app.config['MQTT_BROKER_URL'] = 'localhost'
+app.config['MQTT_BROKER_PORT'] = 1883
+app.config['MQTT_USERNAME'] = ''  # Set this item when you need to verify username and password
+app.config['MQTT_PASSWORD'] = ''  # Set this item when you need to verify username and password
+app.config['MQTT_KEEPALIVE'] = 5  # Set KeepAlive time in seconds
+app.config['MQTT_TLS_ENABLED'] = False  # If your server supports TLS, set it True
+
+
 # The callback for when the client receives a CONNACK response from the server.
+@client.on_connect()
 def on_connect(client, userdata, flags, rc):
     logging.info("Connected with result code " + str(rc))
 
@@ -26,28 +41,12 @@ def on_connect(client, userdata, flags, rc):
 
 
 # The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    logging.info("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
+@client.on_message()
+def on_message(client, userdata, message):
+    logging.info("Recieved message.\n    Topic [{}] -> {}".format(message.topic, message.payload))
     
     global state
-    state[msg.topic] = json.loads(msg.payload)
-
-
-# Create the client
-client = mqtt.Client("GPIO Interface")
-
-client.on_connect = on_connect
-client.on_message = on_message
-
-client.connect(mqtt_broker, mqtt_port)
-
-logging.info("Connecting to MQTT client")
-rc = client.loop_start()
-logging.info(f"Connected with result code {rc}.")
-logging.info("Starting Flask app")
-
-# Flask app setup
-app = Flask(__name__)
+    state[message.topic] = json.loads(message.payload)
 
 
 @app.route("/")
