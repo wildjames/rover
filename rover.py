@@ -38,7 +38,7 @@ client = mqtt.Client("GPIO Interface")
 client.on_connect = on_connect
 client.on_message = on_message
 
-client.connect(mqtt_broker, mqtt_port)
+client.connect_async(mqtt_broker, mqtt_port)
 
 # Flask app setup
 app = Flask(__name__)
@@ -100,4 +100,5 @@ def led_instruction():
 
 
 if __name__ == "__main__":
+    client.loop_start()
     app.run(host="0.0.0.0", port=80, debug=True)
