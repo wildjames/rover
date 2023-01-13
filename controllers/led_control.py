@@ -8,7 +8,7 @@ import json
 mqtt_broker = "localhost"
 mqtt_port = 1883
 
-topics = ["leds"]
+topics = ["led_command"]
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client: mqtt.Client, userdata, flags, rc):
@@ -29,7 +29,7 @@ def on_message(client, userdata, msg):
 
     if topic == "leds":
         states = json.loads(msg.payload)
-        
+
         print("States: {}".format(states))
         for index, state in states.items():
             set_led_state(index, state)
@@ -82,7 +82,7 @@ if __name__ in "__main__":
     while True:
         states = json.dumps(get_led_state())
         print("Publishing: {}".format(states))
-        client.publish("leds", states)
+        client.publish("led_state", states)
 
         client.loop()
 

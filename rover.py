@@ -12,7 +12,7 @@ mqtt_port = 1883
 # GPIO setup
 num_leds = 3
 # State is only modified when an MQTT message is recieved. Otherwise, it should be read-only.
-state = {"leds": [0] * num_leds}
+state = {"led_state": [0] * num_leds}
 
 # The callback for when the client receives a CONNACK response from the server.
 def on_connect(client: mqtt.Client, userdata, flags, rc):
@@ -27,8 +27,8 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     logging.info("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
+    
     global state
-
     state[msg.topic] = json.loads(msg.payload)
 
 
@@ -91,8 +91,8 @@ def led_instruction():
     
     payload = json.dumps(modified_state)
     logging.info("Publishing payload: {}".format(payload))
-    client.publish("leds", payload)
-    logging.info("OK")
+    
+    client.publish("led_command", payload)
 
     return {"message": "success", "state": state}
 
