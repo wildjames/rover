@@ -27,11 +27,11 @@ def on_message(client, userdata, msg):
 
     topic = msg.topic
 
-    if topic == "leds":
+    if topic == "led_command":
         states = json.loads(msg.payload)
 
         print("States: {}".format(states))
-        for index, state in states.items():
+        for index, state in enumerate(states):
             set_led_state(index, state)
 
 
