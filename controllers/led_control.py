@@ -17,7 +17,7 @@ def on_connect(client: mqtt.Client, userdata, flags, rc):
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
     for topic in topics:
-        client.subscribe(topic)
+        client.subscribe(topic, 2)
         print(f"   Subscribed to {topic}")
 
 
