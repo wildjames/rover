@@ -3,6 +3,7 @@ from datetime import datetime
 import paho.mqtt.client as mqtt
 import json
 import logging
+
 logging.basicConfig(filename="/home/rover/rover_app.log", level=logging.DEBUG)
 
 # MQTT setup
@@ -15,7 +16,7 @@ num_leds = 3
 state = {"led_state": [0] * num_leds}
 
 # The callback for when the client receives a CONNACK response from the server.
-def on_connect(client: mqtt.Client, userdata, flags, rc):
+def on_connect(client, userdata, flags, rc):
     logging.info("Connected with result code " + str(rc))
 
     # Subscribing in on_connect() means that if we lose the connection and
@@ -39,6 +40,11 @@ client.on_connect = on_connect
 client.on_message = on_message
 
 client.connect(mqtt_broker, mqtt_port)
+
+logging.info("Connecting to MQTT client")
+rc = client.loop_start()
+logging.info(f"Connected with result code {rc}.")
+logging.info("Starting Flask app")
 
 # Flask app setup
 app = Flask(__name__)
@@ -100,8 +106,4 @@ def led_instruction():
 
 
 if __name__ == "__main__":
-    logging.info("Connecting to MQTT client")
-    rc = client.loop_start()
-    logging.info(f"Connected with result code {rc}.")
-    logging.info("Starting Flask app")
     app.run(host="0.0.0.0", port=80, debug=True)
