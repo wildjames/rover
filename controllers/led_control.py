@@ -72,14 +72,10 @@ if __name__ in "__main__":
     for led in leds:
         set_led_state(led, 0)
 
-    set_led_state(0, 1)
-    sleep(1)
-    set_led_state(0, 0)
-
     client.loop_start()
     while True:
         states = get_led_state()
         payload = json.dumps(states)
         print("Publishing: {}".format(payload))
         client.publish("led_state", payload)
-        sleep(1)
+
