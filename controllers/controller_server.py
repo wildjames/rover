@@ -5,9 +5,9 @@ import led_control
 from bottle import get, post, request, response, run
 
 logging.basicConfig(
-    filename="/var/log/rover_controller.log",
+    filename="/var/log/rover/rover_controller.log",
     filemode='a',
-    format="[%(asctime)s] [%(levelname)-8s]    %(message)s",
+    format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
 )
