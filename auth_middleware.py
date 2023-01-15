@@ -14,6 +14,7 @@ def token_required(f):
 
         if "Authorization" in request.headers:
             token = request.headers["Authorization"].split(" ")[1]
+            logging.info(f"Token found in headers: {token}")
             abort(401, "Authentication Token is missing!")
         
         if not token:
