@@ -1,8 +1,6 @@
-import json
 import logging
 
 import RPi.GPIO as GPIO
-from bottle import get, post, request, response, run
 
 
 logging.basicConfig(
