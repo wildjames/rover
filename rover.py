@@ -42,7 +42,7 @@ def system_info():
 
 
 @app.route("/led_control", methods=["POST"])
-def led_instruction():
+def led_controll():
     """Recieves a JSON packet in the request form, with two keys: an LED index (1-indexed), and a state to set it to."""
     data = request.get_json()
 
@@ -71,7 +71,7 @@ def led_instruction():
 
     response = requests.post(
         controller_address_base.format("led_command"), json=payload
-    )
+    ).json()
 
     return response
 
