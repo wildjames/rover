@@ -4,7 +4,15 @@ import logging
 import RPi.GPIO as GPIO
 from bottle import get, post, request, response, run
 
-logging.basicConfig(level=logging.DEBUG)
+
+logging.basicConfig(
+    filename="/var/log/led_controller.log",
+    filemode='a',
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
+
 
 # GPIO setup
 GPIO.setmode(GPIO.BCM)

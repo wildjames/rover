@@ -4,7 +4,13 @@ import json
 import requests
 import logging
 
-logging.basicConfig(filename="/home/rover/rover_app.log", level=logging.DEBUG)
+logging.basicConfig(
+    filename="/var/log/rover_app.log",
+    filemode='a',
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
 
 controller_address_base = "http://localhost:1001/{}"
 
@@ -45,7 +51,7 @@ def system_info():
 @app.route("/led_control", methods=["POST"])
 def led_control():
     """Set the LED states to the defined states in the request JSON
-    
+
     Request JSON format:
     {
         "states": list of pairs, (index, state)
@@ -57,10 +63,9 @@ def led_control():
     }
     """
     data = json.loads(request.json)
-    logging.debug("Rover received LED command:")
-    logging.debug(data)
+    logging.debug(f"Rover received LED command: {data}")
 
-    led_command = data["states"]
+    led_command = json.dumps(data["states"])
 
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command

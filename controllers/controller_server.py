@@ -1,10 +1,16 @@
-from bottle import get, post, request, response, run
 import json
 import logging
 
 import led_control
+from bottle import get, post, request, response, run
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(
+    filename="/var/log/rover_controller.log",
+    filemode='a',
+    format="%(asctime)s %(levelname)-8s %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
 
 
 @post("/led_command")
@@ -16,7 +22,7 @@ def my_process():
     vals = []
     for led, state in req_obj:
         vals.append(led_control.set_led_state(led, state))
-    
+
     print(vals)
 
     return {"message": "success", "values": vals}
