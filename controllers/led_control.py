@@ -1,6 +1,5 @@
 import json
 import logging
-from time import sleep
 
 import RPi.GPIO as GPIO
 from bottle import get, post, request, response, run
@@ -34,38 +33,3 @@ def get_led_state():
     led_states = [GPIO.input(led) for led in leds]
     logging.debug("Got current LED states: {}".format(led_states))
     return led_states
-
-
-@post("/led_command")
-def my_process():
-    req_obj = json.loads(request.json)
-    
-    logging.info("Received LED command pairs (index, state): {}".format(req_obj))
-    logging.info("This is type: {}".format(type(req_obj)))
-    for led, state in req_obj:
-        set_led_state(led, state)
-
-    return {"message": "success"}
-
-
-@get("/system_info")
-def system_info():
-    """Returns a JSON object containing system information."""
-    response.content_type = "application/json"
-
-    info_dict = {
-        "led_data": {
-            "num_leds": len(leds),
-            "led_states": get_led_state(),
-        }
-    }
-
-    return info_dict
-
-
-if __name__ in "__main__":
-    # Test that LED control works as expected
-    for led in leds:
-        set_led_state(led, 0)
-
-    run(host="localhost", port=1001, debug=True, reloader=True)
