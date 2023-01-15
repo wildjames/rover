@@ -39,6 +39,6 @@ def set_led_state(index, state):
 
 def get_led_state():
     """Returns a list of the states of all LEDs."""
-    led_states = [(led, GPIO.input(led)) for led in leds]
+    led_states = [(i, GPIO.input(led)) for i, led in enumerate(leds)]
     logging.debug("Got current LED states: {}".format(led_states))
     return led_states
