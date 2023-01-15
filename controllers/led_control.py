@@ -38,7 +38,10 @@ def get_led_state():
 
 @post("/led_command")
 def my_process():
-    req_obj = json.loads(request.json())
+    req_obj = json.loads(request.json)
+    data = json.loads(req_obj)
+    print(data)
+    print(type(data))
 
     logging.info("Received LED command pairs (index, state): {}".format(req_obj))
     logging.info("This is type: {}".format(type(req_obj)))
