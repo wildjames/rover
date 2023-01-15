@@ -35,6 +35,12 @@ def index():
     return render_template("index.html", **templateData)
 
 
+@app.route("/system_info")
+def system_info():
+    system_state = requests.get(controller_address_base.format("system_info")).json()
+    return system_state
+
+
 @app.route("/led_control", methods=["POST"])
 def led_instruction():
     """Recieves a JSON packet in the request form, with two keys: an LED index (1-indexed), and a state to set it to."""
@@ -52,7 +58,9 @@ def led_instruction():
         return {"message": "Invalid LED index"}
 
     if type(new_led_state) not in [int, float, bool]:
-        logging.info("Invalid LED state: {} (type {})".format(new_led_state, type(new_led_state)))
+        logging.info(
+            "Invalid LED state: {} (type {})".format(new_led_state, type(new_led_state))
+        )
         return {"message": "Invalid LED state"}
 
     logging.info("Altering led {} to state {}".format(led, new_led_state))
@@ -61,7 +69,9 @@ def led_instruction():
     payload = json.dumps(state_pair)
     logging.info("Publishing payload: {}".format(payload))
 
-    response = requests.post(controller_address_base.format("led_command"), json=payload)
+    response = requests.post(
+        controller_address_base.format("led_command"), json=payload
+    )
 
     return response
 

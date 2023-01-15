@@ -32,8 +32,8 @@ def get_led_state():
 def my_process():
     req_obj = json.loads(request.json)
 
-    # do something with req_obj
-    print(req_obj)
+    for led, state in req_obj:
+        set_led_state(led, state)
 
     return {"message": "success"}
 
