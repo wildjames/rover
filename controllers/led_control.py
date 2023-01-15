@@ -2,16 +2,6 @@ import logging
 
 import RPi.GPIO as GPIO
 
-
-logging.basicConfig(
-    filename="/home/rover/log/led_controller.log",
-    filemode="a",
-    format="[%(asctime)s] %(levelname)-8s    %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    level=logging.DEBUG,
-)
-
-
 # GPIO setup
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)

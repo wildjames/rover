@@ -18,7 +18,6 @@ def led_command():
     req_obj = json.loads(request.json)
 
     logging.info("Received LED command pairs (index, state): {}".format(req_obj))
-    logging.info("This is type: {}".format(type(req_obj)))
 
     for led, state in req_obj:
         if not led_control.set_led_state(led, state):
