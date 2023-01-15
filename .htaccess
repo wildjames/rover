@@ -1,0 +1,2 @@
+# Allow authorization headers to be passed through to the backend
+WSGIPassAuthorization On

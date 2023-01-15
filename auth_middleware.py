@@ -8,16 +8,15 @@ from flask import current_app
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = None
 
         logging.debug(f"Checking for token in headers. Headers: \n{request.headers}")
+        logging.debug(f"Request JSON contents: \n{request.json}")
 
-        if "Authorization" in request.headers.keys():
+        if "Authorization" in request.headers:
             token = request.headers["Authorization"].split(" ")[1]
             logging.info(f"Token found in headers: {token}")
-            abort(401, "Authentication Token is missing!")
 
-        if not token:
+        else:
             logging.debug("No token found in headers")
             return {
                 "message": "Authentication Token is missing!",
