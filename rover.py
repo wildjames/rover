@@ -4,6 +4,7 @@ import json
 import requests
 import logging
 from time import time
+from auth_middleware import token_required
 
 logging.basicConfig(
     filename="/home/rover/log/rover_flask.log",
@@ -15,13 +16,18 @@ logging.basicConfig(
 
 controller_address_base = "http://localhost:1001/{}"
 
-# Flask app setup
-app = Flask(__name__)
-
+# API token secret
+with open("/home/rover/rover_api_token.txt", "r") as f:
+    SECRET_KEY = f.read().strip()
 
 # system configuration information gathering
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
+
+
+# Flask app setup
+app = Flask(__name__)
+app.config["SECRET_KEY"] = SECRET_KEY
 
 
 @app.route("/")
@@ -44,6 +50,7 @@ def index():
 
 
 @app.route("/system_info")
+@token_required
 def system_info():
     """Returns a JSON object containing system information."""
 
@@ -52,6 +59,7 @@ def system_info():
 
 
 @app.route("/led_control", methods=["POST"])
+@token_required
 def led_control():
     """Set the LED states to the defined states in the request JSON
 
@@ -75,7 +83,11 @@ def led_control():
         controller_address_base.format("led_command"), json=led_command
     ).json()
     t1 = time()
-    logging.info("Rover sent LED command and received response in {:.0f} ms".format((t1 - t0)*1000.0))
+    logging.info(
+        "Rover sent LED command and received response in {:.0f} ms".format(
+            (t1 - t0) * 1000.0
+        )
+    )
 
     return response
 
