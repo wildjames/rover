@@ -1,4 +1,5 @@
 from functools import wraps
+import logging
 
 from flask import request, abort
 from flask import current_app
@@ -9,9 +10,12 @@ def token_required(f):
     def decorated(*args, **kwargs):
         token = None
 
+        logging.debug(f"Checking for token in headers. Headers: {request.headers}")
+
         if "Authorization" in request.headers:
             token = request.headers["Authorization"].split(" ")[1]
-
+            abort(401, "Authentication Token is missing!")
+        
         if not token:
             return {
                 "message": "Authentication Token is missing!",
