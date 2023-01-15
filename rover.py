@@ -57,6 +57,8 @@ def led_control():
     }
     """
     data = request.json
+    print("Rover received LED command:")
+    print(data)
 
     led_command = data["states"]
 
