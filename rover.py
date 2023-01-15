@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(
     filename="/home/rover/log/rover_app.log",
-    filemode='a',
+    filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
@@ -75,4 +75,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False, debug=True)
+    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=True)
