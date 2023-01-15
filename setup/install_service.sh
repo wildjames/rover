@@ -3,16 +3,15 @@
 # There are some logging files that we will want to create.
 # We will create them in the /var/log directory
 echo "Creating log file directory"
-mkdir -p /var/log/rover
-chgrp -R adm /var/log/rover
-chmod -R 666 /var/log/rover
+mkdir -p /home/rover/log
+chmod -cR 666 /home/rover/log
+chgrp -cR adm /home/rover/log
 
 
 # TODO: Apache setup should go here. Dockerise that?
 echo "Doing Apache2 service check"
 systemctl restart apache2.service
-systemctl status apache2.service
-
+sleep 5
 
 # This script installs the rover controller service
 # It should be run as root
