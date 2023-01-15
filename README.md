@@ -25,19 +25,13 @@ I feel like this is inelegant, especially the MQTT being used to pass messages b
 
 Even with `QoS = 2`, the MQTT interface is unreliable at even moderately high speeds. Might be because I'm testing on a pi Zero? I could drive slowly, but I don't want erroneous inputs! It might be worth using HTTP to communicate - something like [this SO post](https://stackoverflow.com/a/16218248).
 
+Alternatively, I could just try and reconfigure apache to run the flask app as root. I think adding the web user (www?) to the sudoers file. Dunno, food for thought. Though, I don't like the idea of giving the web user root access. I have begun to implement this.
 
 ## TODO
 - Set up the LED control as a system service, so it starts at boot (and runs as root!)
 
 
 # Setup, prerequisites
-
-
-## Install mosquitto:
-```
-sudo apt install -y mosquitto mosquitto-clients
-sudo systemctl enable mosquitto.service
-```
 
 
 ## Start the LED controller:

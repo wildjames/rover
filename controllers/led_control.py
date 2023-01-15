@@ -1,46 +1,7 @@
 import RPi.GPIO as GPIO
-import paho.mqtt.client as mqtt
 from time import sleep
 import json
-
-
-# MQTT setup
-mqtt_broker = "localhost"
-mqtt_port = 1883
-
-topics = ["led_command"]
-
-# The callback for when the client receives a CONNACK response from the server.
-def on_connect(client: mqtt.Client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
-    for topic in topics:
-        client.subscribe(topic, 2)
-        print(f"   Subscribed to {topic}")
-
-
-# The callback for when a PUBLISH message is received from the server.
-def on_message(client, userdata, msg):
-    print("Recieved message.\n    Topic [{}] -> {}".format(msg.topic, msg.payload))
-
-    topic = msg.topic
-
-    if topic == "led_command":
-        states = json.loads(msg.payload)
-
-        print("States: {}".format(states))
-        for index, state in enumerate(states):
-            set_led_state(index, state)
-
-
-client = mqtt.Client("GPIO Interface")
-
-client.on_connect = on_connect
-client.on_message = on_message
-
-client.connect(mqtt_broker, mqtt_port)
+from bottle import run, post, get, request, response
 
 
 # GPIO setup
@@ -67,14 +28,34 @@ def get_led_state():
     return led_states
 
 
+@post("/led_command")
+def my_process():
+    req_obj = json.loads(request.json)
+
+    # do something with req_obj
+    print(req_obj)
+
+    return {"message": "success"}
+
+
+@get("/system_info")
+def system_info():
+    """Returns a JSON object containing system information."""
+    response.content_type = "application/json"
+
+    info_dict = {
+        "led_data": {
+            "num_leds": len(leds),
+            "led_states": get_led_state(),
+        }
+    }
+
+    return info_dict
+
+
 if __name__ in "__main__":
     # Test that LED control works as expected
     for led in leds:
         set_led_state(led, 0)
 
-    client.loop_start()
-    while True:
-        states = get_led_state()
-        payload = json.dumps(states)
-        client.publish("led_state", payload)
-        sleep(0.05)
+    run(host="localhost", port=1001, debug=True)
