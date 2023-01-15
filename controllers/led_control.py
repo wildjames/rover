@@ -17,6 +17,7 @@ leds = [17, 27, 22]
 # Set up the pins
 for pin in leds:
     GPIO.setup(pin, GPIO.OUT)
+    GPIO.output(pin, 0)
     logging.info("Set up pin {} as GPIO.OUT".format(pin))
 
 
