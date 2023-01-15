@@ -43,34 +43,10 @@ def system_info():
 
 @app.route("/led_control", methods=["POST"])
 def led_controll():
-    """Recieves a JSON packet in the request form, with two keys: an LED index (1-indexed), and a state to set it to."""
+    """Recieves a JSON packet, which is a list of (LED index, desired state) pairs."""
     data = request.get_json()
-
-    led = data["led"]
-    new_led_state = data["state"]
-
-    try:
-        led = int(led)
-    except:
-        return {"message": "Invalid LED index"}
-
-    if (led >= num_leds) or (led < 0):
-        return {"message": "Invalid LED index"}
-
-    if type(new_led_state) not in [int, float, bool]:
-        logging.info(
-            "Invalid LED state: {} (type {})".format(new_led_state, type(new_led_state))
-        )
-        return {"message": "Invalid LED state"}
-
-    logging.info("Altering led {} to state {}".format(led, new_led_state))
-    state_pair = [(led, new_led_state)]
-
-    payload = json.dumps(state_pair)
-    logging.info("Publishing payload: {}".format(payload))
-
     response = requests.post(
-        controller_address_base.format("led_command"), json=payload
+        controller_address_base.format("led_command"), json=data
     ).json()
 
     return response
