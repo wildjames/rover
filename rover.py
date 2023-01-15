@@ -3,9 +3,10 @@ from datetime import datetime
 import json
 import requests
 import logging
+from time import time
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_app.log",
+    filename="/home/rover/log/rover_flask.log",
     filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -44,6 +45,8 @@ def index():
 
 @app.route("/system_info")
 def system_info():
+    """Returns a JSON object containing system information."""
+
     system_state = requests.get(controller_address_base.format("system_info")).json()
     return system_state
 
@@ -67,9 +70,12 @@ def led_control():
 
     led_command = json.dumps(data["states"])
 
+    t0 = time()
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command
     ).json()
+    t1 = time()
+    logging.info("Rover sent LED command and received response in {:.0f} ms".format((t1 - t0)*1000.0))
 
     return response
 
