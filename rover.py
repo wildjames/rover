@@ -46,7 +46,7 @@ def led_controll():
     """Recieves a JSON packet, which is a list of (LED index, desired state) pairs."""
     data = request.get_json()
     response = requests.post(
-        controller_address_base.format("led_command"), json=data
+        controller_address_base.format("led_command"), json=json.dumps(data)
     ).json()
 
     return response
