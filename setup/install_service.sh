@@ -2,7 +2,8 @@
 
 # There are some logging files that we will want to create.
 # We will create them in the /var/log directory
-echo "Creating log file directory"
+echo "Creating/cleaning log file directory"
+rm -r /home/rover/log
 mkdir -p /home/rover/log
 chmod -cR 777 /home/rover/log
 chgrp -cR adm /home/rover/log
