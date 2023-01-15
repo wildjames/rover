@@ -32,9 +32,12 @@ def set_led_state(index, state):
     """Sets the state of the LED at the given index."""
     if index >= len(leds):
         return False
-    retval = GPIO.output(leds[index], state)
+    try:
+        GPIO.output(leds[index], state)
+    except:
+        return False
     logging.debug("Set LED {} to state {}".format(index, state))
-    return retval
+    return True
 
 
 def get_led_state():

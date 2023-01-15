@@ -14,18 +14,17 @@ logging.basicConfig(
 
 
 @post("/led_command")
-def my_process():
+def led_command():
     req_obj = json.loads(request.json)
 
     logging.info("Received LED command pairs (index, state): {}".format(req_obj))
     logging.info("This is type: {}".format(type(req_obj)))
-    vals = []
+
     for led, state in req_obj:
-        vals.append(led_control.set_led_state(led, state))
+        if not led_control.set_led_state(led, state):
+            return {"message": "failure"}
 
-    print(vals)
-
-    return {"message": "success", "values": vals}
+    return {"message": "success"}
 
 
 @get("/system_info")
@@ -39,6 +38,8 @@ def system_info():
             "led_states": led_control.get_led_state(),
         }
     }
+
+    logging.info("Returning system info: {}".format(info_dict))
 
     return info_dict
 
