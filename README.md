@@ -50,26 +50,18 @@ sudo pip3 install -r requirements.txt
 ```
 sudo apt-get install -y apache2
 ```
-Then, set up the flask app to be run by Apache2. To do this, create the file `/etc/apache2/sites-available/rover.conf` with the following contents:
+We want HTTPS, so install the related plugin
 ```
-<VirtualHost *:80>
-        # Add machine's IP address (use ifconfig command)
-        ServerName roverpi.local
+sudo a2enmod ssl
+```
+Create a new SSL certificate, with this command:
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+```
 
-        # Give an alias to to start your website url with
-        WSGIScriptAlias /rover /usr/local/www/rover/rover_app.wsgi
-
-        <Directory /usr/local/www/rover/>
-                # set permissions as per apache2.conf file
-                Options FollowSymLinks
-                AllowOverride None
-                Require all granted
-        </Directory>
-
-        ErrorLog ${APACHE_LOG_DIR}/error.log
-        LogLevel warn
-        CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
+Then, set up the flask app to be run by Apache2. To do this, I have provided a configuration in `setup/rover.conf`. Tweak that, and move it to `/etc/apache2/sites-available/`
+```
+sudo cp setup/rover.conf /etc/apache2/sites-available/
 ```
 Then, enable the site with `sudo a2ensite`, and choose `rover` from the list. Then, restart apache2 with `sudo systemctl restart apache2`.
 
