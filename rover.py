@@ -42,11 +42,11 @@ def system_info():
 
 
 @app.route("/led_control", methods=["POST"])
-def led_controll():
+def led_control():
     """Recieves a JSON packet, which is a list of (LED index, desired state) pairs."""
-    data = request.get_json()
+    data = request.json
     response = requests.post(
-        controller_address_base.format("led_command"), json=json.dumps(data)
+        controller_address_base.format("led_command"), json=data
     ).json()
 
     return response
