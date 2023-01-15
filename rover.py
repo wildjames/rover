@@ -50,9 +50,11 @@ def index():
 
 
 @app.route("/system_info")
-@token_required
+# @token_required
 def system_info():
     """Returns a JSON object containing system information."""
+
+    logging.debug(f"Rover received system info request. Headers: \n{request.headers}")
 
     system_state = requests.get(controller_address_base.format("system_info")).json()
     return system_state
