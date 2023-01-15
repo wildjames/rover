@@ -9,12 +9,8 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
 
-        logging.debug(f"Checking for token in headers. Headers: \n{request.headers}")
-        logging.debug(f"Request JSON contents: \n{request.json}")
-
         if "Authorization" in request.headers:
             token = request.headers["Authorization"].split(" ")[1]
-            logging.info(f"Token found in headers: {token}")
 
         else:
             logging.debug("No token found in headers")
@@ -24,9 +20,9 @@ def token_required(f):
                 "error": "Unauthorized",
             }, 401
 
-        if not token == current_app.config["SECRET_KEY"]:
+        if token != current_app.config["SECRET_KEY"]:
             logging.debug(
-                f"Token found in headers, but is incorrect. Recieved: {token}"
+                f"Token found in headers, but is incorrect. Recieved: {token} | Expected: {current_app.config['SECRET_KEY']}"
             )
             return {
                 "message": "Incorrect Authentication Token",
