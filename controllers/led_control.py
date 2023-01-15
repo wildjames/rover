@@ -23,13 +23,14 @@ for pin in leds:
 def set_led_state(index, state):
     """Sets the state of the LED at the given index."""
     if index >= len(leds):
-        return
-    GPIO.output(leds[index], state)
+        return False
+    retval = GPIO.output(leds[index], state)
     logging.debug("Set LED {} to state {}".format(index, state))
+    return retval
 
 
 def get_led_state():
     """Returns a list of the states of all LEDs."""
-    led_states = [GPIO.input(led) for led in leds]
+    led_states = [(led, GPIO.input(led)) for led in leds]
     logging.debug("Got current LED states: {}".format(led_states))
     return led_states

@@ -13,10 +13,13 @@ def my_process():
 
     logging.info("Received LED command pairs (index, state): {}".format(req_obj))
     logging.info("This is type: {}".format(type(req_obj)))
+    vals = []
     for led, state in req_obj:
-        led_control.set_led_state(led, state)
+        vals.append(led_control.set_led_state(led, state))
+    
+    print(vals)
 
-    return {"message": "success"}
+    return {"message": "success", "values": vals}
 
 
 @get("/system_info")
