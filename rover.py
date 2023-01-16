@@ -31,9 +31,6 @@ app.config["SECRET_KEY"] = SECRET_KEY
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-camera = cv2.VideoCapture(0)
-logging.info("Camera initialized? {}".format(camera.isOpened()))
-
 
 @app.route("/")
 def index():
@@ -51,30 +48,9 @@ def index():
         name = "led{}".format(led)
         templateData[name] = led_state
 
+    template_data["camera_feed"] = controller_address_base.format("video_feed")
+
     return render_template("index.html", **templateData)
-
-
-def gen_frames():
-    """Video streaming generator function."""
-    while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            logging.error("Rover failed to read camera frame")
-            break
-        else:
-            ret, buffer = cv2.imencode(".jpg", frame)
-            frame = buffer.tobytes()
-            yield (
-                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-            )  # concat
-
-
-@app.route("/video_feed")
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    # Hook into openCV to get the camera feed
-    logging.info("Rover received video feed request")
-    return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @app.route("/system_info")
@@ -123,4 +99,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=True, threaded=True, debug=False)
+    app.run(host="0.0.0.0", port=80, use_reloader=True, threaded=True, debug=True)

@@ -2,6 +2,7 @@ import json
 import logging
 
 import led_control
+import camera_control
 from bottle import get, post, request, response, run
 
 logging.basicConfig(
@@ -11,6 +12,14 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
 )
+
+
+@get("/video_feed")
+def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    # Hook into openCV to get the camera feed
+    logging.info("Rover received video feed request")
+    return response(camera_control.gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @post("/led_command")
