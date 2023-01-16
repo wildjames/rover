@@ -31,6 +31,7 @@ app.config["SECRET_KEY"] = SECRET_KEY
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
+logging.info('call cv2.VideoCapture(0) from PID', os.getpid())
 camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
 
