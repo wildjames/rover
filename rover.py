@@ -61,6 +61,7 @@ def gen_frames():
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
+            logging.error("Rover failed to read camera frame")
             break
         else:
             ret, buffer = cv2.imencode(".jpg", frame)
