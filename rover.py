@@ -31,7 +31,6 @@ app.config["SECRET_KEY"] = SECRET_KEY
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-logging.info(f"call cv2.VideoCapture(0) from PID {os.getpid()}")
 camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
 if not camera.isOpened():
@@ -70,6 +69,7 @@ def gen_frames():
     """Video streaming generator function."""
     if not camera.isOpened():
         yield b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n\r\n"
+
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -138,4 +138,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=False, debug=False)
+    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=False)
