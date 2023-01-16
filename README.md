@@ -28,6 +28,18 @@ Will I end up writing an app to control this? It's either that or the browser...
 
 # Setup, prerequisites
 
+## Install OpenCV
+I made a script that follows the instructions from [here](https://pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/). Before you run it though, 
+```
+sudo nano /etc/dphys-swapfile
+```
+and set `CONF_SWAPSIZE=2048`. The default is 100. Then, restart the service with `sudo /etc/init.d/dphys-swapfile restart`.
+
+Then,
+```
+cd setup
+sudo ./install_opencv.sh
+```
 
 ## Start the LED controller:
 ```
@@ -37,6 +49,7 @@ sudo python3 controller/led_controller.py
 
 ## Install python requirements
 ```
+
 sudo pip3 install -r requirements.txt
 ```
 
