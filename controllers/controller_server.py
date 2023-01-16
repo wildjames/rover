@@ -77,4 +77,4 @@ def system_info():
 
 
 if __name__ in "__main__":
-    app.run(host="roverpi.local", port=1001, use_reloader=False, threaded=False, debug=False)
+    app.run(host="localhost", port=1001, use_reloader=False, threaded=False, debug=False)
