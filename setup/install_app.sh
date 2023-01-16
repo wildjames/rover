@@ -1,20 +1,7 @@
 #!/usr/bin/bash
 
-python3 -m pip install -r ../requirements.txt
 
-# There are some logging files that we will want to create.
-# We will create them in the /var/log directory
-echo "Creating/cleaning log file directory"
-rm -r /home/rover/log
-mkdir -p /home/rover/log
-chmod -cR 777 /home/rover/log
-chgrp -cR adm /home/rover/log
-
-
-# Create a secret API token to access the rover API
-echo $RANDOM | md5sum | head -c 20 > /home/rover/rover_api_token.txt
-
-apt install libwayland-cursor0 libxfixes3 libva2 \
+apt-get install libwayland-cursor0 libxfixes3 libva2 \
     libdav1d4 libavutil56 libxcb-render0 libwavpack1 \
     libvorbis0a libx264-160 libx265-192 libaec0 libxinerama1 \
     libva-x11-2 libpixman-1-0 libwayland-egl1 libzvbi0 \
@@ -34,8 +21,20 @@ apt install libwayland-cursor0 libxfixes3 libva2 \
     libatk1.0-0 libxrandr2 librsvg2-2 libopenjp2-7 \
     libpangocairo-1.0-0 libshine3 libxi6 libvorbisfile3 \
     libcodec2-0.9 libmpg123-0 libthai0 libudfread0 libva-drm2 \
-    libtheora0 -y
-apt-get install python3-h5py -y
+    libtheora0 python3-h5py -y
+
+python3 -m pip install -r ../requirements.txt
+
+# There are some logging files that we will want to create.
+# We will create them in the /var/log directory
+echo "Creating/cleaning log file directory"
+rm -r /home/rover/log
+mkdir -p /home/rover/log
+chmod -cR 777 /home/rover/log
+chgrp -cR adm /home/rover/log
+
+# Create a secret API token to access the rover API
+echo $RANDOM | md5sum | head -c 20 > /home/rover/rover_api_token.txt
 
 # TODO: Apache setup should go here. Dockerise that?
 echo "Doing Apache2 service check"

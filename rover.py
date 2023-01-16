@@ -72,6 +72,8 @@ def gen_frames():
 
 @app.route('/video_feed')
 def video_feed():
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    logging.info("Rover received video feed request")
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
