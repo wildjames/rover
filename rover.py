@@ -60,7 +60,7 @@ def index():
         template_data[name] = led_state
 
     # The camera feed is at my URL + /video_feed
-    template_data["camera_feed"] = "/video_feed"
+    template_data["camera_feed"] = "/null"
 
     return render_template("index.html", **template_data)
 
