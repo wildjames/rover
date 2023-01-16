@@ -30,7 +30,7 @@ num_leds = system_state["led_data"]["num_leds"]
 
 # Hook into openCV to get the camera feed
 camera = cv2.VideoCapture(0)
-
+logging.info("Camera initialized: {}".format(camera.isOpened()))
 
 # Flask app setup
 app = Flask(__name__)
