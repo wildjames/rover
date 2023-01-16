@@ -28,10 +28,6 @@ system_state = requests.get(controller_address_base.format("system_info")).json(
 num_leds = system_state["led_data"]["num_leds"]
 
 
-# Hook into openCV to get the camera feed
-camera = cv2.VideoCapture(0)
-logging.info("Camera initialized: {}".format(camera.isOpened()))
-
 # Flask app setup
 app = Flask(__name__)
 app.config["SECRET_KEY"] = SECRET_KEY
@@ -56,7 +52,7 @@ def index():
     return render_template("index.html", **templateData)
 
 
-def gen_frames():
+def gen_frames(camera):
     """Video streaming generator function."""
     while True:
         success, frame = camera.read()  # read the camera frame
@@ -74,8 +70,11 @@ def gen_frames():
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
+    # Hook into openCV to get the camera feed
+    camera = cv2.VideoCapture(0)
+    logging.info("Camera initialized: {}".format(camera.isOpened()))
     logging.info("Rover received video feed request")
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames(camera), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route("/system_info")
