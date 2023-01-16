@@ -39,18 +39,18 @@ def index():
     led_states = system_state["led_data"]["led_states"]
     leds = [state[1] for state in sorted(led_states, key=lambda x: x[0])]
 
-    templateData = {
+    template_data = {
         "title": "Rover Server",
         "time": datetime.now().ctime(),
     }
 
     for led, led_state in enumerate(leds):
         name = "led{}".format(led)
-        templateData[name] = led_state
+        template_data[name] = led_state
 
     template_data["camera_feed"] = controller_address_base.format("video_feed")
 
-    return render_template("index.html", **templateData)
+    return render_template("index.html", **template_data)
 
 
 @app.route("/system_info")
