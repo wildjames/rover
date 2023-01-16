@@ -4,7 +4,8 @@ import logging
 import camera_control
 import cv2
 import led_control
-from bottle import Response, get, post, request, response, run
+from flask import Flask, Response, render_template, request
+
 
 logging.basicConfig(
     filename="/home/rover/log/rover_controller.log",
@@ -14,10 +15,11 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-
 camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
 
+# Flask app setup
+app = Flask(__name__)
 
 def gen_frames():
     """Video streaming generator function."""
@@ -34,7 +36,7 @@ def gen_frames():
             )  # concat
 
 
-@get("/video_feed")
+@app.route("/video_feed")
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     # Hook into openCV to get the camera feed
@@ -45,7 +47,7 @@ def video_feed():
     )
 
 
-@post("/led_command")
+@app.route("/led_command", methods=["POST"])
 def led_command():
     req_obj = json.loads(request.json)
 
@@ -58,10 +60,9 @@ def led_command():
     return {"message": "success"}
 
 
-@get("/system_info")
+@app.route("/system_info", methods=["GET"])
 def system_info():
     """Returns a JSON object containing system information."""
-    response.content_type = "application/json"
 
     info_dict = {
         "led_data": {
@@ -76,4 +77,4 @@ def system_info():
 
 
 if __name__ in "__main__":
-    run(host="localhost", port=1001, debug=True, reloader=True)
+    app.run(host="roverpi.local", port=1001, debug=True, reloader=True)
