@@ -32,7 +32,8 @@ system_state = requests.get(controller_address_base.format("system_info")).json(
 num_leds = system_state["led_data"]["num_leds"]
 
 logging.info('call cv2.VideoCapture(0) from PID', os.getpid())
-camera = cv2.VideoCapture(0)
+if os.environ.get('WERKZEUG_RUN_MAIN') or Flask.debug is False:
+    camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
 
 
@@ -131,4 +132,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=False)
+    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=True)
