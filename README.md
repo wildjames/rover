@@ -35,10 +35,10 @@ sudo nano /etc/dphys-swapfile
 ```
 and set `CONF_SWAPSIZE=2048`. The default is 100. Then, restart the service with `sudo /etc/init.d/dphys-swapfile restart`.
 
-Then,
+Then, run the script from your home directory. This is a permission thing.
 ```
-cd setup
-sudo ./install_opencv.sh
+cd ~
+sudo path_to_rover/setup/install_opencv.sh
 ```
 
 ## Start the LED controller:
