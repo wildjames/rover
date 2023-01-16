@@ -18,12 +18,15 @@ The control software I'm building right now has the following stack:
 
 # Notes, TODO
 
-Software interface works, and has authenication needed to hit the endpoints. An API token is generated, and has to be given in the `Auithorization` html header. Next stop: Hardware.
-Will I end up writing an app to control this? It's either that or the browser... And that would probably take JavaScript?
+Hardware interface works, using a mini server accessible only on localhost.
 
+https://www.linux-projects.org/uv4l/installation/
+This works on here: http://192.168.1.170:1002/ I have cloned over the web code, it's in `facedetection`. I think it's best to ditch the flask frontend, and just use javascript to handle the web interface instead. Should be easier, and I won't have to run two flask servers!
+
+I think 
 ## TODO
 - Write a motor interface
-- Need to get camera feed somehow
+
 
 
 # Setup, prerequisites
@@ -40,6 +43,13 @@ Then, run the script from your home directory. This is a permission thing.
 cd ~
 sudo path_to_rover/setup/install_opencv.sh
 ```
+
+## Install `uv4l`
+https://www.linux-projects.org/uv4l/installation/
+
+This works on here: http://192.168.1.170:1002/ I have cloned over the web code, it's in `facedetection`. See what you can do with that.
+
+I think 
 
 ## Start the LED controller:
 ```

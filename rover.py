@@ -19,13 +19,8 @@ logging.basicConfig(
 
 controller_address_base = "http://localhost:1001/{}"
 
-# API token secret
-with open("/home/rover/rover_api_token.txt", "r") as f:
-    SECRET_KEY = f.read().strip()
-
 # Flask app setup
 app = Flask(__name__)
-app.config["SECRET_KEY"] = SECRET_KEY
 
 # system configuration information gathering
 system_state = requests.get(controller_address_base.format("system_info")).json()
@@ -63,33 +58,6 @@ def index():
     template_data["camera_feed"] = "/null"
 
     return render_template("index.html", **template_data)
-
-
-def gen_frames():
-    """Video streaming generator function."""
-    if not camera.isOpened():
-        yield b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n\r\n"
-
-    while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            logging.error("Rover failed to read camera frame")
-            break
-        else:
-            ret, buffer = cv2.imencode(".jpg", frame)
-            frame = buffer.tobytes()
-            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
-
-
-@app.route("/video_feed")
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    # Hook into openCV to get the camera feed
-    logging.info("Rover received video feed request")
-    return Response(
-        gen_frames(),
-        mimetype="multipart/x-mixed-replace; boundary=frame",
-    )
 
 
 @app.route("/system_info")
