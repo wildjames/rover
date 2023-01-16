@@ -1,12 +1,13 @@
 import json
 import logging
+import os
 from datetime import datetime
 from time import time
 
 import cv2
 import requests
 from auth_middleware import token_required
-from flask import Flask, render_template, request, Response
+from flask import Flask, Response, render_template, request
 
 logging.basicConfig(
     filename="/home/rover/log/rover_flask.log",
@@ -22,15 +23,17 @@ controller_address_base = "http://localhost:1001/{}"
 with open("/home/rover/rover_api_token.txt", "r") as f:
     SECRET_KEY = f.read().strip()
 
+# Flask app setup
+app = Flask(__name__)
+app.config["SECRET_KEY"] = SECRET_KEY
 
 # system configuration information gathering
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-
-# Flask app setup
-app = Flask(__name__)
-app.config["SECRET_KEY"] = SECRET_KEY
+if os.environ.get("WERKZEUG_RUN_MAIN") or Flask.debug is False:
+    camera = cv2.VideoCapture(0)
+    logging.info("Camera initialized: {}".format(camera.isOpened()))
 
 
 @app.route("/")
@@ -52,7 +55,7 @@ def index():
     return render_template("index.html", **templateData)
 
 
-def gen_frames(camera):
+def gen_frames():
     """Video streaming generator function."""
     while True:
         success, frame = camera.read()  # read the camera frame
@@ -67,14 +70,12 @@ def gen_frames(camera):
             )  # concat
 
 
-@app.route('/video_feed')
+@app.route("/video_feed")
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     # Hook into openCV to get the camera feed
-    camera = cv2.VideoCapture(0)
-    logging.info("Camera initialized: {}".format(camera.isOpened()))
     logging.info("Rover received video feed request")
-    return Response(gen_frames(camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
 @app.route("/system_info")
