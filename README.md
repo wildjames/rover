@@ -9,26 +9,21 @@ The control software I'm building right now has the following stack:
   - handles authentication and URL routing
 - Flask app
   - Frontend code, web interface
-  - parses JSON input from the operator and publishes commands to be executed to the MQTT host
-- Mosquitto MQTT server (local access only?)
-  - Brokers communication between the Flask app, and the controllers
-- Controller script(s?)
+  - parses JSON input from the operator and passes commands to be executed to the hardware controller
+- Hardware controller script(s?)
   - Interfaces with the GPIO pins (requires root to do this)
-  - Subscribes to the MQTT broker, and executes commands that are published there
-  - Publishes the state of the electronics to the MQTT broker
+  - runs its own HTTP server, with its own API. This, however, runs as root so is not publicly accessible.
 
 
 
 # Notes, TODO
 
-I feel like this is inelegant, especially the MQTT being used to pass messages between python scripts, but I've not come across anything better (yet). In the end, it's likely that I'll delegate the mechanics of the rover to an arduino, likely an ESP32 for the processing speed and threading capability. In that case, I'd probably want to communicate over USB serial, or else screw around with level-shifting the pi 5V signals to ESP32 3.3V signals... But, I think that would allow me to call out to the microcontroller from within the Flask app, and ditch the mosquitto/controller scripts. 
-
-Even with `QoS = 2`, the MQTT interface is unreliable at even moderately high speeds. Might be because I'm testing on a pi Zero? I could drive slowly, but I don't want erroneous inputs! It might be worth using HTTP to communicate - something like [this SO post](https://stackoverflow.com/a/16218248).
-
-Alternatively, I could just try and reconfigure apache to run the flask app as root. I think adding the web user (www?) to the sudoers file. Dunno, food for thought. Though, I don't like the idea of giving the web user root access. I have begun to implement this.
+Software interface works, and has authenication needed to hit the endpoints. An API token is generated, and has to be given in the `Auithorization` html header. Next stop: Hardware.
+Will I end up writing an app to control this? It's either that or the browser... And that would probably take JavaScript?
 
 ## TODO
-- Set up the LED control as a system service, so it starts at boot (and runs as root!)
+- Write a motor interface
+- Need to get camera feed somehow
 
 
 # Setup, prerequisites
@@ -54,10 +49,13 @@ We want HTTPS, so install the related plugin
 ```
 sudo a2enmod ssl
 ```
-Create a new SSL certificate, with this command:
+
+Really, we should get a proper signed SSL certificate. However, as a stopgap we can get a self-signed one.
+To create a new self-signed SSL certificate, with this command:
 ```
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
 ```
+Note that this is not ideal for deployment, but will do for testing.
 
 Then, set up the flask app to be run by Apache2. To do this, I have provided a configuration in `setup/rover.conf`. Tweak that, and move it to `/etc/apache2/sites-available/`
 ```

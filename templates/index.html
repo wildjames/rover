@@ -6,6 +6,14 @@
    <body>
       <h1>Hello, World!</h1>
       <h2>The date and time on the server is: <span style="color:var(--crimson);">{{ time }}</span></h2>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-8  offset-lg-2">
+                  <h3 class="mt-5">Rover Camera Feed</h3>
+                  <img src="{{ url_for('video_feed') }}" width="100%">
+              </div>
+          </div>
+      </div>
       <h2>The LED states are:</h2>
       <h2>Green: {{ led0 }}</h2>
       <h2>Yellow: {{ led1 }}</h2>

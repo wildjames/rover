@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request
-from datetime import datetime
 import json
-import requests
 import logging
+from datetime import datetime
 from time import time
+
+import cv2
+import requests
 from auth_middleware import token_required
+from flask import Flask, render_template, request, Response
 
 logging.basicConfig(
     filename="/home/rover/log/rover_flask.log",
@@ -20,9 +22,14 @@ controller_address_base = "http://localhost:1001/{}"
 with open("/home/rover/rover_api_token.txt", "r") as f:
     SECRET_KEY = f.read().strip()
 
+
 # system configuration information gathering
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
+
+
+# Hook into openCV to get the camera feed
+camera = cv2.VideoCapture(0)
 
 
 # Flask app setup
@@ -47,6 +54,25 @@ def index():
         templateData[name] = led_state
 
     return render_template("index.html", **templateData)
+
+
+def gen_frames():
+    """Video streaming generator function."""
+    while True:
+        success, frame = camera.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode(".jpg", frame)
+            frame = buffer.tobytes()
+            yield (
+                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
+            )  # concat
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 @app.route("/system_info")
@@ -95,4 +121,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=True)
+    app.run(host="0.0.0.0", port=80, use_reloader=True, threaded=True, debug=True)
