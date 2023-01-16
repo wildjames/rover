@@ -1,8 +1,6 @@
 import json
 import logging
 
-import camera_control
-import cv2
 import led_control
 from flask import Flask, Response, render_template, request
 
@@ -48,4 +46,4 @@ def system_info():
 
 
 if __name__ in "__main__":
-    app.run(host="localhost", port=1001, use_reloader=False, threaded=False, debug=False)
+    app.run(host="localhost", port=1001, use_reloader=True, threaded=False, debug=True)
