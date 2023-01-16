@@ -31,9 +31,8 @@ app.config["SECRET_KEY"] = SECRET_KEY
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-if os.environ.get("WERKZEUG_RUN_MAIN") or Flask.debug is False:
-    camera = cv2.VideoCapture(0)
-    logging.info("Camera initialized: {}".format(camera.isOpened()))
+camera = cv2.VideoCapture(0)
+logging.info("Camera initialized? {}".format(camera.isOpened()))
 
 
 @app.route("/")
