@@ -39,7 +39,9 @@ if not camera.isOpened():
         "Rover failed to initialize camera. Is the user part of the 'video' group?"
     )
     # Print the current user
-    logging.error("Current user: {}".format(os.getlogin()))
+    import getpass
+    usr = getpass.getuser()
+    logging.error(f"Current user: {usr}")
 
 
 @app.route("/")
