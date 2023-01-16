@@ -15,37 +15,8 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-camera = cv2.VideoCapture(0)
-logging.info("Camera initialized? {}".format(camera.isOpened()))
-
 # Flask app setup
 app = Flask(__name__)
-
-def gen_frames():
-    """Video streaming generator function."""
-    while True:
-        success, frame = camera.read()  # read the camera frame
-        if not success:
-            logging.error("Rover failed to read camera frame")
-            break
-        else:
-            ret, buffer = cv2.imencode(".jpg", frame)
-            frame = buffer.tobytes()
-            yield (
-                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-            )  # concat
-
-
-@app.route("/video_feed")
-def video_feed():
-    """Video streaming route. Put this in the src attribute of an img tag."""
-    # Hook into openCV to get the camera feed
-    logging.info("Rover received video feed request")
-    return Response(
-        camera_control.gen_frames(),
-        mimetype="multipart/x-mixed-replace; boundary=frame",
-    )
-
 
 @app.route("/led_command", methods=["POST"])
 def led_command():
