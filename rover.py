@@ -48,10 +48,18 @@ def index():
         name = "led{}".format(led)
         template_data[name] = led_state
 
-    template_data["camera_feed"] = controller_address_base.format("video_feed")
+    # The camera feed is at my URL + /video_feed
+    template_data["camera_feed"] = "/video_feed"
 
     return render_template("index.html", **template_data)
 
+@app.route("/video_feed")
+def video_feed():
+    """Forward data from the controller_address_base/video_feed endpoint to the client."""
+    return Response(
+        requests.get(controller_address_base.format("video_feed"), stream=True).iter_content(),
+        mimetype="multipart/x-mixed-replace; boundary=frame",
+    )
 
 @app.route("/system_info")
 # @token_required
