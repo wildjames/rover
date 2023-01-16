@@ -34,6 +34,10 @@ num_leds = system_state["led_data"]["num_leds"]
 logging.info("call cv2.VideoCapture(0) from PID {os.getpid()}")
 camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
+if not camera.isOpened():
+    logging.error(
+        "Rover failed to initialize camera. Is the user part of the 'video' group?"
+    )
 
 
 @app.route("/")
@@ -60,6 +64,8 @@ def index():
 
 def gen_frames():
     """Video streaming generator function."""
+    if not camera.isOpened():
+        yield b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n\r\n"
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
@@ -68,9 +74,7 @@ def gen_frames():
         else:
             ret, buffer = cv2.imencode(".jpg", frame)
             frame = buffer.tobytes()
-            yield (
-                b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n"
-            )  # concat
+            yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n")
 
 
 @app.route("/video_feed")
