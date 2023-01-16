@@ -31,13 +31,15 @@ app.config["SECRET_KEY"] = SECRET_KEY
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-logging.info("call cv2.VideoCapture(0) from PID {os.getpid()}")
+logging.info(f"call cv2.VideoCapture(0) from PID {os.getpid()}")
 camera = cv2.VideoCapture(0)
 logging.info("Camera initialized? {}".format(camera.isOpened()))
 if not camera.isOpened():
     logging.error(
         "Rover failed to initialize camera. Is the user part of the 'video' group?"
     )
+    # Print the current user
+    logging.error("Current user: {}".format(os.getlogin()))
 
 
 @app.route("/")
