@@ -19,7 +19,7 @@ mv opencv_contrib-4.0.0 opencv_contrib
 
 pip install numpy
 
-cd ~/opencv
+cd opencv
 mkdir build
 cd build
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
