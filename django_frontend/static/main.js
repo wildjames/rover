@@ -11,7 +11,8 @@
 
         start.addEventListener('click', function (e) {
             var address = '192.168.1.170:1002/webrtc';
-            var protocol = location.protocol === "https:" ? "wss:" : "ws:";
+            // var protocol = location.protocol === "https:" ? "wss:" : "ws:";
+            var protocol = 'ws:';
             var wsurl = protocol + '//' + address;
 
             if (!isStreaming) {
