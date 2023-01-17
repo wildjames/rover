@@ -23,6 +23,12 @@ Hardware interface works, using a mini server accessible only on localhost.
 https://www.linux-projects.org/uv4l/installation/
 This works on here: http://192.168.1.170:1002/ I have cloned over the web code, it's in `facedetection`. I think it's best to ditch the flask frontend, and just use javascript to handle the web interface instead. Should be easier, and I won't have to run two flask servers!
 
+`uv4l` server can be configured with this file and service:
+```
+rover@RoverPi:/usr/local/www/rover $ sudo nano /etc/uv4l/uv4l-raspicam.conf
+rover@RoverPi:/usr/local/www/rover $ sudo service uv4l_raspicam restart
+```
+
 I think 
 ## TODO
 - Write a motor interface
