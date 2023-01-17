@@ -26,17 +26,6 @@ app = Flask(__name__)
 system_state = requests.get(controller_address_base.format("system_info")).json()
 num_leds = system_state["led_data"]["num_leds"]
 
-camera = cv2.VideoCapture(0)
-logging.info("Camera initialized? {}".format(camera.isOpened()))
-if not camera.isOpened():
-    logging.error(
-        "Rover failed to initialize camera. Is the user part of the 'video' group?"
-    )
-    # Print the current user
-    import getpass
-    usr = getpass.getuser()
-    logging.error(f"Current user: {usr}")
-
 
 @app.route("/")
 def index():
@@ -55,7 +44,7 @@ def index():
         template_data[name] = led_state
 
     # The camera feed is at my URL + /video_feed
-    template_data["camera_feed"] = "/null"
+    template_data["camera_feed"] = "http://localhost:8080/stream/video.mjpeg"
 
     return render_template("index.html", **template_data)
 
