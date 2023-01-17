@@ -5,6 +5,7 @@
         var isStreaming = false;
         var start = document.getElementById('start');
         var stop = document.getElementById('stop');
+        var canvas = document.getElementById('c');
         var video = document.getElementById('v');
         var ctx = canvas.getContext('2d');
 
