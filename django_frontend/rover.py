@@ -44,7 +44,7 @@ def index():
         template_data[name] = led_state
 
     # The camera feed is at my URL + /video_feed
-    template_data["camera_feed"] = "http://localhost:8080/stream/video.mjpeg"
+    template_data["video_feed"] = "http://localhost:8080/stream/video.mjpeg"
 
     return render_template("index.html", **template_data)
 
