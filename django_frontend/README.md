@@ -29,9 +29,13 @@ rover@RoverPi:/usr/local/www/rover $ sudo nano /etc/uv4l/uv4l-raspicam.conf
 rover@RoverPi:/usr/local/www/rover $ sudo service uv4l_raspicam restart
 ```
 
-I think 
+I think it may be better to stream states and commands over WebRTC similar to video... This may be somewhat tricky to learn though.
+
+
 ## TODO
 - Write a motor interface
+- WebRTC LED states
+- WebRTC LED control
 
 
 

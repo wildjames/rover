@@ -5,9 +5,19 @@
         var isStreaming = false;
         var start = document.getElementById('start');
         var stop = document.getElementById('stop');
+        var led1 = document.getElementById('led1');
+        var led2 = document.getElementById('led2');
+        var led3 = document.getElementById('led3');
         var canvas = document.getElementById('c');
         var video = document.getElementById('v');
         var ctx = canvas.getContext('2d');
+
+        led1.addEventListener('click', function (e) {
+            // I need to send a toggle message to the server. First, get the state of the LED
+            var state = led1.getAttribute('data-state');
+            var newState = state === '1' ? '0' : '1';
+            console.log("Old state: " + state + ", new state: " + newState);
+        }, false);
 
         start.addEventListener('click', function (e) {
             var address = '192.168.1.170:1002/webrtc';

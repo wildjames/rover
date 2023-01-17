@@ -37,15 +37,16 @@
                   </div>
                   <video id='v'></video>
                   <canvas id='c'></canvas>
+                  <button id="led1" data-state="{{ led0 }}">Green: {{ led0 }}</button>
+                  <button id="led2" data-state="{{ led1 }}">Yellow: {{ led1 }}</button>
+                  <button id="led3" data-state="{{ led2 }}">Red: {{ led2 }}</button>
               </div>
           </div>
       </div>
       <h2>The LED states are:</h2>
-        <ul>
-             {% for led in leds %}
-                <li>{{ led }}</li>
-             {% endfor %}
-        </ul>
+      <h2>Green: {{ led0 }}</h2>
+      <h2>Yellow: {{ led1 }}</h2>
+      <h2>Red: {{ led2 }}</h2>
    </body>
 </html>
 
