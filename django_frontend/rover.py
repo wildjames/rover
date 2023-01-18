@@ -29,7 +29,7 @@ def index():
     # Get LED status
     system_state = requests.get(controller_address_base.format("system_info")).json()
     led_states = system_state["led_data"]["led_states"]
-    leds = [state[1] for state in sorted(led_states, key=lambda x: x[0])]
+    leds = [state[1] for state in led_states]
 
     template_data = {
         "title": "Rover Server",
