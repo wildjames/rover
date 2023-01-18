@@ -55,7 +55,7 @@
 
         }, 200);
 
-        function toggleLed(e) {
+        function toggleLed() {
             // I need to send a toggle message to the server. First, get the state of the LED
             var state = this.getAttribute('data-state');
             state = parseInt(state);
@@ -78,52 +78,11 @@
             xhr.send(payload);
         }
 
-        led0.addEventListener('click', toggleLed(this, e), false);
+        led0.addEventListener('click', toggleLed, false);
 
-        led1.addEventListener('click', function (e) {
-            // I need to send a toggle message to the server. First, get the state of the LED
-            var state = led1.getAttribute('data-state');
-            state = parseInt(state);
+        led1.addEventListener('click', toggleLed, false);
 
-            // the LED index is the last character of the id
-            var ledIndex = led1.id[led1.id.length - 1];
-            ledIndex = parseInt(ledIndex);
-
-            var newState = state === 1 ? 0 : 1;
-            console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
-            
-            // Send a command POST request with a JSON payload to the controller server
-            var xhr = new XMLHttpRequest();
-            // Make the post request asynchronously
-            xhr.open('POST', '/rover/led_control', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            // The json payload is of the form {"states": [[1, newstate]]}
-            var payload = JSON.stringify({"states": [[ledIndex, newState]]});
-            console.log("Sending payload: " + payload);
-            xhr.send(payload);
-        }, false);
-
-        led2.addEventListener('click', function (e) {
-            // I need to send a toggle message to the server. First, get the state of the LED
-            var state = led2.getAttribute('data-state');
-            state = parseInt(state);
-
-            // the LED index is the last character of the id
-            var ledIndex = led2.id[led2.id.length - 1];
-            ledIndex = parseInt(ledIndex);
-
-            var newState = state === 1 ? 0 : 1;
-            console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
-            
-            // Send a command POST request with a JSON payload to the controller server
-            var xhr = new XMLHttpRequest();
-            // Make the post request asynchronously
-            xhr.open('POST', '/rover/led_control', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            // The json payload is of the form {"states": [[1, newstate]]}
-            var payload = JSON.stringify({"states": [[ledIndex, newState]]});
-            console.log("Sending payload: " + payload);
-            xhr.send(payload);        }, false);
+        led2.addEventListener('click', toggleLed, false);
 
         start.addEventListener('click', function (e) {
             var address = '192.168.1.170:1002/webrtc';
