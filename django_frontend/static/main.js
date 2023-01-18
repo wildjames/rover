@@ -36,8 +36,14 @@
                     led2.setAttribute('data-state', parseInt(ledStates[2]));
 
                     // Update the color of the LEDs
-                    if (ledStates[0] === 1) {led0.style.backgroundColor = 'red';} 
-                    else {led0.style.backgroundColor = 'black';}
+                    if (ledStates[0] === 1) {
+                        led0.style.backgroundColor = 'red';
+                        console.log("LED 0 is on");
+                    } 
+                    else {
+                        led0.style.backgroundColor = 'black';
+                        console.log("LED 0 is off");
+                    }
 
                     if (ledStates[1] === 1) {led1.style.backgroundColor = 'red';} 
                     else {led1.style.backgroundColor = 'black';}
