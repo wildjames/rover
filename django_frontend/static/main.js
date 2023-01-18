@@ -91,7 +91,7 @@
 
             if (!isStreaming) {
                 // Change the canvas color to white
-                canvas.style.backgroundColor = 'var(--jet)';
+                canvas.style.backgroundColor = 'var(--tyrian-purple)';
 
                 signalObj = new signal(wsurl,
                     function (stream) {
@@ -129,7 +129,7 @@
         }, false);
 
         stop.addEventListener('click', function (e) {
-            canvas.style.backgroundColor = 'var(--morning-blue)';
+            canvas.style.backgroundColor = 'var(--midnight-green-eagle-green)';
             if (signalObj) {
                 signalObj.hangup();
                 signalObj = null;
