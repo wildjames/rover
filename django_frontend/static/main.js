@@ -79,12 +79,12 @@
         }
 
         led0.addEventListener('click', toggleLed, false);
-
         led1.addEventListener('click', toggleLed, false);
-
         led2.addEventListener('click', toggleLed, false);
 
         start.addEventListener('click', function (e) {
+            // This is the IP of the server running the camera stream.
+            // TODO: Will need updating to the actual IP of the server
             var address = '192.168.1.170:1002/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
