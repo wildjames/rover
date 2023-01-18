@@ -38,6 +38,8 @@ It might be fun to have a LoRa modem as well, as a backup in case I drive somewh
 
 Treads can be [bought](https://www.aliexpress.com/item/32876365731.html) - they're not *cheap*, but they're not overly expensive. I would probably want to fabricate the main body of the rover in the shop. Plastic > metal, probably? More weatherproof
 
+I think an RC truck might be the way to go - comes with control electronics I can hopefully hijack, but failing that I can just gut it and hook into the hardware directly. [this](https://uk.banggood.com/Eachine-EAT04-1-or-12-2_4G-4WD-RC-Car-Metal-Body-Shell-Desert-Off-road-Truck-7_4V-1500mAH-RTR-Toy-Black-p-1611391.html?cur_warehouse=CN) looks like s decent one, seems ruged and mostly metal. Will need some waterproofing, but I think that's true of anything I buy. Ideally, I would go a bit bigger so I can fit stuff in a bit more easily, but a lighter chassis might mean longer range. [This is a more plasticy version](https://www.aliexpress.com/item/1005005032547831.html), but I think it might be a little bigger?
+
 ## Power
 
 If I eyeball total power usage (when active) of the compute parts as about 5W for the raspberry pi, 400mA for the modem to give 3.6W while transmitting, call that 4W, and running two motors at about 30W each, I would guess about 40W total power draw while active. A 20W panel would then need to chage for 2 hours to recover that - if I could charge while driving, that gives me a 50% duty cycle on movement - but remember, you can only charge in the daytime, and a solar panel is unlikely to reach its full charging potential. 
