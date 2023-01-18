@@ -66,14 +66,14 @@
 
             var newState = state === 1 ? 0 : 1;
             console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
-            
+
             // Send a command POST request with a JSON payload to the controller server
             var xhr = new XMLHttpRequest();
             // Make the post request asynchronously
             xhr.open('POST', '/rover/led_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             // The json payload is of the form {"states": [[1, newstate]]}
-            var payload = JSON.stringify({"states": [[ledIndex, newState]]});
+            var payload = JSON.stringify({ "states": [[ledIndex, newState]] });
             console.log("Sending payload: " + payload);
             xhr.send(payload);
         }
@@ -85,31 +85,46 @@
         start.addEventListener('click', function (e) {
             // This is the IP of the server running the camera stream.
             // TODO: Make sure that port 1002 is public!
-            var address = 'roverpi.local:1002/webrtc';
+            var address = '192.168.1.170:1002/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
 
             if (!isStreaming) {
                 signalObj = new signal(wsurl,
-                        function (stream) {
-                            console.log('got a stream!');
-                            //var url = window.URL || window.webkitURL;
-                            //video.src = url ? url.createObjectURL(stream) : stream; // deprecated
-                            video.srcObject = stream;
-                            video.play();
-                        },
-                        function (error) {
-                            alert(error);
-                        },
-                        function () {
-                            console.log('websocket closed. bye bye!');
-                            video.srcObject = null;
-                            ctx.clearRect(0, 0, canvas.width, canvas.height);
-                            isStreaming = false;
-                        },
-                        function (message) {
-                            alert(message);
+                    function (stream) {
+                        console.log('got a stream!');
+                        //var url = window.URL || window.webkitURL;
+                        //video.src = url ? url.createObjectURL(stream) : stream; // deprecated
+                        video.srcObject = stream;
+                        
+                        // video.play();
+                        
+                        // Show loading animation.
+                        var playPromise = video.play();
+
+                        if (playPromise !== undefined) {
+                            playPromise.then(_ => {
+                                // Automatic playback started!
+                                // Show playing UI.
+                            })
+                                .catch(error => {
+                                    // Auto-play was prevented
+                                    // Show paused UI.
+                                });
                         }
+                    },
+                    function (error) {
+                        alert(error);
+                    },
+                    function () {
+                        console.log('websocket closed. bye bye!');
+                        video.srcObject = null;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        isStreaming = false;
+                    },
+                    function (message) {
+                        alert(message);
+                    }
                 );
             }
         }, false);
