@@ -22,16 +22,20 @@
             var state = led1.getAttribute('data-state');
             state = parseInt(state);
 
+            // the LED index is the last character of the id
+            var ledIndex = led1.id[led1.id.length - 1];
+            ledIndex = parseInt(ledIndex);
+
             var newState = state === 1 ? 0 : 1;
-            console.log("LED 1. Old state: " + state + ", new state: " + newState);
+            console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
             
             // Send a command POST request with a JSON payload to the controller server
             var xhr = new XMLHttpRequest();
             // Make the post request asynchronously
             xhr.open('POST', '/rover/led_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            // The json payload is of the form {[1, newstate]}
-            var payload = JSON.stringify([[1, newState]]);
+            // The json payload is of the form {"states": [[1, newstate]]}
+            var payload = JSON.stringify({"states": [[ledIndex, newState]]});
             xhr.send(payload);
         }, false);
 
