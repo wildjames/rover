@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 @app.route("/led_command", methods=["POST"])
 def led_command():
-    req_obj = json.loads(request.json)
+    req_obj = request.json
 
     logging.info("Received LED command pairs (index, state): {}".format(req_obj))
 

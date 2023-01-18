@@ -1,10 +1,7 @@
-import json
 import logging
-import os
 from datetime import datetime
 from time import time
 
-import cv2
 import requests
 from auth_middleware import token_required
 from flask import Flask, Response, render_template, request
@@ -75,7 +72,7 @@ def led_control():
     data = request.json
     logging.debug(f"Rover received LED command: {data}")
 
-    led_command = json.dumps(data["states"])
+    led_command = data["states"]
 
     t0 = time()
     response = requests.post(
