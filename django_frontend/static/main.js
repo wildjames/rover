@@ -55,7 +55,7 @@
 
         }, 200);
 
-        led0.addEventListener('click', function (e) {
+        function toggleLed(e) {
             // I need to send a toggle message to the server. First, get the state of the LED
             var state = this.getAttribute('data-state');
             state = parseInt(state);
@@ -76,7 +76,9 @@
             var payload = JSON.stringify({"states": [[ledIndex, newState]]});
             console.log("Sending payload: " + payload);
             xhr.send(payload);
-        }, false);
+        }
+
+        led0.addEventListener('click', toggleLed(this, e), false);
 
         led1.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
