@@ -91,7 +91,7 @@
 
             if (!isStreaming) {
                 // Change the canvas color to white
-                ctx.fillStyle = '#fff';
+                ctx.style.backgroundColor = '#fff';
 
                 signalObj = new signal(wsurl,
                     function (stream) {
