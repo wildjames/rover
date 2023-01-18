@@ -15,7 +15,29 @@
         // Every 100ms, I need to run a function
         setInterval(function () {
             console.log("I will update the state of the LEDs");
-        }, 5000);
+
+            // Send a GET request to the controller server for the system state
+            var xhr = new XMLHttpRequest();
+            // Make the get request asynchronously
+            xhr.open('GET', '/rover/system_info', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    console.log("Received response: " + xhr.responseText);
+                    var ledStates = response.led_states;
+                    console.log("LED states: " + ledStates);
+
+                    // Update the state of the LEDs
+                    led0.setAttribute('data-state', ledStates[0]);
+                    led1.setAttribute('data-state', ledStates[1]);
+                    led2.setAttribute('data-state', ledStates[2]);
+                }
+            }
+
+        }, 100);
 
         led0.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
