@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 from time import time
+from typing import Dict
 
 import requests
 from auth_middleware import token_required
@@ -24,24 +25,6 @@ system_state = requests.get(controller_address_base.format("system_info")).json(
 num_leds = system_state["led_data"]["num_leds"]
 
 
-@app.route("/")
-def index():
-    # Get LED status
-    system_state = requests.get(controller_address_base.format("system_info")).json()
-    led_states = system_state["led_data"]["led_states"]
-    
-    template_data = {
-        "title": "Rover Server",
-        "time": datetime.now().ctime(),
-    }
-
-    for led, state in led_states:
-        name = "led{}".format(led)
-        template_data[name] = state
-
-    return render_template("index.html", **template_data)
-
-
 @app.route("/system_info")
 # @token_required
 def system_info():
@@ -56,7 +39,11 @@ def system_info():
 @app.route("/led_control", methods=["POST"])
 # @token_required
 def led_control():
-    """Set the LED states to the defined states in the request JSON
+    """Set the LED states to the defined states in the request JSON.
+
+    This passes the command on to the controller, but since the controller has to run as root I don't
+    want to expose it to the internet. This checks the request for validity and sensibleness, then passes on
+    only the command part of the request.
 
     Request JSON format:
     {
@@ -68,21 +55,36 @@ def led_control():
         "message": "success" | "failure"
     }
     """
-    data = request.json
+    data: Dict = request.json
     logging.debug(f"Rover received LED command: {data}")
+
+    if "states" not in data.keys():
+        logging.error(f"LED command is invalid.")
+        return {"message": "failure"}
 
     led_command = data["states"]
 
-    t0 = time()
+    for pair in data["states"]:
+        if not isinstance(pair, list):
+            logging.error(f"LED command is invalid: {led_command}")
+            return {"message": "failure"}
+
+        if len(pair) != 2:
+            logging.error(f"LED command is invalid: {led_command}")
+            return {"message": "failure"}
+        
+        if pair[0] >= num_leds:
+            logging.error(f"LED index for {pair} is out of range.")
+            return {"message": "failure"}
+
+        if pair[1] not in [0, 1]:
+            logging.error(f"LED state for {pair} is invalid.")
+            return {"message": "failure"}
+        
+
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command
     ).json()
-    t1 = time()
-    logging.info(
-        "Rover sent LED command and received response in {:.0f} ms".format(
-            (t1 - t0) * 1000.0
-        )
-    )
 
     return response
 
