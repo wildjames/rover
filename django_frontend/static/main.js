@@ -36,6 +36,7 @@
                     led2.setAttribute('data-state', parseInt(ledStates[2]));
 
                     // Update the color of the LEDs
+                    console.log("LED 0 state: " + ledStates[0]);
                     if (ledStates[0] === 1) {
                         led0.style.backgroundColor = 'red';
                         console.log("LED 0 is on");
@@ -54,7 +55,7 @@
                 }
             }
 
-        }, 1000);
+        }, 2500);
 
         led0.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
