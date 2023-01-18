@@ -84,8 +84,8 @@
 
         start.addEventListener('click', function (e) {
             // This is the IP of the server running the camera stream.
-            // TODO: Will need updating to the actual IP of the server
-            var address = '192.168.1.170:1002/webrtc';
+            // TODO: Make sure that port 1002 is public!
+            var address = 'roverpi.local:1002/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
 

@@ -13,7 +13,8 @@ The control software I'm building right now has the following stack:
 - Hardware controller script(s?)
   - Interfaces with the GPIO pins (requires root to do this)
   - runs its own HTTP server, with its own API. This, however, runs as root so is not publicly accessible.
-
+- Camera WebRTC host, `uv4l`
+  - Again, running it's own server. This one has to be publicly accessible, though.
 
 
 # Notes, TODO
