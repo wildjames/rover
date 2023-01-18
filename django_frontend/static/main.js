@@ -14,8 +14,6 @@
 
         // Every 100ms, I need to run a function
         setInterval(function () {
-            console.log("I will update the state of the LEDs");
-
             // Send a GET request to the controller server for the system state
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
@@ -26,27 +24,22 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
-                    console.log("Received response: " + xhr.responseText);
                     var ledStates = response.led_data.led_states;
-                    console.log("LED states: " + ledStates);
 
                     // Update the color of the LEDs
                     var leds = [led0, led1, led2];
                     for (var i = 0; i < leds.length; i++) {
                         var led = leds[i];
 
-                        console.log("Updating LED " + i);
 
                         var mystate = -1;
                         for (var j = 0; j < ledStates.length; j++) {
                             if (parseInt(ledStates[j][0]) === i) {
                                 mystate = parseInt(ledStates[j][1]);
-                                console.log("LED " + i + " state: " + mystate);
                                 break;
                             }
                         }
 
-                        console.log("set data-state to " + mystate);
                         led.setAttribute('data-state', mystate);
 
                         if (mystate === 1) {
@@ -54,22 +47,21 @@
                         } else if (mystate === 0) {
                             led.style.backgroundColor = 'black';
                         } else {
-                            console.log("LED " + i + " state is invalid: " + mystate);
                             led.style.backgroundColor = 'gray';
                         }
                     }
                 }
             }
 
-        }, 2500);
+        }, 200);
 
         led0.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
-            var state = led0.getAttribute('data-state');
+            var state = this.getAttribute('data-state');
             state = parseInt(state);
 
             // the LED index is the last character of the id
-            var ledIndex = led0.id[led0.id.length - 1];
+            var ledIndex = this.id[this.id.length - 1];
             ledIndex = parseInt(ledIndex);
 
             var newState = state === 1 ? 0 : 1;
