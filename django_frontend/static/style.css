@@ -1,16 +1,15 @@
 :root {
 	/* CSS HEX */
-	--yellow-green: #85cb33ff;
-	--alice-blue: #e3f2fdff;
-	--indian-red: #db5461ff;
-	--jet: #2A2A28;
-	--morning-blue: #8aa29eff;
-	--crimson: #CA2B3B;
+	--tyrian-purple: #5f0f40ff;
+	--ruby-red: #9a031eff;
+	--dark-orange: #fb8b24ff;
+	--spanish-orange: #e36414ff;
+	--midnight-green-eagle-green: #0f4c5cff;
 }
 
 body {
-	background: var(--morning-blue);
-	color: var(--jet);
+	background: var(--midnight-green-eagle-green);
+	color: 'black';
 }
 
 #server {
@@ -34,8 +33,8 @@ video {
 }
 
 canvas {
-	border: 2px solid var(--jet);
-	background-color: var(--morning-blue);
+	border: 2px solid var(--tyrian-purple);
+	background-color: var(--midnight-green-eagle-green);
 	width: 640px;
 	height: 480px;
 }
@@ -47,13 +46,13 @@ button {
 	margin: 1% auto 0;
 	cursor: pointer;
 	color: #fff;
-	background-color: #9f361b;
+	background-color: var(--spanish-orange);
 }
 
 button:hover {
-	background-color: #e44d26;
+	background-color: var(--dark-orange);
 }
 
 button:active {
-	background-color: #e44d26;
+	background-color: var(--ruby-red);
 }

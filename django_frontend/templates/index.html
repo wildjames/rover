@@ -1,6 +1,6 @@
 <!DOCTYPE html>
    <head>
-      <title>{{ title }}</title>
+      <title>rover web interface</title>
       <link rel="stylesheet" href="./static/style.css">
       
       <script src='./static/signalling.js'></script>
@@ -25,18 +25,17 @@
 
    </head>
    <body>
-      <h1>Hello, World!</h1>
-      <h2>The date and time on the server is: <span style="color:var(--crimson);">{{ time }}</span></h2>
+      <h1>Rover control interface</h1>
       <div class="container">
           <div class="row">
               <div class="col-lg-8  offset-lg-2">
-                  <h3 class="mt-5">Rover Camera Feed</h3>
+                  <h3 class="mt-5">Rover camera feed</h3>
                   <div>
                     <button id='start' title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start Streaming</button>
                     <button id='stop'>Stop Streaming</button>
                   </div>
                   <video id='v'></video>
-                  <canvas id='c' style="background-color:var(--morning-blue)"></canvas>
+                  <canvas id='c'></canvas>
                   <button id="led0" data-state="{{ led0 }}">Green</button>
                   <button id="led1" data-state="{{ led1 }}">Yellow</button>
                   <button id="led2" data-state="{{ led2 }}">Red</button>
