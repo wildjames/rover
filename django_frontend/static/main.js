@@ -37,7 +37,7 @@
                 }
             }
 
-        }, 100);
+        }, 1000);
 
         led0.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
