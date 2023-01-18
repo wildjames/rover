@@ -27,7 +27,7 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
                     console.log("Received response: " + xhr.responseText);
-                    var ledStates = response.led_states;
+                    var ledStates = response.led_data.led_states;
                     console.log("LED states: " + ledStates);
 
                     // Update the state of the LEDs
