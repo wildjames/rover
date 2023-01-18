@@ -36,6 +36,7 @@
             xhr.setRequestHeader('Content-Type', 'application/json');
             // The json payload is of the form {"states": [[1, newstate]]}
             var payload = JSON.stringify({"states": [[ledIndex, newState]]});
+            console.log("Sending payload: " + payload);
             xhr.send(payload);
         }, false);
 
