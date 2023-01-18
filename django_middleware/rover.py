@@ -1,29 +1,32 @@
 import logging
-from datetime import datetime
-from time import time
 from typing import Dict
 
 import requests
 from auth_middleware import token_required
-from flask import Flask, Response, render_template, request
+from flask import Flask, render_template, request
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_flask.log",
+    filename="rover_flask.log",
     filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
 )
 
-controller_address_base = "http://localhost:1001/{}"
+controller_address_base = "http://roverpi.local:1001/{}"
 
 # Flask app setup
 app = Flask(__name__)
 
-# system configuration information gathering
-system_state = requests.get(controller_address_base.format("system_info")).json()
-num_leds = system_state["led_data"]["num_leds"]
+# # system configuration information gathering
+# system_state = requests.get(controller_address_base.format("system_info")).json()
+# num_leds = system_state["led_data"]["num_leds"]
+num_leds = 3
 
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 @app.route("/system_info")
 # @token_required
