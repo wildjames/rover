@@ -133,6 +133,7 @@
                 signalObj.hangup();
                 signalObj = null;
             }
+            ctx.style.backgroundColor = 'var(--morning-blue)';
         }, false);
 
         // Wait until the video stream can play

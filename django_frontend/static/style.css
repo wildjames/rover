@@ -29,7 +29,10 @@ video {
 	position:absolute;
 	visibility:hidden;
 }
-canvas { border:8px solid #fff;}
+canvas {
+	border:8px solid #fff;
+	background-color: var(--morning-blue);
+}
 button {
 	border:none;
 	display:block;
