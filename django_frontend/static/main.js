@@ -31,9 +31,9 @@
                     console.log("LED states: " + ledStates);
 
                     // Update the state of the LEDs
-                    led0.setAttribute('data-state', ledStates[0]);
-                    led1.setAttribute('data-state', ledStates[1]);
-                    led2.setAttribute('data-state', ledStates[2]);
+                    led0.setAttribute('data-state', parseInt(ledStates[0]));
+                    led1.setAttribute('data-state', parseInt(ledStates[1]));
+                    led2.setAttribute('data-state', parseInt(ledStates[2]));
 
                     // Update the color of the LEDs
                     if (ledStates[0] === 1) {led0.style.backgroundColor = 'red';} 
