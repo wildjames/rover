@@ -91,7 +91,7 @@
 
             if (!isStreaming) {
                 // Change the canvas color to white
-                ctx.style.backgroundColor = '#fff';
+                canvas.style.backgroundColor = '#fff';
 
                 signalObj = new signal(wsurl,
                     function (stream) {
@@ -133,7 +133,7 @@
                 signalObj.hangup();
                 signalObj = null;
             }
-            ctx.style.backgroundColor = 'var(--morning-blue)';
+            canvas.style.backgroundColor = 'var(--morning-blue)';
         }, false);
 
         // Wait until the video stream can play
