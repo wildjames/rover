@@ -4,6 +4,9 @@ This will be the playground for my rover control software. I've never done anyth
 
 The rover design goal is to build a remote-controlled vehicle, that is capable of operating in arbitrarily remote enviroments. Obviously, that is limited to places I can signal, so that is limited in reality to places that get mobile internet reception. 
 
+
+# Software
+
 The control software I'm building right now has the following stack:
 - Apache2 server
   - handles authentication and URL routing
@@ -16,6 +19,34 @@ The control software I'm building right now has the following stack:
 - Camera WebRTC host, `uv4l`
   - Again, running it's own server. This one has to be publicly accessible, though.
 
+# Hardware
+
+Just some thoughts and ideas.
+
+## Communication
+
+This [4G base station](https://www.waveshare.com/product/sim7600g-h-4g-dtu.htm) is about the cost of the chip, but comes with some nice extras. Might gobble some power, though: 
+- Operating voltage	7 ~ 36V DC
+- Operating current
+  - idle: 10~30mA @12V
+  - transmit: 80~450mA @12V (depending on the network condition)
+If I'm running off a LiPo bank, the voltage won't be an issue, but drawing 30mA even when idle might be a bit much. Not really a way around it though!
+
+It might be fun to have a LoRa modem as well, as a backup in case I drive somewhere that means I lose signal. That way, so long as I know its rough coordinates, I can drive out and re-establish communications.
+
+## Motion
+
+Treads can be [bought](https://www.aliexpress.com/item/32876365731.html) - they're not *cheap*, but they're not overly expensive. I would probably want to fabricate the main body of the rover in the shop. Plastic > metal, probably? More weatherproof
+
+## Power
+
+If I eyeball total power usage (when active) of the compute parts as about 5W for the raspberry pi, 400mA for the modem to give 3.6W while transmitting, call that 4W, and running two motors at about 30W each, I would guess about 40W total power draw while active. A 20W panel would then need to chage for 2 hours to recover that - if I could charge while driving, that gives me a 50% duty cycle on movement - but remember, you can only charge in the daytime, and a solar panel is unlikely to reach its full charging potential. 
+
+For reference, I can find 20W solar panels on [aliexpress](https://www.aliexpress.com/item/1005004546004726.html) that are specced as `300x145x3MM 20W` and probably around 1kg, so totally doable on the rover. If I splash out and put wings on the thing, I *could* overhang the sides and put two on - but I think it wouldn't be worth it and would be asking for trouble. [Amazon](https://www.amazon.co.uk/Waterproof-Portable-Starter-Monocrystalline-Controller/dp/B0B9T4V3JF/) has [comparable](https://www.amazon.co.uk/Monocrystalline-Waterproof-Maintainer-Motorhomes-Motorcycle/dp/B08QHRWK4M/) things, that are far more likely to be authentic.
+
+From this estimate, I would guess that a relatively standard 4,000mAh LiPo (which typically costs about £100, ouch!) would run the thing for about an hour; (4 Ah * 12V) / 40W = 72 minutes.
+
+I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather.
 
 # Notes, TODO
 
@@ -32,11 +63,10 @@ rover@RoverPi:/usr/local/www/rover $ sudo service uv4l_raspicam restart
 
 I think it may be better to stream states and commands over WebRTC similar to video... This may be somewhat tricky to learn though.
 
-
 ## TODO
 - Write a motor interface
-- WebRTC LED states
-- WebRTC LED control
+- WebRTC LED states?
+- WebRTC LED control?
 
 
 
