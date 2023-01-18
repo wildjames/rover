@@ -30,30 +30,32 @@
                     var ledStates = response.led_data.led_states;
                     console.log("LED states: " + ledStates);
 
-                    // Update the state of the LEDs
-                    led0.setAttribute('data-state', parseInt(ledStates[0][0]));
-                    led1.setAttribute('data-state', parseInt(ledStates[1][0]));
-                    led2.setAttribute('data-state', parseInt(ledStates[2][0]));
-
                     // Update the color of the LEDs
                     var leds = [led0, led1, led2];
                     for (var i = 0; i < leds.length; i++) {
                         var led = leds[i];
 
-                        var mystate = 0;
+                        console.log("Updating LED " + i);
+
+                        var mystate = -1;
                         for (var j = 0; j < ledStates.length; j++) {
                             if (parseInt(ledStates[j][0]) === i) {
                                 mystate = parseInt(ledStates[j][1]);
+                                console.log("LED " + i + " state: " + mystate);
                                 break;
                             }
                         }
-                        
+
+                        console.log("set data-state to " + mystate);
                         led.setAttribute('data-state', mystate);
 
                         if (mystate === 1) {
                             led.style.backgroundColor = 'red';
-                        } else {
+                        } else if (mystate === 0) {
                             led.style.backgroundColor = 'black';
+                        } else {
+                            console.log("LED " + i + " state is invalid: " + mystate);
+                            led.style.backgroundColor = 'gray';
                         }
                     }
                 }
