@@ -31,27 +31,31 @@
                     console.log("LED states: " + ledStates);
 
                     // Update the state of the LEDs
-                    led0.setAttribute('data-state', parseInt(ledStates[0]));
-                    led1.setAttribute('data-state', parseInt(ledStates[1]));
-                    led2.setAttribute('data-state', parseInt(ledStates[2]));
+                    led0.setAttribute('data-state', parseInt(ledStates[0][0]));
+                    led1.setAttribute('data-state', parseInt(ledStates[1][0]));
+                    led2.setAttribute('data-state', parseInt(ledStates[2][0]));
 
                     // Update the color of the LEDs
-                    console.log("LED 0 state: " + ledStates[0]);
-                    if (ledStates[0] === 1) {
-                        led0.style.backgroundColor = 'red';
-                        console.log("LED 0 is on");
-                    } 
-                    else {
-                        led0.style.backgroundColor = 'black';
-                        console.log("LED 0 is off");
+                    var leds = [led0, led1, led2];
+                    for (var i = 0; i < leds.length; i++) {
+                        var led = leds[i];
+
+                        var mystate = 0;
+                        for (var j = 0; j < ledStates.length; j++) {
+                            if (parseInt(ledStates[j][0]) === i) {
+                                mystate = parseInt(ledStates[j][1]);
+                                break;
+                            }
+                        }
+                        
+                        led.setAttribute('data-state', mystate);
+
+                        if (mystate === 1) {
+                            led.style.backgroundColor = 'red';
+                        } else {
+                            led.style.backgroundColor = 'black';
+                        }
                     }
-
-                    if (ledStates[1] === 1) {led1.style.backgroundColor = 'red';} 
-                    else {led1.style.backgroundColor = 'black';}
-
-                    if (ledStates[2] === 1) {led2.style.backgroundColor = 'red';} 
-                    else {led2.style.backgroundColor = 'black';}
-
                 }
             }
 
