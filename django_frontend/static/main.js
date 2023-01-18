@@ -34,6 +34,17 @@
                     led0.setAttribute('data-state', ledStates[0]);
                     led1.setAttribute('data-state', ledStates[1]);
                     led2.setAttribute('data-state', ledStates[2]);
+
+                    // Update the color of the LEDs
+                    if (ledStates[0] === 1) {led0.style.backgroundColor = 'red';} 
+                    else {led0.style.backgroundColor = 'black';}
+
+                    if (ledStates[1] === 1) {led1.style.backgroundColor = 'red';} 
+                    else {led1.style.backgroundColor = 'black';}
+
+                    if (ledStates[2] === 1) {led2.style.backgroundColor = 'red';} 
+                    else {led2.style.backgroundColor = 'black';}
+
                 }
             }
 
