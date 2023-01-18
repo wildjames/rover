@@ -85,7 +85,7 @@
         start.addEventListener('click', function (e) {
             // This is the IP of the server running the camera stream.
             // TODO: Make sure that port 1002 is public!
-            var address = '192.168.1.170:1002/webrtc';
+            var address = 'roverpi.local:1002/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
 
@@ -93,13 +93,9 @@
                 signalObj = new signal(wsurl,
                     function (stream) {
                         console.log('got a stream!');
-                        //var url = window.URL || window.webkitURL;
-                        //video.src = url ? url.createObjectURL(stream) : stream; // deprecated
+
+                        // Play the stream in browser. Need to handle promises properly.
                         video.srcObject = stream;
-                        
-                        // video.play();
-                        
-                        // Show loading animation.
                         var playPromise = video.play();
 
                         if (playPromise !== undefined) {
