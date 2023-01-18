@@ -12,11 +12,41 @@
         var video = document.getElementById('v');
         var ctx = canvas.getContext('2d');
 
+        // Every 100ms, I need to run a function
+        setInterval(function () {
+            console.log("I will update the state of the LEDs");
+        }, 5000);
+
         led1.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the LED
             var state = led1.getAttribute('data-state');
+            state = parseInt(state);
+
+            var newState = state === 1 ? 0 : 1;
+            console.log("LED 1. Old state: " + state + ", new state: " + newState);
+            
+            // Send a command POST request with a JSON payload to the controller server
+            var xhr = new XMLHttpRequest();
+            // Make the post request asynchronously
+            xhr.open('POST', '/api/command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            // The json payload is of the form {[1, newstate]}
+            var payload = JSON.stringify([[1, newState]]);
+            xhr.send(payload);
+        }, false);
+
+        led2.addEventListener('click', function (e) {
+            // I need to send a toggle message to the server. First, get the state of the LED
+            var state = led2.getAttribute('data-state');
             var newState = state === '1' ? '0' : '1';
-            console.log("Old state: " + state + ", new state: " + newState);
+            console.log("LED 2. Old state: " + state + ", new state: " + newState);
+        }, false);
+
+        led3.addEventListener('click', function (e) {
+            // I need to send a toggle message to the server. First, get the state of the LED
+            var state = led3.getAttribute('data-state');
+            var newState = state === '1' ? '0' : '1';
+            console.log("LED 3. Old state: " + state + ", new state: " + newState);
         }, false);
 
         start.addEventListener('click', function (e) {
