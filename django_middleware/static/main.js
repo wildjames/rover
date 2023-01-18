@@ -159,5 +159,29 @@
             }, 33);
         }, false);
 
+        // Should detect gamepad connection and disconnection
+        const gamepads = {};
+
+        function gamepadHandler(event, connecting) {
+          const gamepad = event.gamepad;
+          // Note:
+          // gamepad === navigator.getGamepads()[gamepad.index]
+        
+          if (connecting) {
+            gamepads[gamepad.index] = gamepad;
+          } else {
+            delete gamepads[gamepad.index];
+          }
+        }
+        
+        window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
+        window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+
+        window.addEventListener("gamepadconnected", (e) => {
+            const gp = navigator.getGamepads()[e.gamepad.index];
+            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+              gp.index, gp.id,
+              gp.buttons.length, gp.axes.length);
+          });
     });
 })();
