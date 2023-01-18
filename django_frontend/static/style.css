@@ -14,32 +14,46 @@ body {
 }
 
 #server {
-	display:block;
-	margin:0% auto 2%;
+	display: block;
+	margin: 0% auto 2%;
 }
+
 #start {
-	display:inline-block;
-	margin:0% auto 2%;
+	display: inline-block;
+	margin: 0% auto 2%;
 }
+
 #stop {
-	display:inline-block;
-	margin:0% auto 2%;
+	display: inline-block;
+	margin: 0% auto 2%;
 }
+
 video {
-	position:absolute;
-	visibility:hidden;
+	position: absolute;
+	visibility: hidden;
 }
+
 canvas {
-	border:8px solid #fff;
+	border: 2px solid var(--jet);
 	background-color: var(--morning-blue);
+	width: 640px;
+	height: 480px;
 }
+
 button {
-	border:none;
-	display:block;
-	padding:0.5em 1em;
-	margin:1% auto 0;
-	cursor:pointer;
-	color:#fff;
-	background-color:#9f361b;
+	border: none;
+	display: block;
+	padding: 0.5em 1em;
+	margin: 1% auto 0;
+	cursor: pointer;
+	color: #fff;
+	background-color: #9f361b;
 }
-button:active { background-color:#e44d26; }
+
+button:hover {
+	background-color: #e44d26;
+}
+
+button:active {
+	background-color: #e44d26;
+}
