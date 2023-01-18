@@ -72,7 +72,7 @@ def led_control():
         "message": "success" | "failure"
     }
     """
-    data = json.loads(request.json)
+    data = request.json
     logging.debug(f"Rover received LED command: {data}")
 
     led_command = json.dumps(data["states"])
