@@ -32,8 +32,8 @@ function signal(url, onStream, onError, onClose, onMessage) {
 
         ws.onopen = function () {
             /* First we create a peer connection */
-            var config = {"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]};
-            var options = {optional: []};
+            var config = { "iceServers": [{ "urls": ["stun:stun.l.google.com:19302"] }] };
+            var options = { optional: [] };
             pc = new RTCPeerConnection(config, options);
             iceCandidates = [];
             hasRemoteDesc = false;
@@ -107,24 +107,24 @@ function signal(url, onStream, onError, onClose, onMessage) {
                         }
                     };
                     pc.setRemoteDescription(new RTCSessionDescription(JSON.parse(data)),
-                            function onRemoteSdpSuccess() {
-                                hasRemoteDesc = true;
-                                addIceCandidates();
-                                pc.createAnswer(function (sessionDescription) {
-                                    pc.setLocalDescription(sessionDescription);
-                                    var request = {
-                                        what: "answer",
-                                        data: JSON.stringify(sessionDescription)
-                                    };
-                                    ws.send(JSON.stringify(request));
-                                }, function (error) {
-                                    onError("failed to create answer: " + error);
-                                }, mediaConstraints);
-                            },
-                            function onRemoteSdpError(event) {
-                                onError('failed to set the remote description: ' + event);
-                                ws.close();
-                            }
+                        function onRemoteSdpSuccess() {
+                            hasRemoteDesc = true;
+                            addIceCandidates();
+                            pc.createAnswer(function (sessionDescription) {
+                                pc.setLocalDescription(sessionDescription);
+                                var request = {
+                                    what: "answer",
+                                    data: JSON.stringify(sessionDescription)
+                                };
+                                ws.send(JSON.stringify(request));
+                            }, function (error) {
+                                onError("failed to create answer: " + error);
+                            }, mediaConstraints);
+                        },
+                        function onRemoteSdpError(event) {
+                            onError('failed to set the remote description: ' + event);
+                            ws.close();
+                        }
                     );
 
                     break;
@@ -144,7 +144,7 @@ function signal(url, onStream, onError, onClose, onMessage) {
                         break;
                     }
                     var elt = JSON.parse(msg.data);
-                    let candidate = new RTCIceCandidate({sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate});
+                    let candidate = new RTCIceCandidate({ sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate });
                     iceCandidates.push(candidate);
                     addIceCandidates(); // it internally checks if the remote description has been set
                     break;
@@ -153,7 +153,7 @@ function signal(url, onStream, onError, onClose, onMessage) {
                     var candidates = JSON.parse(msg.data);
                     for (var i = 0; candidates && i < candidates.length; i++) {
                         var elt = candidates[i];
-                        let candidate = new RTCIceCandidate({sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate});
+                        let candidate = new RTCIceCandidate({ sdpMLineIndex: elt.sdpMLineIndex, candidate: elt.candidate });
                         iceCandidates.push(candidate);
                     }
                     addIceCandidates();
@@ -177,7 +177,7 @@ function signal(url, onStream, onError, onClose, onMessage) {
             onError("An error has occurred on the websocket (make sure the address is correct)!");
         };
 
-        this.hangup = function() {
+        this.hangup = function () {
             if (ws) {
                 var request = {
                     what: "hangup"

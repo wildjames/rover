@@ -5,11 +5,13 @@
 	--dark-orange: #fb8b24ff;
 	--spanish-orange: #e36414ff;
 	--midnight-green-eagle-green: #0f4c5cff;
+	--grey: #555
 }
 
 body {
-	background: var(--midnight-green-eagle-green);
-	color: 'black';
+	background: white;
+	font-family: Arial,sans-serif;
+	color: var(--grey);
 }
 
 #server {

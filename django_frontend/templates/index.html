@@ -1,47 +1,53 @@
 <!DOCTYPE html>
-   <head>
-      <title>rover web interface</title>
-      <link rel="stylesheet" href="./static/style.css">
-      
-      <script src='./static/signalling.js'></script>
-      <script src='./static/main.js'></script>
 
-      <script type='text/javascript'>
-          var Module = {
-              preRun: [],
-              postRun: [],
-              print: (function () {
-                  return function (text) {
-                      text = Array.prototype.slice.call(arguments).join(' ');
-                      console.log(text);
-                  };
-              })(),
-              printErr: function (text) {
-                  text = Array.prototype.slice.call(arguments).join(' ');
-                  console.error(text);
-              }
-          };
-      </script>
+<head>
+    <title>rover web interface</title>
+    <link rel="stylesheet" href="./static/style.css">
 
-   </head>
-   <body>
-      <h1>Rover control interface</h1>
-      <div class="container">
-          <div class="row">
-              <div class="col-lg-8  offset-lg-2">
-                  <h3 class="mt-5">Rover camera feed</h3>
-                  <div>
-                    <button id='start' title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start Streaming</button>
+    <script src='./static/signalling.js'></script>
+    <script src='./static/main.js'></script>
+
+    <script type='text/javascript'>
+        var Module = {
+            preRun: [],
+            postRun: [],
+            print: (function () {
+                return function (text) {
+                    text = Array.prototype.slice.call(arguments).join(' ');
+                    console.log(text);
+                };
+            })(),
+            printErr: function (text) {
+                text = Array.prototype.slice.call(arguments).join(' ');
+                console.error(text);
+            }
+        };
+    </script>
+
+</head>
+
+<body>
+    <h1>Rover control interface</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8  offset-lg-2">
+                <h3 class="mt-5">Rover camera feed</h3>
+                <div>
+                    <button id='start'
+                        title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start
+                        Streaming</button>
                     <button id='stop'>Stop Streaming</button>
-                  </div>
-                  <video id='v'></video>
-                  <canvas id='c'></canvas>
-                  <button id="led0" data-state="{{ led0 }}">Green</button>
-                  <button id="led1" data-state="{{ led1 }}">Yellow</button>
-                  <button id="led2" data-state="{{ led2 }}">Red</button>
-              </div>
-          </div>
-      </div>
-   </body>
-</html>
+                </div>
+                <video id='v'></video>
+                <canvas id='c'></canvas>
+                <div id='led_controls'>
+                    <button id="led0" data-state="{{ led0 }}">Green</button>
+                    <button id="led1" data-state="{{ led1 }}">Yellow</button>
+                    <button id="led2" data-state="{{ led2 }}">Red</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
+</html>
