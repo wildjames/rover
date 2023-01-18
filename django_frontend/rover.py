@@ -58,7 +58,7 @@ def system_info():
 
 
 @app.route("/led_control", methods=["POST"])
-@token_required
+# @token_required
 def led_control():
     """Set the LED states to the defined states in the request JSON
 
