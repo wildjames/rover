@@ -90,6 +90,9 @@
             var wsurl = protocol + '//' + address;
 
             if (!isStreaming) {
+                // Change the canvas color to white
+                ctx.fillStyle = '#fff';
+
                 signalObj = new signal(wsurl,
                     function (stream) {
                         console.log('got a stream!');
