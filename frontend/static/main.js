@@ -17,7 +17,7 @@
             // Send a GET request to the controller server for the system state
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
-            xhr.open('GET', '/rover/system_info', true);
+            xhr.open('GET', '/api/system_info', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send();
 
@@ -70,7 +70,7 @@
             // Send a command POST request with a JSON payload to the controller server
             var xhr = new XMLHttpRequest();
             // Make the post request asynchronously
-            xhr.open('POST', '/rover/led_control', true);
+            xhr.open('POST', '/api/led_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             // The json payload is of the form {"states": [[1, newstate]]}
             var payload = JSON.stringify({ "states": [[ledIndex, newState]] });

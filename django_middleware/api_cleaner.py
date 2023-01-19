@@ -14,7 +14,6 @@ logging.basicConfig(
 )
 
 
-
 controller_address_base = "http://localhost:1001/{}"
 
 # Flask app setup
@@ -29,6 +28,7 @@ num_leds = 3
 @app.route("/")
 def index():
     return render_template("index.html")
+
 
 @app.route("/system_info")
 # @token_required
@@ -77,7 +77,7 @@ def led_control():
         if len(pair) != 2:
             logging.error(f"LED command is invalid: {led_command}")
             return {"message": "failure"}
-        
+
         if pair[0] >= num_leds:
             logging.error(f"LED index for {pair} is out of range.")
             return {"message": "failure"}
@@ -85,7 +85,6 @@ def led_control():
         if pair[1] not in [0, 1]:
             logging.error(f"LED state for {pair} is invalid.")
             return {"message": "failure"}
-        
 
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command
@@ -95,4 +94,4 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=80, use_reloader=False, threaded=True, debug=False)
+    app.run(host="localhost", port=2000, use_reloader=True, threaded=True, debug=True)

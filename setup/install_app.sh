@@ -33,9 +33,6 @@ mkdir -p /home/rover/log
 chmod -cR 777 /home/rover/log
 chgrp -cR adm /home/rover/log
 
-# Create a secret API token to access the rover API
-echo $RANDOM | md5sum | head -c 20 > /home/rover/rover_api_token.txt
-
 # TODO: Apache setup should go here. Dockerise that?
 echo "Doing Apache2 service check"
 systemctl restart apache2.service
@@ -54,5 +51,6 @@ systemctl start rover_controller.service
 echo "Is the rover controller service running?"
 systemctl is-active rover_controller.service
 
+# Install the websites, too
 
 echo "OK!"

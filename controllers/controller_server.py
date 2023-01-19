@@ -16,6 +16,7 @@ logging.basicConfig(
 # Flask app setup
 app = Flask(__name__)
 
+
 @app.route("/led_command", methods=["POST"])
 def led_command():
     req_obj = request.json
