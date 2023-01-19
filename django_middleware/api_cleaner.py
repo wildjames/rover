@@ -6,7 +6,7 @@ from auth_middleware import token_required
 from flask import Flask, render_template, request
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_flask.log",
+    filename="/var/www/html/rover_flask.log",
     filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
