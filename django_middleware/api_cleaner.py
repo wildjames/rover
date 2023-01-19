@@ -6,8 +6,8 @@ from auth_middleware import token_required
 from flask import Flask, render_template, request
 
 logging.basicConfig(
-    filename="/var/www/html/rover_flask.log",
-    filemode="a",
+#    filename="/var/www/html/rover_flask.log",
+#    filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
@@ -95,4 +95,5 @@ def led_control():
 
 
 if __name__ == "__main__":
-    app.run(host="localhost", port=2000, use_reloader=True, threaded=True, debug=True)
+    logging.info("Starting server")
+    app.run(host="0.0.0.0", port=2000, use_reloader=True, threaded=True, debug=True)

@@ -1,0 +1,1338 @@
+System Information
+------------------
+
+Raspberry Pi 3 Model B Plus Rev 1.3
+PRETTY_NAME="Raspbian GNU/Linux 11 (bullseye)"
+NAME="Raspbian GNU/Linux"
+VERSION_ID="11"
+VERSION="11 (bullseye)"
+
+Raspberry Pi reference 2022-09-22
+Generated using pi-gen, https://github.com/RPi-Distro/pi-gen, 8a42abcd1dbd8c9c1fdfca4e0c3778255b2f9cc4, stage2
+
+Linux RoverPi 5.15.84-v7+ #1613 SMP Thu Jan 5 11:59:48 GMT 2023 armv7l GNU/Linux
+Revision	: a020d3
+Serial		: 0000000007578236
+Model		: Raspberry Pi 3 Model B Plus Rev 1.3
+Throttled flag  : throttled=0x50005
+Camera          : supported=1 detected=1, libcamera interfaces=0
+
+Videocore information
+---------------------
+
+Jan  5 2023 10:49:28 
+Copyright (c) 2012 Broadcom
+version 8ba17717fbcedd4c3b6d4bce7e50c7af4155cba9 (clean) (release) (start_x)
+
+alloc failures:     0
+compactions:        0
+legacy block fails: 0
+
+Filesystem information
+----------------------
+Filesystem     1K-blocks    Used Available Use% Mounted on
+/dev/root       14810840 6475004   7700752  46% /
+devtmpfs          412656       0    412656   0% /dev
+tmpfs             445936       0    445936   0% /dev/shm
+tmpfs             178376     928    177448   1% /run
+tmpfs               5120       4      5116   1% /run/lock
+/dev/mmcblk0p1    261108   51034    210074  20% /boot
+tmpfs              89184       0     89184   0% /run/user/1000
+
+Filename				Type		Size		Used		Priority
+/var/swap                               file		2097148		7424		-2
+
+Package version information
+---------------------------
+raspberrypi-ui-mods:
+  Installed: (none)
+raspberrypi-sys-mods:
+  Installed: 20221019
+openbox:
+  Installed: (none)
+lxpanel:
+  Installed: (none)
+pcmanfm:
+  Installed: (none)
+rpd-plym-splash:
+  Installed: (none)
+
+Networking Information
+----------------------
+
+eth0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether m.m.m.m  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet x.x.x.x  netmask x.x.x.x
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 853  bytes 195640 (191.0 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 853  bytes 195640 (191.0 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet x.x.x.x  netmask x.x.x.x  broadcast x.x.x.x
+        inet6 y::y.y.y.y  prefixlen 64  scopeid 0x20<link>
+        ether m.m.m.m  txqueuelen 1000  (Ethernet)
+        RX packets 920550  bytes 1091292532 (1.0 GiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 430242  bytes 162628094 (155.0 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+USB Information
+---------------
+
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=dwc_otg/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=Hub, Driver=hub/4p, 480M
+        |__ Port 1: Dev 3, If 0, Class=Hub, Driver=hub/3p, 480M
+            |__ Port 1: Dev 4, If 0, Class=Vendor Specific Class, Driver=lan78xx, 480M
+
+Display Information
+-------------------
+
+Running Legacy framebuffer
+
+Framebuffer: /dev/fb0
+
+mode "720x480"
+    geometry 720 480 720 480 32
+    timings 0 0 0 0 0 0 0
+    rgba 8/16,8/8,8/0,8/24
+endmode
+
+
+Display:  3
+state 0x40000 [NTSC 4:3], 720x480 @ 60.00Hz, interlaced
+device_name=Unk-Composite dis
+Group CEA has 0 modes:
+Group DMT has 0 modes:
+
+
+config.txt
+----------
+
+aphy_params_current=819
+arm_freq=1400
+arm_freq_min=600
+audio_pwm_mode=514
+camera_auto_detect=-1
+config_hdmi_boost=5
+core_freq=400
+desired_osc_freq=0x331df0
+desired_osc_freq_boost=0x3c45b0
+disable_commandline_tags=2
+disable_l2cache=1
+disable_overscan=1
+display_auto_detect=1
+display_hdmi_rotate=-1
+display_lcd_rotate=-1
+dphy_params_current=547
+dvfs=3
+enable_tvout=1
+force_eeprom_read=1
+force_pwm_open=1
+framebuffer_ignore_alpha=1
+framebuffer_swap=1
+gpu_freq=300
+init_uart_clock=0x2dc6c00
+lcd_framerate=60
+max_framebuffers=2
+over_voltage_avs=43750
+over_voltage_avs_boost=0x249f0
+pause_burst_frames=1
+program_serial_random=1
+sdram_freq=450
+total_mem=1024
+hdmi_force_cec_address:0=65535
+hdmi_force_cec_address:1=65535
+hdmi_pixel_freq_limit:0=0x9a7ec80
+device_tree=-
+overlay_prefix=overlays/
+hdmi_cvt:0=
+hdmi_cvt:1=
+hdmi_edid_filename:0=
+hdmi_edid_filename:1=
+hdmi_timings:0=
+hdmi_timings:1=
+
+cmdline.txt
+-----------
+coherent_pool=1M 8250.nr_uarts=0 snd_bcm2835.enable_compat_alsa=0 snd_bcm2835.enable_hdmi=1 bcm2708_fb.fbwidth=720 bcm2708_fb.fbheight=480 bcm2708_fb.fbswap=1 vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  console=ttyS0,115200 console=tty1 root=PARTUUID=0a48ca6b-02 rootfstype=ext4 fsck.repair=yes rootwait
+
+raspi-gpio settings
+-------------------
+
+BANK0 (GPIO 0 to 27):
+GPIO 0: level=1 fsel=0 func=INPUT
+GPIO 1: level=1 fsel=0 func=INPUT
+GPIO 2: level=1 fsel=0 func=INPUT
+GPIO 3: level=1 fsel=0 func=INPUT
+GPIO 4: level=1 fsel=0 func=INPUT
+GPIO 5: level=1 fsel=0 func=INPUT
+GPIO 6: level=1 fsel=0 func=INPUT
+GPIO 7: level=1 fsel=0 func=INPUT
+GPIO 8: level=1 fsel=0 func=INPUT
+GPIO 9: level=0 fsel=0 func=INPUT
+GPIO 10: level=0 fsel=0 func=INPUT
+GPIO 11: level=0 fsel=0 func=INPUT
+GPIO 12: level=0 fsel=0 func=INPUT
+GPIO 13: level=0 fsel=0 func=INPUT
+GPIO 14: level=0 fsel=0 func=INPUT
+GPIO 15: level=1 fsel=0 func=INPUT
+GPIO 16: level=0 fsel=0 func=INPUT
+GPIO 17: level=0 fsel=1 func=OUTPUT
+GPIO 18: level=0 fsel=0 func=INPUT
+GPIO 19: level=0 fsel=0 func=INPUT
+GPIO 20: level=0 fsel=0 func=INPUT
+GPIO 21: level=0 fsel=0 func=INPUT
+GPIO 22: level=0 fsel=1 func=OUTPUT
+GPIO 23: level=0 fsel=0 func=INPUT
+GPIO 24: level=0 fsel=0 func=INPUT
+GPIO 25: level=0 fsel=0 func=INPUT
+GPIO 26: level=0 fsel=0 func=INPUT
+GPIO 27: level=0 fsel=1 func=OUTPUT
+BANK1 (GPIO 28 to 45):
+GPIO 28: level=1 fsel=0 func=INPUT
+GPIO 29: level=0 fsel=1 func=OUTPUT
+GPIO 30: level=0 fsel=7 alt=3 func=CTS0
+GPIO 31: level=0 fsel=7 alt=3 func=RTS0
+GPIO 32: level=1 fsel=7 alt=3 func=TXD0
+GPIO 33: level=1 fsel=7 alt=3 func=RXD0
+GPIO 34: level=0 fsel=7 alt=3 func=SD1_CLK
+GPIO 35: level=1 fsel=7 alt=3 func=SD1_CMD
+GPIO 36: level=1 fsel=7 alt=3 func=SD1_DAT0
+GPIO 37: level=1 fsel=7 alt=3 func=SD1_DAT1
+GPIO 38: level=1 fsel=7 alt=3 func=SD1_DAT2
+GPIO 39: level=1 fsel=7 alt=3 func=SD1_DAT3
+GPIO 40: level=0 fsel=4 alt=0 func=PWM0
+GPIO 41: level=0 fsel=4 alt=0 func=PWM1
+GPIO 42: level=0 fsel=4 alt=0 func=GPCLK1
+GPIO 43: level=0 fsel=4 alt=0 func=GPCLK2
+GPIO 44: level=1 fsel=0 func=INPUT
+GPIO 45: level=1 fsel=0 func=INPUT
+BANK2 (GPIO 46 to 53):
+GPIO 46: level=1 fsel=0 func=INPUT
+GPIO 47: level=1 fsel=1 func=OUTPUT
+GPIO 48: level=0 fsel=4 alt=0 func=SD0_CLK
+GPIO 49: level=1 fsel=4 alt=0 func=SD0_CMD
+GPIO 50: level=1 fsel=4 alt=0 func=SD0_DAT0
+GPIO 51: level=1 fsel=4 alt=0 func=SD0_DAT1
+GPIO 52: level=1 fsel=4 alt=0 func=SD0_DAT2
+GPIO 53: level=1 fsel=4 alt=0 func=SD0_DAT3
+
+vcdbg log messages
+------------------
+
+001090.907: brfs: File read: /mfs/sd/config.txt
+001092.153: brfs: File read: 2100 bytes
+001125.598: HDMI0:EDID error reading EDID block 0 attempt 0
+001126.864: HDMI0:EDID error reading EDID block 0 attempt 1
+001128.130: HDMI0:EDID error reading EDID block 0 attempt 2
+001129.393: HDMI0:EDID error reading EDID block 0 attempt 3
+001130.660: HDMI0:EDID error reading EDID block 0 attempt 4
+001131.925: HDMI0:EDID error reading EDID block 0 attempt 5
+001133.190: HDMI0:EDID error reading EDID block 0 attempt 6
+001134.455: HDMI0:EDID error reading EDID block 0 attempt 7
+001135.720: HDMI0:EDID error reading EDID block 0 attempt 8
+001136.986: HDMI0:EDID error reading EDID block 0 attempt 9
+001138.010: HDMI0:EDID giving up on reading EDID block 0
+001140.587: brfs: File read: /mfs/sd/config.txt
+001368.835: gpioman: gpioman_get_pin_num: pin DISPLAY_DSI_PORT not defined
+001371.032: *** Restart logging
+001371.060: brfs: File read: 2100 bytes
+001372.024: hdmi: HDMI0:EDID error reading EDID block 0 attempt 0
+001373.294: hdmi: HDMI0:EDID error reading EDID block 0 attempt 1
+001374.561: hdmi: HDMI0:EDID error reading EDID block 0 attempt 2
+001375.830: hdmi: HDMI0:EDID error reading EDID block 0 attempt 3
+001377.098: hdmi: HDMI0:EDID error reading EDID block 0 attempt 4
+001378.367: hdmi: HDMI0:EDID error reading EDID block 0 attempt 5
+001379.634: hdmi: HDMI0:EDID error reading EDID block 0 attempt 6
+001380.903: hdmi: HDMI0:EDID error reading EDID block 0 attempt 7
+001382.171: hdmi: HDMI0:EDID error reading EDID block 0 attempt 8
+001383.440: hdmi: HDMI0:EDID error reading EDID block 0 attempt 9
+001384.465: hdmi: HDMI0:EDID giving up on reading EDID block 0
+001384.795: hdmi: HDMI0:EDID error reading EDID block 0 attempt 0
+001386.065: hdmi: HDMI0:EDID error reading EDID block 0 attempt 1
+001387.332: hdmi: HDMI0:EDID error reading EDID block 0 attempt 2
+001388.602: hdmi: HDMI0:EDID error reading EDID block 0 attempt 3
+001389.870: hdmi: HDMI0:EDID error reading EDID block 0 attempt 4
+001391.139: hdmi: HDMI0:EDID error reading EDID block 0 attempt 5
+001392.406: hdmi: HDMI0:EDID error reading EDID block 0 attempt 6
+001393.676: hdmi: HDMI0:EDID error reading EDID block 0 attempt 7
+001394.944: hdmi: HDMI0:EDID error reading EDID block 0 attempt 8
+001396.213: hdmi: HDMI0:EDID error reading EDID block 0 attempt 9
+001397.239: hdmi: HDMI0:EDID giving up on reading EDID block 0
+001397.282: hdmi: HDMI:hdmi_get_state is deprecated, use hdmi_get_display_state instead
+001397.306: HDMI0: hdmi_pixel_encoding: 162000000
+001397.573: vec: vec_middleware_power_on: vec_base: 0x7e806000 rev-id 0x00002708 @ vec: 0x7e806100 @ 0x00000420 enc: 0x7e806060 @ 0x00000220 cgmsae: 0x7e80605c @ 0x00000000
+001402.900: dtb_file 'bcm2710-rpi-3-b-plus.dtb'
+001406.896: brfs: File read: /mfs/sd/bcm2710-rpi-3-b-plus.dtb
+001406.919: Loaded 'bcm2710-rpi-3-b-plus.dtb' to 0x100 size 0x7f15
+001422.155: brfs: File read: 32533 bytes
+001434.106: brfs: File read: /mfs/sd/overlays/overlay_map.dtb
+001527.575: brfs: File read: 2295 bytes
+001530.404: brfs: File read: /mfs/sd/config.txt
+001531.043: dtparam: audio=on
+001549.110: brfs: File read: 2100 bytes
+001549.827: brfs: File read: /mfs/sd/cmdline.txt
+001549.876: Read command line from file 'cmdline.txt':
+001549.893: 'console=serial0,115200 console=tty1 root=PARTUUID=0a48ca6b-02 rootfstype=ext4 fsck.repair=yes rootwait'
+002295.819: gpioman: gpioman_get_pin_num: pin EMMC_ENABLE not defined
+002356.467: kernel=
+002356.493: brfs: File read: 102 bytes
+002754.512: brfs: File read: /mfs/sd/kernel7.img
+002754.534: Loaded 'kernel7.img' to 0x8000 size 0x653ff8
+002754.568: Device tree loaded to 0x2eff7b00 (size 0x8468)
+002760.351: gpioman: gpioman_get_pin_num: pin SDCARD_CONTROL_POWER not defined
+006571.409: vchiq_core: vchiq_init_state: slot_zero = 0xf4180000, is_master = 1
+012156.752: camsubs: Looking for camera 0: i2c_port = 0, led gpio = 134, power enable gpio = 133
+012452.398: camsubs: Camera not found
+012452.549: camsubs: Looking for camera 0: i2c_port = 0, led gpio = 134, power enable gpio = 133
+012453.260: camsubs: Camera not found
+012453.390: camsubs: Looking for camera 0: i2c_port = 0, led gpio = 134, power enable gpio = 133
+012455.007: camsubs: Camera found OK
+
+dmesg log
+---------
+
+[    0.000000] Booting Linux on physical CPU 0x0
+[    0.000000] Linux version 5.15.84-v7+ (dom@buildbot) (arm-linux-gnueabihf-gcc-8 (Ubuntu/Linaro 8.4.0-3ubuntu1) 8.4.0, GNU ld (GNU Binutils for Ubuntu) 2.34) #1613 SMP Thu Jan 5 11:59:48 GMT 2023
+[    0.000000] CPU: ARMv7 Processor [410fd034] revision 4 (ARMv7), cr=10c5383d
+[    0.000000] CPU: div instructions available: patching division code
+[    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT aliasing instruction cache
+[    0.000000] OF: fdt: Machine model: Raspberry Pi 3 Model B Plus Rev 1.3
+[    0.000000] random: crng init done
+[    0.000000] Memory policy: Data cache writealloc
+[    0.000000] Reserved memory: created CMA memory pool at 0x34000000, size 64 MiB
+[    0.000000] OF: reserved mem: initialized node linux,cma, compatible id shared-dma-pool
+[    0.000000] Zone ranges:
+[    0.000000]   DMA      [mem 0x0000000000000000-0x0000000037ffffff]
+[    0.000000]   Normal   empty
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x0000000037ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x0000000037ffffff]
+[    0.000000] percpu: Embedded 16 pages/cpu s35724 r8192 d21620 u65536
+[    0.000000] pcpu-alloc: s35724 r8192 d21620 u65536 alloc=16*4096
+[    0.000000] pcpu-alloc: [0] 0 [0] 1 [0] 2 [0] 3 
+[    0.000000] Built 1 zonelists, mobility grouping on.  Total pages: 227360
+[    0.000000] Kernel command line: coherent_pool=1M 8250.nr_uarts=0 snd_bcm2835.enable_compat_alsa=0 snd_bcm2835.enable_hdmi=1 bcm2708_fb.fbwidth=720 bcm2708_fb.fbheight=480 bcm2708_fb.fbswap=1 vc_mem.mem_base=0x3ec00000 vc_mem.mem_size=0x40000000  console=ttyS0,115200 console=tty1 root=PARTUUID=0a48ca6b-02 rootfstype=ext4 fsck.repair=yes rootwait
+[    0.000000] Dentry cache hash table entries: 131072 (order: 7, 524288 bytes, linear)
+[    0.000000] Inode-cache hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.000000] mem auto-init: stack:off, heap alloc:off, heap free:off
+[    0.000000] Memory: 825312K/917504K available (10240K kernel code, 1337K rwdata, 3076K rodata, 1024K init, 569K bss, 26656K reserved, 65536K cma-reserved)
+[    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=4, Nodes=1
+[    0.000000] ftrace: allocating 33312 entries in 98 pages
+[    0.000000] ftrace: allocated 98 pages with 3 groups
+[    0.000000] trace event string verifier disabled
+[    0.000000] rcu: Hierarchical RCU implementation.
+[    0.000000] 	Rude variant of Tasks RCU enabled.
+[    0.000000] 	Tracing variant of Tasks RCU enabled.
+[    0.000000] rcu: RCU calculated value of scheduler-enlistment delay is 10 jiffies.
+[    0.000000] NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+[    0.000000] arch_timer: cp15 timer(s) running at 19.20MHz (phys).
+[    0.000000] clocksource: arch_sys_counter: mask: 0xffffffffffffff max_cycles: 0x46d987e47, max_idle_ns: 440795202767 ns
+[    0.000001] sched_clock: 56 bits at 19MHz, resolution 52ns, wraps every 4398046511078ns
+[    0.000024] Switching to timer-based delay loop, resolution 52ns
+[    0.000421] Console: colour dummy device 80x30
+[    0.001223] printk: console [tty1] enabled
+[    0.001295] Calibrating delay loop (skipped), value calculated using timer frequency.. 38.40 BogoMIPS (lpj=192000)
+[    0.001355] pid_max: default: 32768 minimum: 301
+[    0.001534] LSM: Security Framework initializing
+[    0.001791] Mount-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+[    0.001844] Mountpoint-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+[    0.003422] cgroup: Disabling memory control group subsystem
+[    0.003728] CPU: Testing write buffer coherency: ok
+[    0.004275] CPU0: thread -1, cpu 0, socket 0, mpidr 80000000
+[    0.005765] Setting up static identity map for 0x100000 - 0x10003c
+[    0.005974] rcu: Hierarchical SRCU implementation.
+[    0.006976] smp: Bringing up secondary CPUs ...
+[    0.008136] CPU1: thread -1, cpu 1, socket 0, mpidr 80000001
+[    0.009428] CPU2: thread -1, cpu 2, socket 0, mpidr 80000002
+[    0.010719] CPU3: thread -1, cpu 3, socket 0, mpidr 80000003
+[    0.010871] smp: Brought up 1 node, 4 CPUs
+[    0.010973] SMP: Total of 4 processors activated (153.60 BogoMIPS).
+[    0.011009] CPU: All CPU(s) started in HYP mode.
+[    0.011036] CPU: Virtualization extensions available.
+[    0.011960] devtmpfs: initialized
+[    0.030192] VFP support v0.3: implementor 41 architecture 3 part 40 variant 3 rev 4
+[    0.030453] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.030521] futex hash table entries: 1024 (order: 4, 65536 bytes, linear)
+[    0.033676] pinctrl core: initialized pinctrl subsystem
+[    0.035055] NET: Registered PF_NETLINK/PF_ROUTE protocol family
+[    0.039628] DMA: preallocated 1024 KiB pool for atomic coherent allocations
+[    0.045211] audit: initializing netlink subsys (disabled)
+[    0.045538] audit: type=2000 audit(0.040:1): state=initialized audit_enabled=0 res=1
+[    0.046174] thermal_sys: Registered thermal governor 'step_wise'
+[    0.047170] hw-breakpoint: found 5 (+1 reserved) breakpoint and 4 watchpoint registers.
+[    0.047238] hw-breakpoint: maximum watchpoint size is 8 bytes.
+[    0.047515] Serial: AMBA PL011 UART driver
+[    0.055482] bcm2835-mbox 3f00b880.mailbox: mailbox enabled
+[    0.080058] raspberrypi-firmware soc:firmware: Attached to firmware from 2023-01-05T10:49:28, variant start_x
+[    0.090075] raspberrypi-firmware soc:firmware: Firmware hash is 8ba17717fbcedd4c3b6d4bce7e50c7af4155cba9
+[    0.140198] Kprobes globally optimized
+[    0.145624] bcm2835-dma 3f007000.dma: DMA legacy API manager, dmachans=0x1
+[    0.147911] SCSI subsystem initialized
+[    0.148184] usbcore: registered new interface driver usbfs
+[    0.148285] usbcore: registered new interface driver hub
+[    0.148376] usbcore: registered new device driver usb
+[    0.148704] usb_phy_generic phy: supply vcc not found, using dummy regulator
+[    0.148913] usb_phy_generic phy: dummy supplies not allowed for exclusive requests
+[    0.149207] pps_core: LinuxPPS API ver. 1 registered
+[    0.149240] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+[    0.149300] PTP clock support registered
+[    0.151844] clocksource: Switched to clocksource arch_sys_counter
+[    0.222584] VFS: Disk quotas dquot_6.6.0
+[    0.222732] VFS: Dquot-cache hash table entries: 1024 (order 0, 4096 bytes)
+[    0.222958] FS-Cache: Loaded
+[    0.223266] CacheFiles: Loaded
+[    0.234248] NET: Registered PF_INET protocol family
+[    0.234551] IP idents hash table entries: 16384 (order: 5, 131072 bytes, linear)
+[    0.236203] tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 6144 bytes, linear)
+[    0.236279] Table-perturb hash table entries: 65536 (order: 6, 262144 bytes, linear)
+[    0.236332] TCP established hash table entries: 8192 (order: 3, 32768 bytes, linear)
+[    0.236479] TCP bind hash table entries: 8192 (order: 4, 65536 bytes, linear)
+[    0.236696] TCP: Hash tables configured (established 8192 bind 8192)
+[    0.236884] UDP hash table entries: 512 (order: 2, 16384 bytes, linear)
+[    0.236965] UDP-Lite hash table entries: 512 (order: 2, 16384 bytes, linear)
+[    0.237277] NET: Registered PF_UNIX/PF_LOCAL protocol family
+[    0.242867] RPC: Registered named UNIX socket transport module.
+[    0.242905] RPC: Registered udp transport module.
+[    0.242935] RPC: Registered tcp transport module.
+[    0.242963] RPC: Registered tcp NFSv4.1 backchannel transport module.
+[    1.899954] hw perfevents: enabled with armv7_cortex_a7 PMU driver, 7 counters available
+[    1.903932] Initialise system trusted keyrings
+[    1.904306] workingset: timestamp_bits=14 max_order=18 bucket_order=4
+[    1.914314] zbud: loaded
+[    1.916407] FS-Cache: Netfs 'nfs' registered for caching
+[    1.917377] NFS: Registering the id_resolver key type
+[    1.917447] Key type id_resolver registered
+[    1.917477] Key type id_legacy registered
+[    1.917653] nfs4filelayout_init: NFSv4 File Layout Driver Registering...
+[    1.917690] nfs4flexfilelayout_init: NFSv4 Flexfile Layout Driver Registering...
+[    1.919053] Key type asymmetric registered
+[    1.919088] Asymmetric key parser 'x509' registered
+[    1.919200] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 247)
+[    1.919243] io scheduler mq-deadline registered
+[    1.919273] io scheduler kyber registered
+[    1.924029] bcm2708_fb soc:fb: FB found 1 display(s)
+[    1.938837] Console: switching to colour frame buffer device 90x30
+[    1.947531] bcm2708_fb soc:fb: Registered framebuffer for display 0, size 720x480
+[    1.956233] bcm2835-rng 3f104000.rng: hwrng registered
+[    1.959636] vc-mem: phys_addr:0x00000000 mem_base=0x3ec00000 mem_size:0x40000000(1024 MiB)
+[    1.967038] gpiomem-bcm2835 3f200000.gpiomem: Initialised: Registers at 0x3f200000
+[    1.983032] brd: module loaded
+[    1.996191] loop: module loaded
+[    2.000010] Loading iSCSI transport class v2.0-870.
+[    2.005093] usbcore: registered new interface driver lan78xx
+[    2.008278] usbcore: registered new interface driver smsc95xx
+[    2.011341] dwc_otg: version 3.00a 10-AUG-2012 (platform bus)
+[    2.742981] Core Release: 2.80a
+[    2.746008] Setting default values for core params
+[    2.749127] Finished setting default values for core params
+[    2.952584] Using Buffer DMA mode
+[    2.955608] Periodic Transfer Interrupt Enhancement - disabled
+[    2.958645] Multiprocessor Interrupt Enhancement - disabled
+[    2.961697] OTG VER PARAM: 0, OTG VER FLAG: 0
+[    2.964822] Dedicated Tx FIFOs mode
+
+[    2.968676] WARN::dwc_otg_hcd_init:1074: FIQ DMA bounce buffers: virt = b4114000 dma = 0xf4114000 len=9024
+[    2.977563] FIQ FSM acceleration enabled for :
+               Non-periodic Split Transactions
+               Periodic Split Transactions
+               High-Speed Isochronous Endpoints
+               Interrupt/Control Split Transaction hack enabled
+[    2.992269] dwc_otg: Microframe scheduler enabled
+
+[    2.992410] WARN::hcd_init_fiq:457: FIQ on core 1
+
+[    2.997725] WARN::hcd_init_fiq:458: FIQ ASM at 807fc54c length 36
+
+[    3.002896] WARN::hcd_init_fiq:497: MPHI regs_base at b8810000
+[    3.008173] dwc_otg 3f980000.usb: DWC OTG Controller
+[    3.010977] dwc_otg 3f980000.usb: new USB bus registered, assigned bus number 1
+[    3.013846] dwc_otg 3f980000.usb: irq 89, io mem 0x00000000
+[    3.016651] Init: Port Power? op_state=1
+[    3.019381] Init: Power Port (0)
+[    3.022395] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002, bcdDevice= 5.15
+[    3.027924] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+[    3.030857] usb usb1: Product: DWC OTG Controller
+[    3.033772] usb usb1: Manufacturer: Linux 5.15.84-v7+ dwc_otg_hcd
+[    3.036716] usb usb1: SerialNumber: 3f980000.usb
+[    3.040453] hub 1-0:1.0: USB hub found
+[    3.043389] hub 1-0:1.0: 1 port detected
+[    3.046982] dwc_otg: FIQ enabled
+[    3.046996] dwc_otg: NAK holdoff enabled
+[    3.047008] dwc_otg: FIQ split-transaction FSM enabled
+[    3.047027] Module dwc_common_port init
+[    3.047402] usbcore: registered new interface driver usb-storage
+[    3.050427] mousedev: PS/2 mouse device common for all mice
+[    3.056769] sdhci: Secure Digital Host Controller Interface driver
+[    3.059666] sdhci: Copyright(c) Pierre Ossman
+[    3.063152] sdhci-pltfm: SDHCI platform and OF driver helper
+[    3.068675] ledtrig-cpu: registered to indicate activity on CPUs
+[    3.071971] hid: raw HID events driver (C) Jiri Kosina
+[    3.075090] usbcore: registered new interface driver usbhid
+[    3.078069] usbhid: USB HID core driver
+[    3.086573] Initializing XFRM netlink socket
+[    3.089533] NET: Registered PF_PACKET protocol family
+[    3.092635] Key type dns_resolver registered
+[    3.096146] Registering SWP/SWPB emulation handler
+[    3.099717] registered taskstats version 1
+[    3.102588] Loading compiled-in X.509 certificates
+[    3.106266] Key type .fscrypt registered
+[    3.109107] Key type fscrypt-provisioning registered
+[    3.123712] uart-pl011 3f201000.serial: cts_event_workaround enabled
+[    3.126649] 3f201000.serial: ttyAMA0 at MMIO 0x3f201000 (irq = 114, base_baud = 0) is a PL011 rev2
+[    3.134890] bcm2835-wdt bcm2835-wdt: Broadcom BCM2835 watchdog timer
+[    3.138220] bcm2835-power bcm2835-power: Broadcom BCM2835 power domains driver
+[    3.142909] mmc-bcm2835 3f300000.mmcnr: mmc_debug:0 mmc_debug2:0
+[    3.145865] mmc-bcm2835 3f300000.mmcnr: DMA channel allocated
+[    3.172022] Indeed it is in host mode hprt0 = 00021501
+[    3.235280] sdhost: log_buf @ 5eb725ad (f4113000)
+[    3.288668] mmc0: sdhost-bcm2835 loaded - DMA enabled (>1)
+[    3.294578] of_cfs_init
+[    3.297572] of_cfs_init: OK
+[    3.301702] Waiting for root device PARTUUID=0a48ca6b-02...
+[    3.314126] mmc1: new high speed SDIO card at address 0001
+[    3.354687] mmc0: host does not support reading read-only switch, assuming write-enable
+[    3.361022] mmc0: new high speed SDHC card at address 0001
+[    3.364901] mmcblk0: mmc0:0001 00000 14.6 GiB 
+[    3.371132]  mmcblk0: p1 p2
+[    3.374708] mmcblk0: mmc0:0001 00000 14.6 GiB
+[    3.381889] usb 1-1: new high-speed USB device number 2 using dwc_otg
+[    3.385022] Indeed it is in host mode hprt0 = 00001101
+[    3.417197] EXT4-fs (mmcblk0p2): mounted filesystem with ordered data mode. Opts: (null). Quota mode: none.
+[    3.423507] VFS: Mounted root (ext4 filesystem) readonly on device 179:2.
+[    3.435298] devtmpfs: mounted
+[    3.450061] Freeing unused kernel image (initmem) memory: 1024K
+[    3.453863] Run /sbin/init as init process
+[    3.456968]   with arguments:
+[    3.456980]     /sbin/init
+[    3.456992]   with environment:
+[    3.457002]     HOME=/
+[    3.457014]     TERM=linux
+[    3.622273] usb 1-1: New USB device found, idVendor=0424, idProduct=2514, bcdDevice= b.b3
+[    3.628625] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[    3.632802] hub 1-1:1.0: USB hub found
+[    3.636212] hub 1-1:1.0: 4 ports detected
+[    3.951894] usb 1-1.1: new high-speed USB device number 3 using dwc_otg
+[    3.971963] systemd[1]: System time before build time, advancing clock.
+[    4.082340] usb 1-1.1: New USB device found, idVendor=0424, idProduct=2514, bcdDevice= b.b3
+[    4.089105] usb 1-1.1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[    4.093646] hub 1-1.1:1.0: USB hub found
+[    4.097302] hub 1-1.1:1.0: 3 ports detected
+[    4.236777] NET: Registered PF_INET6 protocol family
+[    4.241918] Segment Routing with IPv6
+[    4.245318] In-situ OAM (IOAM) with IPv6
+[    4.334522] systemd[1]: systemd 247.3-7+rpi1+deb11u1 running in system mode. (+PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +ZSTD +SECCOMP +BLKID +ELFUTILS +KMOD +IDN2 -IDN +PCRE2 default-hierarchy=unified)
+[    4.346462] systemd[1]: Detected architecture arm.
+[    4.392320] systemd[1]: Set hostname to <RoverPi>.
+[    4.453827] dwc_otg_handle_wakeup_detected_intr lxstate = 2
+[    5.131902] usb 1-1.1.1: new high-speed USB device number 4 using dwc_otg
+[    5.262509] usb 1-1.1.1: New USB device found, idVendor=0424, idProduct=7800, bcdDevice= 3.00
+[    5.269135] usb 1-1.1.1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+[    5.538597] lan78xx 1-1.1.1:1.0 (unnamed net_device) (uninitialized): No External EEPROM. Setting MAC Speed
+[    5.568659] lan78xx 1-1.1.1:1.0 (unnamed net_device) (uninitialized): int urb period 64
+[    5.604617] systemd[1]: Queued start job for default target Multi-User System.
+[    5.617884] systemd[1]: Created slice system-getty.slice.
+[    5.630576] systemd[1]: Created slice system-modprobe.slice.
+[    5.647310] systemd[1]: Created slice system-systemd\x2dfsck.slice.
+[    5.656513] systemd[1]: Created slice User and Session Slice.
+[    5.665187] systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+[    5.673725] systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+[    5.683295] systemd[1]: Set up automount Arbitrary Executable File Formats File System Automount Point.
+[    5.696318] systemd[1]: Reached target Local Encrypted Volumes.
+[    5.705620] systemd[1]: Reached target Paths.
+[    5.714447] systemd[1]: Reached target Slices.
+[    5.722951] systemd[1]: Reached target Swap.
+[    5.732567] systemd[1]: Listening on Syslog Socket.
+[    5.741189] systemd[1]: Listening on fsck to fsckd communication Socket.
+[    5.749542] systemd[1]: Listening on initctl Compatibility Named Pipe.
+[    5.758944] systemd[1]: Listening on Journal Audit Socket.
+[    5.767737] systemd[1]: Listening on Journal Socket (/dev/log).
+[    5.776702] systemd[1]: Listening on Journal Socket.
+[    5.786432] systemd[1]: Listening on udev Control Socket.
+[    5.794819] systemd[1]: Listening on udev Kernel Socket.
+[    5.803417] systemd[1]: Condition check resulted in Huge Pages File System being skipped.
+[    5.815281] systemd[1]: Mounting POSIX Message Queue File System...
+[    5.828750] systemd[1]: Mounting RPC Pipe File System...
+[    5.843285] systemd[1]: Mounting Kernel Debug File System...
+[    5.857587] systemd[1]: Mounting Kernel Trace File System...
+[    5.866998] systemd[1]: Condition check resulted in Kernel Module supporting RPCSEC_GSS being skipped.
+[    5.882541] systemd[1]: Starting Restore / save the current clock...
+[    5.897794] systemd[1]: Starting Set the console keyboard layout...
+[    5.913327] systemd[1]: Starting Create list of static device nodes for the current kernel...
+[    5.934130] systemd[1]: Starting Load Kernel Module configfs...
+[    5.949606] systemd[1]: Starting Load Kernel Module drm...
+[    5.964813] systemd[1]: Starting Load Kernel Module fuse...
+[    5.987993] systemd[1]: Condition check resulted in Set Up Additional Binary Formats being skipped.
+[    6.007363] systemd[1]: Starting File System Check on Root Device...
+[    6.028391] systemd[1]: Starting Journal Service...
+[    6.054014] fuse: init (API version 7.34)
+[    6.072025] systemd[1]: Starting Load Kernel Modules...
+[    6.101071] systemd[1]: Starting Coldplug All udev Devices...
+[    6.147581] systemd[1]: Mounted POSIX Message Queue File System.
+[    6.170144] systemd[1]: Mounted RPC Pipe File System.
+[    6.179011] systemd[1]: Mounted Kernel Debug File System.
+[    6.188976] systemd[1]: Mounted Kernel Trace File System.
+[    6.200487] systemd[1]: Finished Restore / save the current clock.
+[    6.215262] systemd[1]: Finished Create list of static device nodes for the current kernel.
+[    6.231584] systemd[1]: modprobe@configfs.service: Succeeded.
+[    6.238087] systemd[1]: Finished Load Kernel Module configfs.
+[    6.255260] systemd[1]: modprobe@drm.service: Succeeded.
+[    6.260379] systemd[1]: Finished Load Kernel Module drm.
+[    6.272054] systemd[1]: modprobe@fuse.service: Succeeded.
+[    6.294262] systemd[1]: Finished Load Kernel Module fuse.
+[    6.303902] systemd[1]: Finished Load Kernel Modules.
+[    6.317865] systemd[1]: Mounting FUSE Control File System...
+[    6.358601] systemd[1]: Mounting Kernel Configuration File System...
+[    6.372647] systemd[1]: Started File System Check Daemon to report status.
+[    6.386540] systemd[1]: Starting Apply Kernel Variables...
+[    6.401044] systemd[1]: Started Journal Service.
+[    6.626184] EXT4-fs (mmcblk0p2): re-mounted. Opts: (null). Quota mode: none.
+[    6.705497] systemd-journald[137]: Received client request to flush runtime journal.
+[    6.720734] systemd-journald[137]: File /var/log/journal/58216aba408847fc973aa4ef23dbd895/system.journal corrupted or uncleanly shut down, renaming and replacing.
+[    8.161346] mc: Linux media interface: v0.10
+[    8.196296] vc_sm_cma: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.199384] bcm2835_vc_sm_cma_probe: Videocore shared memory driver
+[    8.199430] [vc_sm_connected_init]: start
+[    8.232435] [vc_sm_connected_init]: installed successfully
+[    8.288519] snd_bcm2835: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.353289] bcm2835_audio bcm2835_audio: card created with 8 channels
+[    8.374194] videodev: Linux video capture interface: v2.00
+[    8.521327] bcm2835_mmal_vchiq: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.524592] bcm2835_mmal_vchiq: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.530395] bcm2835_mmal_vchiq: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.576181] bcm2835_isp: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.598856] bcm2835_v4l2: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.667412] bcm2835_codec: module is from the staging directory, the quality is unknown, you have been warned.
+[    8.993338] bcm2835-isp bcm2835-isp: Device node output[0] registered as /dev/video13
+[    8.994527] bcm2835-isp bcm2835-isp: Device node capture[0] registered as /dev/video14
+[    8.997167] bcm2835-isp bcm2835-isp: Device node capture[1] registered as /dev/video15
+[    8.997785] bcm2835-isp bcm2835-isp: Device node stats[2] registered as /dev/video16
+[    8.997827] bcm2835-isp bcm2835-isp: Register output node 0 with media controller
+[    8.997857] bcm2835-isp bcm2835-isp: Register capture node 1 with media controller
+[    8.997880] bcm2835-isp bcm2835-isp: Register capture node 2 with media controller
+[    8.997907] bcm2835-isp bcm2835-isp: Register capture node 3 with media controller
+[    9.012393] bcm2835-codec bcm2835-codec: Device registered as /dev/video10
+[    9.012465] bcm2835-codec bcm2835-codec: Loaded V4L2 decode
+[    9.016278] bcm2835-codec bcm2835-codec: Device registered as /dev/video11
+[    9.016289] bcm2835-isp bcm2835-isp: Device node output[0] registered as /dev/video20
+[    9.016359] bcm2835-codec bcm2835-codec: Loaded V4L2 encode
+[    9.017707] bcm2835-isp bcm2835-isp: Device node capture[0] registered as /dev/video21
+[    9.019025] bcm2835-isp bcm2835-isp: Device node capture[1] registered as /dev/video22
+[    9.020256] bcm2835-isp bcm2835-isp: Device node stats[2] registered as /dev/video23
+[    9.020301] bcm2835-isp bcm2835-isp: Register output node 0 with media controller
+[    9.020328] bcm2835-isp bcm2835-isp: Register capture node 1 with media controller
+[    9.020351] bcm2835-isp bcm2835-isp: Register capture node 2 with media controller
+[    9.020373] bcm2835-isp bcm2835-isp: Register capture node 3 with media controller
+[    9.027134] bcm2835-v4l2-0: scene mode selected 0, was 0
+[    9.043045] bcm2835-codec bcm2835-codec: Device registered as /dev/video12
+[    9.043112] bcm2835-codec bcm2835-codec: Loaded V4L2 isp
+[    9.044060] bcm2835-v4l2-0: V4L2 device registered as video0 - stills mode > 1280x720
+[    9.048137] bcm2835-codec bcm2835-codec: Device registered as /dev/video18
+[    9.048200] bcm2835-codec bcm2835-codec: Loaded V4L2 image_fx
+[    9.054651] bcm2835-v4l2-0: Broadcom 2835 MMAL video capture ver 0.0.2 loaded.
+[    9.058965] bcm2835-codec bcm2835-codec: Device registered as /dev/video31
+[    9.059027] bcm2835-codec bcm2835-codec: Loaded V4L2 encode_image
+[    9.062422] bcm2835-isp bcm2835-isp: Loaded V4L2 bcm2835-isp
+[    9.162326] cfg80211: Loading compiled-in X.509 certificates for regulatory database
+[    9.314730] cfg80211: Loaded X.509 cert 'sforshee: 00b28ddf47aef9cea7'
+[    9.326335] cfg80211: loaded regulatory.db is malformed or signature is missing/invalid
+[    9.622372] brcmfmac: F1 signature read @0x18000000=0x15264345
+[    9.642543] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    9.644152] usbcore: registered new interface driver brcmfmac
+[    9.924885] brcmfmac: brcmf_fw_alloc_request: using brcm/brcmfmac43455-sdio for chip BCM4345/6
+[    9.930294] brcmfmac: brcmf_c_preinit_dcmds: Firmware: BCM4345/6 wl0: Nov  1 2021 00:37:25 version 7.45.241 (1a2f2fa CY) FWID 01-703fd60
+[   10.714022] hwmon hwmon1: Undervoltage detected!
+[   10.971702] 8021q: 802.1Q VLAN Support v1.8
+[   11.289443] uart-pl011 3f201000.serial: no DMA platform data
+[   11.559461] Adding 102396k swap on /var/swap.  Priority:-2 extents:1 across:102396k SSFS
+[   12.069305] brcmfmac: brcmf_cfg80211_set_power_mgmt: power save enabled
+[   12.467357] 8021q: adding VLAN 0 to HW filter on device eth0
+[   19.734857] Bluetooth: Core ver 2.22
+[   19.735023] NET: Registered PF_BLUETOOTH protocol family
+[   19.735038] Bluetooth: HCI device and connection manager initialized
+[   19.735073] Bluetooth: HCI socket layer initialized
+[   19.735095] Bluetooth: L2CAP socket layer initialized
+[   19.735137] Bluetooth: SCO socket layer initialized
+[   19.775035] Bluetooth: HCI UART driver ver 2.3
+[   19.775075] Bluetooth: HCI UART protocol H4 registered
+[   19.775203] Bluetooth: HCI UART protocol Three-wire (H5) registered
+[   19.775512] Bluetooth: HCI UART protocol Broadcom registered
+[   20.374988] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+[   20.375024] Bluetooth: BNEP filters: protocol multicast
+[   20.375057] Bluetooth: BNEP socket layer initialized
+[   20.410973] NET: Registered PF_ALG protocol family
+[   20.474058] cryptd: max_cpu_qlen set to 1000
+[   23.226064] IPv6: ADDRCONF(NETDEV_CHANGE): wlan0: link becomes ready
+[   24.798028] ICMPv6: process `dhcpcd' is using deprecated sysctl (syscall) net.ipv6.neigh.wlan0.retrans_time - use net.ipv6.neigh.wlan0.retrans_time_ms instead
+[   33.591989] hwmon hwmon1: Voltage normalised
+[   33.751924] cam-dummy-reg: disabling
+[   41.911978] hwmon hwmon1: Undervoltage detected!
+[   46.071993] hwmon hwmon1: Voltage normalised
+[   52.311969] hwmon hwmon1: Undervoltage detected!
+[   56.471974] hwmon hwmon1: Voltage normalised
+[   73.112029] hwmon hwmon1: Undervoltage detected!
+[   79.351898] hwmon hwmon1: Voltage normalised
+[  158.391411] hwmon hwmon1: Undervoltage detected!
+[  172.951155] hwmon hwmon1: Voltage normalised
+[  179.191110] hwmon hwmon1: Undervoltage detected!
+[  187.511039] hwmon hwmon1: Voltage normalised
+[  191.671006] hwmon hwmon1: Undervoltage detected!
+[  202.070928] hwmon hwmon1: Voltage normalised
+[  208.310836] hwmon hwmon1: Undervoltage detected!
+[  222.870783] hwmon hwmon1: Voltage normalised
+[  235.350750] hwmon hwmon1: Undervoltage detected!
+[  341.430330] hwmon hwmon1: Voltage normalised
+[  345.590361] hwmon hwmon1: Undervoltage detected!
+[  422.550088] hwmon hwmon1: Voltage normalised
+[  426.710154] hwmon hwmon1: Undervoltage detected!
+[  457.909983] hwmon hwmon1: Voltage normalised
+[  459.990010] hwmon hwmon1: Undervoltage detected!
+[  464.149973] hwmon hwmon1: Voltage normalised
+[  468.309949] hwmon hwmon1: Undervoltage detected!
+[  472.469985] hwmon hwmon1: Voltage normalised
+[  482.869947] hwmon hwmon1: Undervoltage detected!
+[  487.029919] hwmon hwmon1: Voltage normalised
+[  507.829824] hwmon hwmon1: Undervoltage detected!
+[  514.069825] hwmon hwmon1: Voltage normalised
+[  518.229823] hwmon hwmon1: Undervoltage detected!
+[  522.389791] hwmon hwmon1: Voltage normalised
+[  539.030117] hwmon hwmon1: Undervoltage detected!
+[  545.270205] hwmon hwmon1: Voltage normalised
+[  549.430305] hwmon hwmon1: Undervoltage detected!
+[  553.590358] hwmon hwmon1: Voltage normalised
+[  559.830457] hwmon hwmon1: Undervoltage detected!
+[  563.990498] hwmon hwmon1: Voltage normalised
+[  595.190957] hwmon hwmon1: Undervoltage detected!
+[  607.671065] hwmon hwmon1: Voltage normalised
+[  628.471251] hwmon hwmon1: Undervoltage detected!
+[  634.711319] hwmon hwmon1: Voltage normalised
+[  640.951439] hwmon hwmon1: Undervoltage detected!
+[  730.391849] hwmon hwmon1: Voltage normalised
+[  732.471966] hwmon hwmon1: Undervoltage detected!
+[  857.272068] hwmon hwmon1: Voltage normalised
+[  859.352334] hwmon hwmon1: Undervoltage detected!
+[17330.940908] hwmon hwmon1: Voltage normalised
+[17343.420832] hwmon hwmon1: Undervoltage detected!
+[17347.580802] hwmon hwmon1: Voltage normalised
+[17385.020900] hwmon hwmon1: Undervoltage detected!
+[17391.260907] hwmon hwmon1: Voltage normalised
+[17445.341043] hwmon hwmon1: Undervoltage detected!
+[17449.501024] hwmon hwmon1: Voltage normalised
+[17505.661149] hwmon hwmon1: Undervoltage detected!
+[17509.821164] hwmon hwmon1: Voltage normalised
+[17563.901301] hwmon hwmon1: Undervoltage detected!
+[17570.141300] hwmon hwmon1: Voltage normalised
+[17582.621388] hwmon hwmon1: Undervoltage detected!
+[17588.861363] hwmon hwmon1: Voltage normalised
+[17628.381461] hwmon hwmon1: Undervoltage detected!
+[17634.621486] hwmon hwmon1: Voltage normalised
+[17640.861476] hwmon hwmon1: Undervoltage detected!
+[17647.101504] hwmon hwmon1: Voltage normalised
+[17688.701642] hwmon hwmon1: Undervoltage detected!
+[17692.861650] hwmon hwmon1: Voltage normalised
+[17711.581673] hwmon hwmon1: Undervoltage detected!
+[17715.741708] hwmon hwmon1: Voltage normalised
+[17749.021777] hwmon hwmon1: Undervoltage detected!
+[17753.181806] hwmon hwmon1: Voltage normalised
+[17761.501797] hwmon hwmon1: Undervoltage detected!
+[17765.661819] hwmon hwmon1: Voltage normalised
+[17809.341942] hwmon hwmon1: Undervoltage detected!
+[17813.501964] hwmon hwmon1: Voltage normalised
+[17867.582105] hwmon hwmon1: Undervoltage detected!
+[17873.822120] hwmon hwmon1: Voltage normalised
+[17927.902292] hwmon hwmon1: Undervoltage detected!
+[17934.142314] hwmon hwmon1: Voltage normalised
+[17988.222449] hwmon hwmon1: Undervoltage detected!
+[17992.383931] hwmon hwmon1: Voltage normalised
+[18048.542646] hwmon hwmon1: Undervoltage detected!
+[18052.702645] hwmon hwmon1: Voltage normalised
+[18169.183056] hwmon hwmon1: Undervoltage detected!
+[18173.343051] hwmon hwmon1: Voltage normalised
+[18183.743073] hwmon hwmon1: Undervoltage detected!
+[18189.983050] hwmon hwmon1: Voltage normalised
+[18227.423158] hwmon hwmon1: Undervoltage detected!
+[18233.663199] hwmon hwmon1: Voltage normalised
+[18408.383708] hwmon hwmon1: Undervoltage detected!
+[18412.543724] hwmon hwmon1: Voltage normalised
+[18499.904457] hwmon hwmon1: Undervoltage detected!
+[18506.144502] hwmon hwmon1: Voltage normalised
+[18529.024763] hwmon hwmon1: Undervoltage detected!
+[18533.184814] hwmon hwmon1: Voltage normalised
+[18587.265358] hwmon hwmon1: Undervoltage detected!
+[18593.505427] hwmon hwmon1: Voltage normalised
+[18630.945835] hwmon hwmon1: Undervoltage detected!
+[18637.185891] hwmon hwmon1: Voltage normalised
+[18647.585953] hwmon hwmon1: Undervoltage detected!
+[18653.826023] hwmon hwmon1: Voltage normalised
+[18662.146120] hwmon hwmon1: Undervoltage detected!
+[18666.306137] hwmon hwmon1: Voltage normalised
+[18707.906512] hwmon hwmon1: Undervoltage detected!
+[18712.066544] hwmon hwmon1: Voltage normalised
+[18728.706705] hwmon hwmon1: Undervoltage detected!
+[18732.866728] hwmon hwmon1: Voltage normalised
+[18768.227030] hwmon hwmon1: Undervoltage detected!
+[18772.387075] hwmon hwmon1: Voltage normalised
+[18784.867168] hwmon hwmon1: Undervoltage detected!
+[18789.027198] hwmon hwmon1: Voltage normalised
+[18791.107234] hwmon hwmon1: Undervoltage detected!
+[18795.267251] hwmon hwmon1: Voltage normalised
+[18855.587732] hwmon hwmon1: Undervoltage detected!
+[18859.747785] hwmon hwmon1: Voltage normalised
+[18876.387897] hwmon hwmon1: Undervoltage detected!
+[18882.627914] hwmon hwmon1: Voltage normalised
+[18886.787983] hwmon hwmon1: Undervoltage detected!
+[18893.028035] hwmon hwmon1: Voltage normalised
+[18994.948715] hwmon hwmon1: Undervoltage detected!
+[18999.108780] hwmon hwmon1: Voltage normalised
+[19007.428824] hwmon hwmon1: Undervoltage detected!
+[19013.668862] hwmon hwmon1: Voltage normalised
+[19038.629056] hwmon hwmon1: Undervoltage detected!
+[19067.749198] hwmon hwmon1: Voltage normalised
+[19071.909245] hwmon hwmon1: Undervoltage detected!
+[19086.469332] hwmon hwmon1: Voltage normalised
+[19094.789394] hwmon hwmon1: Undervoltage detected!
+[19101.029450] hwmon hwmon1: Voltage normalised
+[19128.069597] hwmon hwmon1: Undervoltage detected!
+[19132.229621] hwmon hwmon1: Voltage normalised
+[19159.269839] hwmon hwmon1: Undervoltage detected!
+[19163.429853] hwmon hwmon1: Voltage normalised
+[19180.070056] hwmon hwmon1: Undervoltage detected!
+[19219.590174] hwmon hwmon1: Voltage normalised
+[19238.310390] hwmon hwmon1: Undervoltage detected!
+[19263.270432] hwmon hwmon1: Voltage normalised
+[19273.670547] hwmon hwmon1: Undervoltage detected!
+[19375.591034] hwmon hwmon1: Voltage normalised
+[19379.751117] hwmon hwmon1: Undervoltage detected!
+[19400.551213] hwmon hwmon1: Voltage normalised
+[19402.631208] hwmon hwmon1: Undervoltage detected!
+[19548.231942] hwmon hwmon1: Voltage normalised
+[19554.472602] hwmon hwmon1: Undervoltage detected!
+[19560.712004] hwmon hwmon1: Voltage normalised
+[19566.952054] hwmon hwmon1: Undervoltage detected!
+[19571.112066] hwmon hwmon1: Voltage normalised
+[19591.912192] hwmon hwmon1: Undervoltage detected!
+[19612.712277] hwmon hwmon1: Voltage normalised
+[19666.792561] hwmon hwmon1: Undervoltage detected!
+[19670.952573] hwmon hwmon1: Voltage normalised
+[19681.352600] hwmon hwmon1: Undervoltage detected!
+[19687.592620] hwmon hwmon1: Voltage normalised
+[19691.752746] hwmon hwmon1: Undervoltage detected!
+[19725.032805] hwmon hwmon1: Voltage normalised
+[19752.072993] hwmon hwmon1: Undervoltage detected!
+[19756.233000] hwmon hwmon1: Voltage normalised
+[19758.312970] hwmon hwmon1: Undervoltage detected!
+[19797.833152] hwmon hwmon1: Voltage normalised
+[19801.993208] hwmon hwmon1: Undervoltage detected!
+[19806.153228] hwmon hwmon1: Voltage normalised
+[19814.473274] hwmon hwmon1: Undervoltage detected!
+[19818.633295] hwmon hwmon1: Voltage normalised
+[19905.993672] hwmon hwmon1: Undervoltage detected!
+[19912.233717] hwmon hwmon1: Voltage normalised
+[19966.313982] hwmon hwmon1: Undervoltage detected!
+[19970.473991] hwmon hwmon1: Voltage normalised
+[19980.874042] hwmon hwmon1: Undervoltage detected!
+[19991.274072] hwmon hwmon1: Voltage normalised
+[19995.434073] hwmon hwmon1: Undervoltage detected!
+[20018.314240] hwmon hwmon1: Voltage normalised
+[20024.554255] hwmon hwmon1: Undervoltage detected!
+[20025.900911] Adding 2097148k swap on /var/swap.  Priority:-2 extents:8 across:10493952k SSFS
+[20032.874280] hwmon hwmon1: Voltage normalised
+[20043.274375] hwmon hwmon1: Undervoltage detected!
+[20047.434330] hwmon hwmon1: Voltage normalised
+[20086.954517] hwmon hwmon1: Undervoltage detected!
+[20091.114541] hwmon hwmon1: Voltage normalised
+[20147.274813] hwmon hwmon1: Undervoltage detected!
+[20151.434853] hwmon hwmon1: Voltage normalised
+[20163.914843] hwmon hwmon1: Undervoltage detected!
+[20168.074860] hwmon hwmon1: Voltage normalised
+[20205.515044] hwmon hwmon1: Undervoltage detected!
+[20211.755059] hwmon hwmon1: Voltage normalised
+[20238.795216] hwmon hwmon1: Undervoltage detected!
+[20255.435295] hwmon hwmon1: Voltage normalised
+[20257.515302] hwmon hwmon1: Undervoltage detected!
+[20265.835298] hwmon hwmon1: Voltage normalised
+[20267.915310] hwmon hwmon1: Undervoltage detected!
+[20292.875422] hwmon hwmon1: Voltage normalised
+[20336.555626] hwmon hwmon1: Undervoltage detected!
+[20340.715661] hwmon hwmon1: Voltage normalised
+[20342.795633] hwmon hwmon1: Undervoltage detected!
+[20351.115694] hwmon hwmon1: Voltage normalised
+[20353.195705] hwmon hwmon1: Undervoltage detected!
+[20365.675749] hwmon hwmon1: Voltage normalised
+[20367.755762] hwmon hwmon1: Undervoltage detected!
+[20386.475837] hwmon hwmon1: Voltage normalised
+[20405.196016] hwmon hwmon1: Undervoltage detected!
+[20571.596627] hwmon hwmon1: Voltage normalised
+[20573.676659] hwmon hwmon1: Undervoltage detected!
+[20594.476725] hwmon hwmon1: Voltage normalised
+[20606.956808] hwmon hwmon1: Undervoltage detected!
+[20623.596910] hwmon hwmon1: Voltage normalised
+[20642.316983] hwmon hwmon1: Undervoltage detected!
+[20646.476964] hwmon hwmon1: Voltage normalised
+[20650.636973] hwmon hwmon1: Undervoltage detected!
+[20656.877004] hwmon hwmon1: Voltage normalised
+[20661.037067] hwmon hwmon1: Undervoltage detected!
+[20671.437081] hwmon hwmon1: Voltage normalised
+[20696.397206] hwmon hwmon1: Undervoltage detected!
+[20713.037212] hwmon hwmon1: Voltage normalised
+[20717.197310] hwmon hwmon1: Undervoltage detected!
+[20721.357293] hwmon hwmon1: Voltage normalised
+[20723.437291] hwmon hwmon1: Undervoltage detected!
+[21039.598642] hwmon hwmon1: Voltage normalised
+[21066.638751] hwmon hwmon1: Undervoltage detected!
+[21072.878790] hwmon hwmon1: Voltage normalised
+[21106.158928] hwmon hwmon1: Undervoltage detected!
+[21112.399021] hwmon hwmon1: Voltage normalised
+[21118.638998] hwmon hwmon1: Undervoltage detected!
+[21124.878996] hwmon hwmon1: Voltage normalised
+[21129.039026] hwmon hwmon1: Undervoltage detected!
+[21143.599062] hwmon hwmon1: Voltage normalised
+[21166.479196] hwmon hwmon1: Undervoltage detected!
+[21170.639186] hwmon hwmon1: Voltage normalised
+[21187.279262] hwmon hwmon1: Undervoltage detected!
+[21235.119513] hwmon hwmon1: Voltage normalised
+[21241.359512] hwmon hwmon1: Undervoltage detected!
+[21247.599525] hwmon hwmon1: Voltage normalised
+[21289.199678] hwmon hwmon1: Undervoltage detected!
+[21295.439719] hwmon hwmon1: Voltage normalised
+[21301.679732] hwmon hwmon1: Undervoltage detected!
+[21309.999831] hwmon hwmon1: Voltage normalised
+[21322.479950] hwmon hwmon1: Undervoltage detected!
+[21345.359939] hwmon hwmon1: Voltage normalised
+[21349.519950] hwmon hwmon1: Undervoltage detected!
+[21353.679974] hwmon hwmon1: Voltage normalised
+[21393.200242] hwmon hwmon1: Undervoltage detected!
+[21403.600243] hwmon hwmon1: Voltage normalised
+[21409.840255] hwmon hwmon1: Undervoltage detected!
+[21424.400290] hwmon hwmon1: Voltage normalised
+[21426.480324] hwmon hwmon1: Undervoltage detected!
+[21445.200360] hwmon hwmon1: Voltage normalised
+[21447.280483] hwmon hwmon1: Undervoltage detected!
+[21455.600394] hwmon hwmon1: Voltage normalised
+[21484.720535] hwmon hwmon1: Undervoltage detected!
+[21534.640743] hwmon hwmon1: Voltage normalised
+[21545.040789] hwmon hwmon1: Undervoltage detected!
+[21549.200756] hwmon hwmon1: Voltage normalised
+[21551.280822] hwmon hwmon1: Undervoltage detected!
+[21555.440826] hwmon hwmon1: Voltage normalised
+[21559.600875] hwmon hwmon1: Undervoltage detected!
+[21597.040980] hwmon hwmon1: Voltage normalised
+[21603.281041] hwmon hwmon1: Undervoltage detected!
+[21613.681048] hwmon hwmon1: Voltage normalised
+[21615.761083] hwmon hwmon1: Undervoltage detected!
+[21624.081139] hwmon hwmon1: Voltage normalised
+[21649.041244] hwmon hwmon1: Undervoltage detected!
+[21653.201223] hwmon hwmon1: Voltage normalised
+[21663.601348] hwmon hwmon1: Undervoltage detected!
+[21667.761313] hwmon hwmon1: Voltage normalised
+[21696.881411] hwmon hwmon1: Undervoltage detected!
+[21709.361467] hwmon hwmon1: Voltage normalised
+[21719.761549] hwmon hwmon1: Undervoltage detected!
+[21728.081532] hwmon hwmon1: Voltage normalised
+[21738.481609] hwmon hwmon1: Undervoltage detected!
+[21744.721626] hwmon hwmon1: Voltage normalised
+[21759.281675] hwmon hwmon1: Undervoltage detected!
+[21784.241810] hwmon hwmon1: Voltage normalised
+[21788.401815] hwmon hwmon1: Undervoltage detected!
+[21792.561803] hwmon hwmon1: Voltage normalised
+[21827.921988] hwmon hwmon1: Undervoltage detected!
+[21834.161997] hwmon hwmon1: Voltage normalised
+[21838.321985] hwmon hwmon1: Undervoltage detected!
+[21854.962081] hwmon hwmon1: Voltage normalised
+[21859.122127] hwmon hwmon1: Undervoltage detected!
+[21875.762288] hwmon hwmon1: Voltage normalised
+[21877.842177] hwmon hwmon1: Undervoltage detected!
+[21884.082242] hwmon hwmon1: Voltage normalised
+[21886.162233] hwmon hwmon1: Undervoltage detected!
+[21909.042328] hwmon hwmon1: Voltage normalised
+[21911.122346] hwmon hwmon1: Undervoltage detected!
+[22784.726166] hwmon hwmon1: Voltage normalised
+[22861.686520] hwmon hwmon1: Undervoltage detected!
+[22867.926443] hwmon hwmon1: Voltage normalised
+[22876.246521] hwmon hwmon1: Undervoltage detected!
+[22978.166957] hwmon hwmon1: Voltage normalised
+[22986.486988] hwmon hwmon1: Undervoltage detected!
+[22994.807050] hwmon hwmon1: Voltage normalised
+[23005.207086] hwmon hwmon1: Undervoltage detected!
+[23013.527117] hwmon hwmon1: Voltage normalised
+[23015.607120] hwmon hwmon1: Undervoltage detected!
+[23026.007163] hwmon hwmon1: Voltage normalised
+[23028.087251] hwmon hwmon1: Undervoltage detected!
+[23034.327204] hwmon hwmon1: Voltage normalised
+[23036.407274] hwmon hwmon1: Undervoltage detected!
+[23111.287562] hwmon hwmon1: Voltage normalised
+[23115.447612] hwmon hwmon1: Undervoltage detected!
+[23119.607575] hwmon hwmon1: Voltage normalised
+[23148.727712] hwmon hwmon1: Undervoltage detected!
+[23152.887693] hwmon hwmon1: Voltage normalised
+[23161.207777] hwmon hwmon1: Undervoltage detected!
+[23167.447787] hwmon hwmon1: Voltage normalised
+[23244.408180] hwmon hwmon1: Undervoltage detected!
+[23250.648208] hwmon hwmon1: Voltage normalised
+[23279.768285] hwmon hwmon1: Undervoltage detected!
+[23300.568370] hwmon hwmon1: Voltage normalised
+[23302.648500] hwmon hwmon1: Undervoltage detected!
+[23323.448457] hwmon hwmon1: Voltage normalised
+[23331.768531] hwmon hwmon1: Undervoltage detected!
+[23344.248579] hwmon hwmon1: Voltage normalised
+[23381.693744] hwmon hwmon1: Undervoltage detected!
+[23396.248838] hwmon hwmon1: Voltage normalised
+[23398.328824] hwmon hwmon1: Undervoltage detected!
+[23406.648860] hwmon hwmon1: Voltage normalised
+[23408.728844] hwmon hwmon1: Undervoltage detected!
+[23425.368923] hwmon hwmon1: Voltage normalised
+[23448.249049] hwmon hwmon1: Undervoltage detected!
+[23452.409033] hwmon hwmon1: Voltage normalised
+[23491.929237] hwmon hwmon1: Undervoltage detected!
+[23512.729280] hwmon hwmon1: Voltage normalised
+[23514.809324] hwmon hwmon1: Undervoltage detected!
+[23573.049575] hwmon hwmon1: Voltage normalised
+[23587.609639] hwmon hwmon1: Undervoltage detected!
+[23593.849676] hwmon hwmon1: Voltage normalised
+[23639.609871] hwmon hwmon1: Undervoltage detected!
+[23650.009899] hwmon hwmon1: Voltage normalised
+[23654.169912] hwmon hwmon1: Undervoltage detected!
+[23668.729972] hwmon hwmon1: Voltage normalised
+[23677.050078] hwmon hwmon1: Undervoltage detected!
+[23681.210086] hwmon hwmon1: Voltage normalised
+[23685.370074] hwmon hwmon1: Undervoltage detected!
+[23689.530055] hwmon hwmon1: Voltage normalised
+[23691.610103] hwmon hwmon1: Undervoltage detected!
+[23718.650205] hwmon hwmon1: Voltage normalised
+[23722.810252] hwmon hwmon1: Undervoltage detected!
+[24309.372714] hwmon hwmon1: Voltage normalised
+[24315.612765] hwmon hwmon1: Undervoltage detected!
+[24359.292916] hwmon hwmon1: Voltage normalised
+[24363.452996] hwmon hwmon1: Undervoltage detected!
+[24367.612961] hwmon hwmon1: Voltage normalised
+[24398.813081] hwmon hwmon1: Undervoltage detected!
+[24405.053148] hwmon hwmon1: Voltage normalised
+[24413.373156] hwmon hwmon1: Undervoltage detected!
+[24542.333726] hwmon hwmon1: Voltage normalised
+[24548.573849] hwmon hwmon1: Undervoltage detected!
+[24565.213823] hwmon hwmon1: Voltage normalised
+[24567.293946] hwmon hwmon1: Undervoltage detected!
+[24814.815483] hwmon hwmon1: Voltage normalised
+[24818.974369] hwmon hwmon1: Undervoltage detected!
+[24866.814418] hwmon hwmon1: Voltage normalised
+[24870.974426] hwmon hwmon1: Undervoltage detected!
+[24881.374440] hwmon hwmon1: Voltage normalised
+[24885.534450] hwmon hwmon1: Undervoltage detected!
+[24891.774482] hwmon hwmon1: Voltage normalised
+[24902.174540] hwmon hwmon1: Undervoltage detected!
+[24927.134545] hwmon hwmon1: Voltage normalised
+[24941.694684] hwmon hwmon1: Undervoltage detected!
+[24962.494656] hwmon hwmon1: Voltage normalised
+[25037.374846] hwmon hwmon1: Undervoltage detected!
+[25062.334927] hwmon hwmon1: Voltage normalised
+[25066.494944] hwmon hwmon1: Undervoltage detected!
+[25070.654944] hwmon hwmon1: Voltage normalised
+[25110.175094] hwmon hwmon1: Undervoltage detected!
+[25145.535169] hwmon hwmon1: Voltage normalised
+[25162.175184] hwmon hwmon1: Undervoltage detected!
+[25193.375284] hwmon hwmon1: Voltage normalised
+[25205.865333] hwmon hwmon1: Undervoltage detected!
+[25216.255343] hwmon hwmon1: Voltage normalised
+[25245.375433] hwmon hwmon1: Undervoltage detected!
+[25251.615468] hwmon hwmon1: Voltage normalised
+[25282.815561] hwmon hwmon1: Undervoltage detected!
+[25336.895799] hwmon hwmon1: Voltage normalised
+[25343.135957] hwmon hwmon1: Undervoltage detected!
+[25366.015843] hwmon hwmon1: Voltage normalised
+[25368.095835] hwmon hwmon1: Undervoltage detected!
+[25393.055923] hwmon hwmon1: Voltage normalised
+[25426.336056] hwmon hwmon1: Undervoltage detected!
+[25440.896064] hwmon hwmon1: Voltage normalised
+[25442.976109] hwmon hwmon1: Undervoltage detected!
+[25459.616124] hwmon hwmon1: Voltage normalised
+[25470.016174] hwmon hwmon1: Undervoltage detected!
+[25476.256199] hwmon hwmon1: Voltage normalised
+[25486.656222] hwmon hwmon1: Undervoltage detected!
+[25490.816257] hwmon hwmon1: Voltage normalised
+[25544.896403] hwmon hwmon1: Undervoltage detected!
+[25551.146396] hwmon hwmon1: Voltage normalised
+[25553.216485] hwmon hwmon1: Undervoltage detected!
+[25557.376452] hwmon hwmon1: Voltage normalised
+[25586.496532] hwmon hwmon1: Undervoltage detected!
+[25590.656560] hwmon hwmon1: Voltage normalised
+[25665.537947] hwmon hwmon1: Undervoltage detected!
+[25669.696821] hwmon hwmon1: Voltage normalised
+[25707.137007] hwmon hwmon1: Undervoltage detected!
+[25715.457030] hwmon hwmon1: Voltage normalised
+[25723.777071] hwmon hwmon1: Undervoltage detected!
+[25761.217162] hwmon hwmon1: Voltage normalised
+[25767.457201] hwmon hwmon1: Undervoltage detected!
+[25773.697196] hwmon hwmon1: Voltage normalised
+[25784.097256] hwmon hwmon1: Undervoltage detected!
+[25794.497322] hwmon hwmon1: Voltage normalised
+[25823.617389] hwmon hwmon1: Undervoltage detected!
+[25854.817485] hwmon hwmon1: Voltage normalised
+[25858.977484] hwmon hwmon1: Undervoltage detected!
+[25863.137517] hwmon hwmon1: Voltage normalised
+[25871.457579] hwmon hwmon1: Undervoltage detected!
+[25881.857590] hwmon hwmon1: Voltage normalised
+[25892.257654] hwmon hwmon1: Undervoltage detected!
+[25902.657684] hwmon hwmon1: Voltage normalised
+[25904.737683] hwmon hwmon1: Undervoltage detected!
+[25931.777841] hwmon hwmon1: Voltage normalised
+[25935.937860] hwmon hwmon1: Undervoltage detected!
+[25956.737862] hwmon hwmon1: Voltage normalised
+[25973.377912] hwmon hwmon1: Undervoltage detected!
+[26012.898083] hwmon hwmon1: Voltage normalised
+[26014.978070] hwmon hwmon1: Undervoltage detected!
+[26033.698178] hwmon hwmon1: Voltage normalised
+[26042.018227] hwmon hwmon1: Undervoltage detected!
+[26052.418200] hwmon hwmon1: Voltage normalised
+[26098.178394] hwmon hwmon1: Undervoltage detected!
+[26114.818420] hwmon hwmon1: Voltage normalised
+[26123.138695] hwmon hwmon1: Undervoltage detected!
+[26181.378659] hwmon hwmon1: Voltage normalised
+[26200.098732] hwmon hwmon1: Undervoltage detected!
+[26210.498760] hwmon hwmon1: Voltage normalised
+[26264.578979] hwmon hwmon1: Undervoltage detected!
+[26270.819007] hwmon hwmon1: Voltage normalised
+[26385.219458] hwmon hwmon1: Undervoltage detected!
+[26389.379459] hwmon hwmon1: Voltage normalised
+[26410.179517] hwmon hwmon1: Undervoltage detected!
+[26435.139594] hwmon hwmon1: Voltage normalised
+[26437.219731] hwmon hwmon1: Undervoltage detected!
+[26445.539650] hwmon hwmon1: Voltage normalised
+[26458.019709] hwmon hwmon1: Undervoltage detected!
+[26512.763143] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[26601.540253] hwmon hwmon1: Voltage normalised
+[26603.620277] hwmon hwmon1: Undervoltage detected!
+[26611.940265] hwmon hwmon1: Voltage normalised
+[26614.020298] hwmon hwmon1: Undervoltage detected!
+[26651.460424] hwmon hwmon1: Voltage normalised
+[26653.540486] hwmon hwmon1: Undervoltage detected!
+[26664.225958] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[26670.180569] hwmon hwmon1: Voltage normalised
+[26672.260633] hwmon hwmon1: Undervoltage detected!
+[26686.820683] hwmon hwmon1: Voltage normalised
+[26688.900697] hwmon hwmon1: Undervoltage detected!
+[26770.021177] hwmon hwmon1: Voltage normalised
+[26774.181208] hwmon hwmon1: Undervoltage detected!
+[26859.461728] hwmon hwmon1: Voltage normalised
+[26861.541739] hwmon hwmon1: Undervoltage detected!
+[26865.701752] hwmon hwmon1: Voltage normalised
+[26867.781771] hwmon hwmon1: Undervoltage detected!
+[26878.181837] hwmon hwmon1: Voltage normalised
+[26880.262551] hwmon hwmon1: Undervoltage detected!
+[26917.702057] hwmon hwmon1: Voltage normalised
+[26919.782051] hwmon hwmon1: Undervoltage detected!
+[26966.003390] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27007.142577] hwmon hwmon1: Voltage normalised
+[27009.222770] hwmon hwmon1: Undervoltage detected!
+[27040.422769] hwmon hwmon1: Voltage normalised
+[27042.502783] hwmon hwmon1: Undervoltage detected!
+[27169.383353] hwmon hwmon1: Voltage normalised
+[27181.863423] hwmon hwmon1: Undervoltage detected!
+[27190.183443] hwmon hwmon1: Voltage normalised
+[27192.263483] hwmon hwmon1: Undervoltage detected!
+[27258.823807] hwmon hwmon1: Voltage normalised
+[27262.983834] hwmon hwmon1: Undervoltage detected!
+[27273.383854] hwmon hwmon1: Voltage normalised
+[27275.463863] hwmon hwmon1: Undervoltage detected!
+[27283.783916] hwmon hwmon1: Voltage normalised
+[27285.863945] hwmon hwmon1: Undervoltage detected!
+[27317.064122] hwmon hwmon1: Voltage normalised
+[27321.224125] hwmon hwmon1: Undervoltage detected!
+[27331.624136] hwmon hwmon1: Voltage normalised
+[27333.704187] hwmon hwmon1: Undervoltage detected!
+[27370.523589] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27381.489282] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27456.424762] hwmon hwmon1: Voltage normalised
+[27458.504743] hwmon hwmon1: Undervoltage detected!
+[27479.371640] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27537.701129] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27556.265151] hwmon hwmon1: Voltage normalised
+[27568.745228] hwmon hwmon1: Undervoltage detected!
+[27574.985260] hwmon hwmon1: Voltage normalised
+[27577.065299] hwmon hwmon1: Undervoltage detected!
+[27612.425423] hwmon hwmon1: Voltage normalised
+[27614.505469] hwmon hwmon1: Undervoltage detected!
+[27620.745471] hwmon hwmon1: Voltage normalised
+[27622.825509] hwmon hwmon1: Undervoltage detected!
+[27681.239009] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27762.186094] hwmon hwmon1: Voltage normalised
+[27768.426107] hwmon hwmon1: Undervoltage detected!
+[27774.666157] hwmon hwmon1: Voltage normalised
+[27776.746157] hwmon hwmon1: Undervoltage detected!
+[27858.482968] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27878.666592] hwmon hwmon1: Voltage normalised
+[27882.826615] hwmon hwmon1: Undervoltage detected!
+[27905.640596] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27969.943629] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[27999.307090] hwmon hwmon1: Voltage normalised
+[28001.387110] hwmon hwmon1: Undervoltage detected!
+[28213.548039] hwmon hwmon1: Voltage normalised
+[28215.628077] hwmon hwmon1: Undervoltage detected!
+[28230.188102] hwmon hwmon1: Voltage normalised
+[28244.748167] hwmon hwmon1: Undervoltage detected!
+[28255.148175] hwmon hwmon1: Voltage normalised
+[28261.388212] hwmon hwmon1: Undervoltage detected!
+[28267.628241] hwmon hwmon1: Voltage normalised
+[28269.708271] hwmon hwmon1: Undervoltage detected!
+[28377.868702] hwmon hwmon1: Voltage normalised
+[28382.028707] hwmon hwmon1: Undervoltage detected!
+[28398.668784] hwmon hwmon1: Voltage normalised
+[28400.748855] hwmon hwmon1: Undervoltage detected!
+[28415.308845] hwmon hwmon1: Voltage normalised
+[28425.708935] hwmon hwmon1: Undervoltage detected!
+[28431.948920] hwmon hwmon1: Voltage normalised
+[28434.028944] hwmon hwmon1: Undervoltage detected!
+[28438.188935] hwmon hwmon1: Voltage normalised
+[28440.268992] hwmon hwmon1: Undervoltage detected!
+[28452.749033] hwmon hwmon1: Voltage normalised
+[28454.829027] hwmon hwmon1: Undervoltage detected!
+[28471.469091] hwmon hwmon1: Voltage normalised
+[28488.109173] hwmon hwmon1: Undervoltage detected!
+[28494.349180] hwmon hwmon1: Voltage normalised
+[28502.669213] hwmon hwmon1: Undervoltage detected!
+[28506.829232] hwmon hwmon1: Voltage normalised
+[28513.069265] hwmon hwmon1: Undervoltage detected!
+[28544.269432] hwmon hwmon1: Voltage normalised
+[28546.349490] hwmon hwmon1: Undervoltage detected!
+[28552.589485] hwmon hwmon1: Voltage normalised
+[28556.749537] hwmon hwmon1: Undervoltage detected!
+[28560.909562] hwmon hwmon1: Voltage normalised
+[28562.989560] hwmon hwmon1: Undervoltage detected!
+[28581.709600] hwmon hwmon1: Voltage normalised
+[28590.029600] hwmon hwmon1: Undervoltage detected!
+[28639.949805] hwmon hwmon1: Voltage normalised
+[28646.189823] hwmon hwmon1: Undervoltage detected!
+[28704.430113] hwmon hwmon1: Voltage normalised
+[28706.510117] hwmon hwmon1: Undervoltage detected!
+[28725.230233] hwmon hwmon1: Voltage normalised
+[28727.310303] hwmon hwmon1: Undervoltage detected!
+[28737.710294] hwmon hwmon1: Voltage normalised
+[28739.790304] hwmon hwmon1: Undervoltage detected!
+[28746.030363] hwmon hwmon1: Voltage normalised
+[28748.110389] hwmon hwmon1: Undervoltage detected!
+[28752.270368] hwmon hwmon1: Voltage normalised
+[28773.070472] hwmon hwmon1: Undervoltage detected!
+[28781.390520] hwmon hwmon1: Voltage normalised
+[28783.470582] hwmon hwmon1: Undervoltage detected!
+[28791.790585] hwmon hwmon1: Voltage normalised
+[28795.950643] hwmon hwmon1: Undervoltage detected!
+[28806.350661] hwmon hwmon1: Voltage normalised
+[28812.590719] hwmon hwmon1: Undervoltage detected!
+[28818.830724] hwmon hwmon1: Voltage normalised
+[28841.710880] hwmon hwmon1: Undervoltage detected!
+[28856.270961] hwmon hwmon1: Voltage normalised
+[28860.430996] hwmon hwmon1: Undervoltage detected!
+[28878.390497] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[28889.551113] hwmon hwmon1: Voltage normalised
+[28891.631128] hwmon hwmon1: Undervoltage detected!
+[28907.853925] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[28920.751366] hwmon hwmon1: Voltage normalised
+[28931.151340] hwmon hwmon1: Undervoltage detected!
+[28937.391363] hwmon hwmon1: Voltage normalised
+[28956.111496] hwmon hwmon1: Undervoltage detected!
+[28967.104822] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[28978.991567] hwmon hwmon1: Voltage normalised
+[28981.071645] hwmon hwmon1: Undervoltage detected!
+[28989.391618] hwmon hwmon1: Voltage normalised
+[28991.471693] hwmon hwmon1: Undervoltage detected!
+[28997.711686] hwmon hwmon1: Voltage normalised
+[29006.031738] hwmon hwmon1: Undervoltage detected!
+[29014.351753] hwmon hwmon1: Voltage normalised
+[29018.511778] hwmon hwmon1: Undervoltage detected!
+[29028.911855] hwmon hwmon1: Voltage normalised
+[29041.391891] hwmon hwmon1: Undervoltage detected!
+[29057.315372] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[29372.113483] hwmon hwmon1: Voltage normalised
+[29374.193526] hwmon hwmon1: Undervoltage detected!
+[29413.713671] hwmon hwmon1: Voltage normalised
+[29415.793696] hwmon hwmon1: Undervoltage detected!
+[29422.033711] hwmon hwmon1: Voltage normalised
+[29424.113737] hwmon hwmon1: Undervoltage detected!
+[29430.353748] hwmon hwmon1: Voltage normalised
+[29432.433774] hwmon hwmon1: Undervoltage detected!
+[29453.233868] hwmon hwmon1: Voltage normalised
+[29455.313903] hwmon hwmon1: Undervoltage detected!
+[29517.714158] hwmon hwmon1: Voltage normalised
+[29565.554397] hwmon hwmon1: Undervoltage detected!
+[29575.954425] hwmon hwmon1: Voltage normalised
+[29590.514495] hwmon hwmon1: Undervoltage detected!
+[29598.834536] hwmon hwmon1: Voltage normalised
+[29605.074585] hwmon hwmon1: Undervoltage detected!
+[29618.339243] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[29623.794678] hwmon hwmon1: Voltage normalised
+[29627.954706] hwmon hwmon1: Undervoltage detected!
+[29632.114693] hwmon hwmon1: Voltage normalised
+[29686.194936] hwmon hwmon1: Undervoltage detected!
+[29704.915048] hwmon hwmon1: Voltage normalised
+[29727.795148] hwmon hwmon1: Undervoltage detected!
+[29736.115170] hwmon hwmon1: Voltage normalised
+[29742.355233] hwmon hwmon1: Undervoltage detected!
+[29750.675228] hwmon hwmon1: Voltage normalised
+[29758.995303] hwmon hwmon1: Undervoltage detected!
+[29771.475384] hwmon hwmon1: Voltage normalised
+[29779.795395] hwmon hwmon1: Undervoltage detected!
+[29786.035371] hwmon hwmon1: Voltage normalised
+[29788.115413] hwmon hwmon1: Undervoltage detected!
+[29792.275448] hwmon hwmon1: Voltage normalised
+[29794.355552] hwmon hwmon1: Undervoltage detected!
+[29794.961594] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[29819.315584] hwmon hwmon1: Voltage normalised
+[29867.155758] hwmon hwmon1: Undervoltage detected!
+[29877.555804] hwmon hwmon1: Voltage normalised
+[29912.915955] hwmon hwmon1: Undervoltage detected!
+[29917.075964] hwmon hwmon1: Voltage normalised
+[29925.395998] hwmon hwmon1: Undervoltage detected!
+[29931.636027] hwmon hwmon1: Voltage normalised
+[29944.116099] hwmon hwmon1: Undervoltage detected!
+[29948.276106] hwmon hwmon1: Voltage normalised
+[29950.356161] hwmon hwmon1: Undervoltage detected!
+[29956.596167] hwmon hwmon1: Voltage normalised
+[29985.716254] hwmon hwmon1: Undervoltage detected!
+[29991.956301] hwmon hwmon1: Voltage normalised
+[29996.116336] hwmon hwmon1: Undervoltage detected!
+[30000.276357] hwmon hwmon1: Voltage normalised
+[30006.516498] hwmon hwmon1: Undervoltage detected!
+[30010.676350] hwmon hwmon1: Voltage normalised
+[30023.156437] hwmon hwmon1: Undervoltage detected!
+[30041.876582] hwmon hwmon1: Voltage normalised
+[30046.036601] hwmon hwmon1: Undervoltage detected!
+[30052.276598] hwmon hwmon1: Voltage normalised
+[30068.916692] hwmon hwmon1: Undervoltage detected!
+[30070.540031] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[30077.236731] hwmon hwmon1: Voltage normalised
+[30102.196789] hwmon hwmon1: Undervoltage detected!
+[30104.175186] bcm2835-v4l2-0: vidioc_s_fmt_vid_cap device busy
+[30110.516969] hwmon hwmon1: Voltage normalised
+[30120.916917] hwmon hwmon1: Undervoltage detected!
+[30127.156920] hwmon hwmon1: Voltage normalised
+[30129.236934] hwmon hwmon1: Undervoltage detected!
+[30139.636964] hwmon hwmon1: Voltage normalised
+[30143.796991] hwmon hwmon1: Undervoltage detected!
+[30147.956974] hwmon hwmon1: Voltage normalised
+[30152.117116] hwmon hwmon1: Undervoltage detected!
+[30162.517035] hwmon hwmon1: Voltage normalised
+[30164.597064] hwmon hwmon1: Undervoltage detected!
+[30181.237134] hwmon hwmon1: Voltage normalised
+[30183.317187] hwmon hwmon1: Undervoltage detected!
+[30189.557142] hwmon hwmon1: Voltage normalised
+[30191.637194] hwmon hwmon1: Undervoltage detected!
+[30195.797164] hwmon hwmon1: Voltage normalised
+[30216.597258] hwmon hwmon1: Undervoltage detected!
+[30220.757288] hwmon hwmon1: Voltage normalised
+[30222.837328] hwmon hwmon1: Undervoltage detected!
+[30235.317350] hwmon hwmon1: Voltage normalised
+[30237.397350] hwmon hwmon1: Undervoltage detected!
+[30861.399808] hwmon hwmon1: Voltage normalised
+[30886.359899] hwmon hwmon1: Undervoltage detected!
+[30890.519929] hwmon hwmon1: Voltage normalised
+[30938.360027] hwmon hwmon1: Undervoltage detected!
