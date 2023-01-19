@@ -12,7 +12,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
 )
-
+logging.info("Loading flask script")
 
 controller_address_base = "http://localhost:1001/{}"
 
@@ -20,8 +20,9 @@ controller_address_base = "http://localhost:1001/{}"
 app = Flask(__name__)
 
 # # system configuration information gathering
-# system_state = requests.get(controller_address_base.format("system_info")).json()
-# num_leds = system_state["led_data"]["num_leds"]
+system_state = requests.get(controller_address_base.format("system_info")).json()
+num_leds = system_state["led_data"]["num_leds"]
+logging.info("Rover API server getting basic info. Number of LEDs: {}".format(num_leds))
 num_leds = 3
 
 
