@@ -13,7 +13,9 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-controller_address_base = "http://roverpi.local:1001/{}"
+
+
+controller_address_base = "http://localhost:1001/{}"
 
 # Flask app setup
 app = Flask(__name__)
