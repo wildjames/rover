@@ -79,7 +79,7 @@ def led_control():
             logging.error(f"LED command is invalid: {led_command}")
             return {"message": "failure"}
 
-        if pair[0] >= num_leds:
+        if pair[0] >= num_leds or pair[0] < 0:
             logging.error(f"LED index for {pair} is out of range.")
             return {"message": "failure"}
 
