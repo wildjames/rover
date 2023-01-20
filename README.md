@@ -36,9 +36,13 @@ It might be fun to have a LoRa modem as well, as a backup in case I drive somewh
 
 ## Motion
 
-Treads can be [bought](https://www.aliexpress.com/item/32876365731.html) - they're not *cheap*, but they're not overly expensive. I would probably want to fabricate the main body of the rover in the shop. Plastic > metal, probably? More weatherproof
+Treads can be [bought](https://www.aliexpress.com/item/32876365731.html) - they're not *cheap*, but they're not overly expensive. I would probably want to fabricate the main body of the rover in the shop. Plastic < metal, probably? More weatherproof. I keep gravitating towards [this one](https://www.aliexpress.com/item/4000187862847.html) ([build doc](https://gitnova.com/#/Robot/FrameChassis/4WDDampingCar/4WDDampingCar))
 
 I think an RC truck might be the way to go - comes with control electronics I can hopefully hijack, but failing that I can just gut it and hook into the hardware directly. [this](https://uk.banggood.com/Eachine-EAT04-1-or-12-2_4G-4WD-RC-Car-Metal-Body-Shell-Desert-Off-road-Truck-7_4V-1500mAH-RTR-Toy-Black-p-1611391.html?cur_warehouse=CN) looks like s decent one, seems ruged and mostly metal. Will need some waterproofing, but I think that's true of anything I buy. Ideally, I would go a bit bigger so I can fit stuff in a bit more easily, but a lighter chassis might mean longer range. [This is a more plasticy version](https://www.aliexpress.com/item/1005005032547831.html), but I think it might be a little bigger?
+
+I lean towards the tank, since I worry about the load capacity of the cars. 
+
+Read [this](https://blog.ampow.com/rc-brushless-motor-size-chart-choose-the-best/) for help choosing a motor. I think I'll want to be running a 6S battery for lower current draw, but that's gonna call for some step-down stuff to run the compute parts from. For motors, I think I want low-Kv and high voltage, so [these](https://www.aliexpress.com/item/1005001702756074.html) would do great. Plus they're slim, which helps. **Waterproofing**? For an ESC, I think I want to err on the high side of current rating. I think buy [these probably overkill](https://www.aliexpress.com/item/32986228623.html) motors, since I don't know much about the chassis
 
 ## Power
 
@@ -46,9 +50,13 @@ If I eyeball total power usage (when active) of the compute parts as about 5W fo
 
 For reference, I can find 20W solar panels on [aliexpress](https://www.aliexpress.com/item/1005004546004726.html) that are specced as `300x145x3MM 20W` and probably around 1kg, so totally doable on the rover. If I splash out and put wings on the thing, I *could* overhang the sides and put two on - but I think it wouldn't be worth it and would be asking for trouble. [Amazon](https://www.amazon.co.uk/Waterproof-Portable-Starter-Monocrystalline-Controller/dp/B0B9T4V3JF/) has [comparable](https://www.amazon.co.uk/Monocrystalline-Waterproof-Maintainer-Motorhomes-Motorcycle/dp/B08QHRWK4M/) things, that are far more likely to be authentic.
 
-From this estimate, I would guess that a relatively standard 4,000mAh LiPo (which typically costs about £100, ouch!) would run the thing for about an hour; (4 Ah * 12V) / 40W = 72 minutes.
+From this estimate, I would guess that a relatively standard 4,000mAh LiPo (which typically costs about £100, ouch!) would run the thing for about an hour; (4 Ah * 12V) / 40W = 72 minutes. a 6C motor is aroun £60, here is a [two-pack](https://www.amazon.co.uk/HRB-4000mAh-Battery-Quadcopter-Helicopter/dp/B06XT6L382) on Amazon, or [one 6s](https://www.hobbyrc.co.uk/gnb-4000mah-6s-50c-lipo-battery) on hobbyking.
 
 I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather.
+
+## Camera
+
+The pi has a camera module, but I would probably be better off with a mid-tier USB webcam instead. Bulkier, but that's not an issue. [here](https://www.aliexpress.com/item/1005002165612156.html) is a gimbal that I can mount it on - probably very worthwhile for QoL on sustained drives. 
 
 # Notes, TODO
 
@@ -66,13 +74,21 @@ rover@RoverPi:/usr/local/www/rover $ sudo service uv4l_raspicam restart
 I think it may be better to stream states and commands over WebRTC similar to video... This may be somewhat tricky to learn though.
 
 ## TODO
-- Write a motor interface
+- Fix apache
+- Write a motor interface - xbox controllers?
 - WebRTC LED states?
 - WebRTC LED control?
 
 
 
 # Setup, prerequisites
+
+Before anything else, 
+```
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install git -y
+```
+And set up the git instance with an SSH key. Then, clone this repo.
 
 ## Install OpenCV
 I made a script that follows the instructions from [here](https://pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/). Before you run it though, 

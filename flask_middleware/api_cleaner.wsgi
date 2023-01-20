@@ -10,4 +10,4 @@ sys.path.insert(0, my_dir)
 from api_cleaner import app as application
 
 import logging
-logging.basicConfig(stream=sys.stderr)
+logging.basicConfig(stream=sys.stdout)

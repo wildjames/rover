@@ -96,4 +96,4 @@ def led_control():
 
 if __name__ == "__main__":
     logging.info("Starting server")
-    app.run(host="0.0.0.0", port=2000, use_reloader=True, threaded=True, debug=True)
+    app.run(host="0.0.0.0", port=8000, use_reloader=True, threaded=True, debug=True)
