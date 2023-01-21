@@ -87,7 +87,7 @@ def led_control():
 
     if "states" not in data.keys():
         logging.error(f"LED command is invalid.")
-        return {"message": "failure"}
+        return {"message": "failure: No states in command JSON"}
 
     led_command = data["states"]
 
