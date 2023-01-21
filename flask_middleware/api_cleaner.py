@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 logging.info("Loading flask script")
 
-controller_address_base = "http://localhost:1001/{}"
+controller_address_base = "http://localhost:8001/{}"
 
 # Flask app setup
 app = Flask(__name__)

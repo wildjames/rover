@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=rover
-ExecStart=/usr/bin/env sudo python3 /home/rover/rover/controllers/controller_server.py
+ExecStart=/usr/bin/env python3 /home/rover/rover/controllers/controller_server.py
 
 [Install]
 WantedBy=multi-user.target

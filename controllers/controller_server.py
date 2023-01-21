@@ -47,4 +47,4 @@ def system_info():
 
 
 if __name__ in "__main__":
-    app.run(host="localhost", port=1001, use_reloader=True, threaded=False, debug=True)
+    app.run(host="localhost", port=8001, use_reloader=True, threaded=False, debug=True)
