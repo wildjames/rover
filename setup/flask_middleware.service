@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=rover
-ExecStart=/home/rover/.local/bin/gunicorn -c /home/rover/rover/flask_middleware/api_cleaner_wsgi.py "api_cleaner:app"
+ExecStart=/home/rover/.local/bin/gunicorn -c /home/rover/rover/flask_middleware/api_cleaner_wsgi.py --forwarded-allow-ips="*" "api_cleaner:app"
 
 [Install]
 WantedBy=multi-user.target
