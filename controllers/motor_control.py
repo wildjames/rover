@@ -11,10 +11,7 @@ ESC_control_pins = [12]
 
 class ESCController:
     """Class for controlling an ESC using a Raspberry Pi and a PWM signal."""
-
     armed = False
-    min_pulse_width: float = 0
-    max_pulse_width: float = 0
 
     def __init__(
         self,
@@ -24,7 +21,7 @@ class ESCController:
         max_pulse_width: int = 2000,
     ):
         """The constructor for the ESC class.
-        
+
         Frequency is the frequency of the PWM signal in Hz.
         min/max pulse width is the minimum and maximum pulse widths, in microseconds
         """
@@ -35,25 +32,25 @@ class ESCController:
         self.pwm = gpiozero.PWMOutputDevice(pin, frequency=frequency, initial_value=0)
 
         # calculate the duty cycle that corresponds to the minumum and maximum pulse widths, from the frequency
-        
+
         self.min_pulse_width = min_pulse_width / 1000000
         self.max_pulse_width = max_pulse_width / 1000000
+
+    @property
+    def min_pulse_width(self):
+        return self._min_pulse_width
 
     @min_pulse_width.setter
     def min_pulse_width(self, value):
         self._min_pulse_width = self.frequency * value / 1000000
-    
-    @min_pulse_width.getter
-    def min_pulse_width(self):
-        return self._min_pulse_width
-    
+
+    @property
+    def max_pulse_width(self):
+        return self._max_pulse_width
+
     @max_pulse_width.setter
     def max_pulse_width(self, value):
         self._max_pulse_width = self.frequency * value / 1000000
-
-    @max_pulse_width.getter
-    def max_pulse_width(self):
-        return self._max_pulse_width
 
     def arm(self):
         """Start the ESC wakeup handshake.
@@ -107,5 +104,7 @@ class ESCController:
         pwm_value = (self.max_pulse_width - self.min_pulse_width) * speed
         pwm_value += self.min_pulse_width
 
-        logging.info("Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed, pwm_value))
+        logging.info(
+            "Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed, pwm_value)
+        )
         self.pwm.value = pwm_value
