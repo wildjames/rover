@@ -1,9 +1,9 @@
-import json
 import logging
 from typing import List
 
 import led_control
-import motor_control
+# import motor_control
+
 from flask import Flask, request
 
 
@@ -89,7 +89,7 @@ def led_command():
 
     for led, state in req_obj:
         if not led_control.set_led_state(led, state):
-            return {"message": "failure"}
+            return {"message": "failure: Controller could not set LED state"}
 
     return {"message": "success"}
 
