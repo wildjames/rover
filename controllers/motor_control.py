@@ -39,6 +39,8 @@ class ESCController:
 
         After the handshake, the ESC will be ready to receive a throttle signal.
         """
+        self.pwm.on()
+        time.sleep(5)
 
         # Set the pulse width to the minimum.
         self.pwm.value = self.min_pulse_width
