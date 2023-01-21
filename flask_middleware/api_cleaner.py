@@ -41,7 +41,9 @@ else:
 def index():
     try:
         # # system configuration information gathering
-        requests.get(controller_address_base.format("system_info")).json()
+        resp = requests.get(controller_address_base.format("ping")).json()
+        if resp["message"] == "pong":
+            logging.info("Rover API server successfully contacted controller.")
         status_message = "Contacted the backend successfully - hardware control is available."
     except requests.exceptions.ConnectionError:
         logging.warning("Rover API server could not connect to controller.")

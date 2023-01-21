@@ -2,7 +2,8 @@ import json
 import logging
 
 import led_control
-from flask import Flask, Response, render_template, request
+import motor_control
+from flask import Flask, request
 
 
 logging.basicConfig(
@@ -17,17 +18,10 @@ logging.basicConfig(
 app = Flask(__name__)
 
 
-@app.route("/led_command", methods=["POST"])
-def led_command():
-    req_obj = request.json
-
-    logging.info("Received LED command pairs (index, state): {}".format(req_obj))
-
-    for led, state in req_obj:
-        if not led_control.set_led_state(led, state):
-            return {"message": "failure"}
-
-    return {"message": "success"}
+@app.route("/ping", methods=["GET"])
+def ping():
+    """Returns a JSON object containing a message."""
+    return {"message": "pong"}
 
 
 @app.route("/system_info", methods=["GET"])
@@ -44,6 +38,38 @@ def system_info():
     logging.info("Returning system info: {}".format(info_dict))
 
     return info_dict
+
+
+@app.route("/motor_command", methods=["POST"])
+def motor_command():
+    req_obj = request.json
+
+    logging.info("Received motor command pairs (index, state): {}".format(req_obj))
+
+    for index, state in req_obj:
+        if not motor_control.motors[index]:
+            return {"message": "failure: Motor index {} does not exist".format(index)}
+        
+        if state < 0.0 or state > 1.0:
+            return {"message": "failure: motor state must be between 0.0 and 1.0"}
+        
+    for index, state in req_obj:
+        motor_control.motors[index].set_speed(state)
+
+    return {"message": "success"}
+
+
+@app.route("/led_command", methods=["POST"])
+def led_command():
+    req_obj = request.json
+
+    logging.info("Received LED command pairs (index, state): {}".format(req_obj))
+
+    for led, state in req_obj:
+        if not led_control.set_led_state(led, state):
+            return {"message": "failure"}
+
+    return {"message": "success"}
 
 
 if __name__ in "__main__":
