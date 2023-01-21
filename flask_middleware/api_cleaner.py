@@ -4,6 +4,7 @@ from typing import Dict
 import requests
 from auth_middleware import token_required
 from flask import Flask, render_template, request
+from flask_cors import CORS
 
 logging.basicConfig(
 #    filename="/var/www/html/rover_flask.log",
