@@ -46,32 +46,6 @@ def system_info():
     return info_dict
 
 
-@app.route("/motor_init", methods=["GET"])
-def motor_init():
-    global motors
-
-    for pin in ESC_pins:
-        logging.info("Initializing ESC on pin {}".format(pin))
-        # Create an ESC object to control the ESC on pin 18.
-        esc = motor_control.ESCController(pin)
-
-        motors.append(esc)
-
-    return {"message": "success"}
-
-
-@app.route("/motor_arm", methods=["GET"])
-def motor_arm():
-    global motors
-
-    for m in motors:
-        logging.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
-        m.arm()
-        logging.info("Done")
-
-    return {"message": "success"}
-
-
 @app.route("/motor_info", methods=["GET"])
 def motor_info():
     global motors
@@ -100,6 +74,32 @@ def motor_info():
     logging.info("Returning motor info: {}".format(info_dict))
 
     return info_dict
+
+
+@app.route("/motor_init", methods=["POST"])
+def motor_init():
+    global motors
+
+    for pin in ESC_pins:
+        logging.info("Initializing ESC on pin {}".format(pin))
+        # Create an ESC object to control the ESC on pin 18.
+        esc = motor_control.ESCController(pin)
+
+        motors.append(esc)
+
+    return {"message": "success"}
+
+
+@app.route("/motor_arm", methods=["POST"])
+def motor_arm():
+    global motors
+
+    for m in motors:
+        logging.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
+        m.arm()
+        logging.info("Done")
+
+    return {"message": "success"}
 
 
 @app.route("/motor_calibrate", methods=["POST"])

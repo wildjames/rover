@@ -119,7 +119,7 @@ def led_control():
     return response
 
 
-@app.route("/motor_init", methods=["GET"])
+@app.route("/motor_init", methods=["POST"])
 def motor_init():
     """Initializes the motors."""
     response = requests.get(controller_address_base.format("motor_init")).json()
