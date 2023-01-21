@@ -8,6 +8,10 @@ import logging
 
 ESC_control_pins = [12]
 
+logging.basicConfig(
+    level=logging.DEBUG,
+)
+
 
 class ESCController:
     """Class for controlling an ESC using a Raspberry Pi and a PWM signal."""
