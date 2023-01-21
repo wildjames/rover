@@ -36,6 +36,8 @@ class ESCController:
         self.min_pulse_width = min_pulse_width / 1000000
         self.max_pulse_width = max_pulse_width / 1000000
 
+        self.pwm.value = self.min_pulse_width
+
     @property
     def min_pulse_width(self):
         return self._min_pulse_width
