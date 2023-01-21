@@ -42,15 +42,15 @@ class ESCController:
 
         # Set the pulse width to the minimum.
         self.pwm.value = self.min_pulse_width
-        time.sleep(2)
+        time.sleep(3)
 
         # Set the pulse width to the maximum.
         self.pwm.value = self.max_pulse_width
-        time.sleep(2)
+        time.sleep(5)
 
         # Set the pulse width to the minimum
         self.pwm.value = self.min_pulse_width
-        time.sleep(1)
+        time.sleep(2)
 
         # Then we're done
         self.pwm.value = 0.0
