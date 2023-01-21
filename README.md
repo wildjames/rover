@@ -86,29 +86,33 @@ I think it may be better to stream states and commands over WebRTC similar to vi
 Before anything else, 
 ```
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install git -y
+sudo apt-get install -y git python3-pip
+pip install -U pip
 ```
 And set up the git instance with an SSH key. Then, clone this repo.
-
-## Install OpenCV
-I made a script that follows the instructions from [here](https://pyimagesearch.com/2018/09/26/install-opencv-4-on-your-raspberry-pi/). Before you run it though, 
-```
-sudo nano /etc/dphys-swapfile
-```
-and set `CONF_SWAPSIZE=2048`. The default is 100. Then, restart the service with `sudo /etc/init.d/dphys-swapfile restart`.
-
-Then, run the script from your home directory. This is a permission thing.
-```
-cd ~
-sudo path_to_rover/setup/install_opencv.sh
-```
 
 ## Install `uv4l`
 https://www.linux-projects.org/uv4l/installation/
 
 This works on here: http://192.168.1.170:1002/ I have cloned over the web code, it's in `facedetection`. See what you can do with that.
 
-I think 
+```
+sudo rpi-update
+echo /opt/vc/lib/ | sudo tee /etc/ld.so.conf.d/vc.conf
+sudo ldconfig
+```
+
+Then, using the `sudo raspi-config` tool, enable legacy camera support. While you're there, increase the GPU memory to its maximum value.
+Then, add the repo to `apt`
+```
+curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
+sudo apt-get update
+sudo apt-get install -y uv4l-webrtc
+```
+
+
+
 
 ## Start the LED controller:
 ```

@@ -19,11 +19,14 @@ controller_address_base = "http://localhost:1001/{}"
 # Flask app setup
 app = Flask(__name__)
 
-# # system configuration information gathering
-system_state = requests.get(controller_address_base.format("system_info")).json()
+logging.info("Rover API server getting basic info.")
+try:
+    # # system configuration information gathering
+    system_state = requests.get(controller_address_base.format("system_info")).json()
+except requests.exceptions.ConnectionError:
+    logging.error("Rover API server could not connect to controller.")
+    num_leds = 0
 num_leds = system_state["led_data"]["num_leds"]
-logging.info("Rover API server getting basic info. Number of LEDs: {}".format(num_leds))
-num_leds = 3
 
 
 @app.route("/")
