@@ -58,6 +58,23 @@ class ESCController:
     def max_pulse_width(self, value):
         self._max_pulse_width = self.frequency * value / 1000000
 
+    def calibrate(self):
+        logging.info("Disconnect the battery, hit enter when done")
+        input("> ")
+
+        logging.info("Sending maximum pulse width")
+        self.pwm.value = self.max_pulse_width
+
+        logging.info("Connect the battery, hit enter when done")
+        input("> ")
+
+        time.sleep(2)
+        logging.info("Sending minimum pulse width")
+        self.pwm.value = self.min_pulse_width
+
+        logging.info("OK")
+
+
     def arm(self):
         """Start the ESC wakeup handshake.
 
@@ -111,6 +128,6 @@ class ESCController:
         pwm_value += self.min_pulse_width
 
         logging.info(
-            "Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed, pwm_value)
+            "Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed*100.0, pwm_value)
         )
         self.pwm.value = pwm_value
