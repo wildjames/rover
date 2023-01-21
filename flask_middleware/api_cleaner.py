@@ -19,6 +19,7 @@ controller_address_base = "http://localhost:8001/{}"
 
 # Flask app setup
 app = Flask(__name__)
+CORS(app)
 
 logging.info("Rover API server getting basic info.")
 try:
