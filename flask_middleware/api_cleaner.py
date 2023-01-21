@@ -7,8 +7,8 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 
 logging.basicConfig(
-#    filename="/var/www/html/rover_flask.log",
-#    filemode="a",
+   filename="/var/www/html/rover_flask.log",
+   filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
@@ -94,19 +94,19 @@ def led_control():
     for pair in data["states"]:
         if not isinstance(pair, list):
             logging.error(f"LED command is invalid: {led_command}")
-            return {"message": "failure"}
+            return {"message": "failure: Bad LED command"}
 
         if len(pair) != 2:
             logging.error(f"LED command is invalid: {led_command}")
-            return {"message": "failure"}
+            return {"message": "failure: Bad LED command"}
 
         if pair[0] >= num_leds or pair[0] < 0:
             logging.error(f"LED index for {pair} is out of range.")
-            return {"message": "failure"}
+            return {"message": "failure: LED index out of range"}
 
         if pair[1] not in [0, 1]:
             logging.error(f"LED state for {pair} is invalid.")
-            return {"message": "failure"}
+            return {"message": "failure: Bad LED state"}
 
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command

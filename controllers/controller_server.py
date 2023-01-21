@@ -26,6 +26,7 @@ motors: List[motor_control.ESCController] = []
 @app.route("/ping", methods=["GET"])
 def ping():
     """Returns a JSON object containing a message."""
+    logging.info("Received ping request")
     return {"message": "pong"}
 
 
@@ -59,7 +60,6 @@ def motor_init():
         motors.append(esc)
 
 
-
 @app.route("/motor_command", methods=["POST"])
 def motor_command():
     req_obj = request.json
@@ -72,7 +72,8 @@ def motor_command():
         
         if state < 0.0 or state > 1.0:
             return {"message": "failure: motor state must be between 0.0 and 1.0"}
-        
+    
+    global motors
     for index, state in req_obj:
         motors[index].set_speed(state)
 
