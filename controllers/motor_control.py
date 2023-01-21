@@ -13,6 +13,9 @@ class ESCController:
     """Class for controlling an ESC using a Raspberry Pi and a PWM signal."""
 
     armed = False
+    min_pulse_width: float = 0
+    max_pulse_width: float = 0
+
     def __init__(
         self,
         pin,
