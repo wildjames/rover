@@ -23,15 +23,25 @@ logging.info("Rover API server getting basic info.")
 try:
     # # system configuration information gathering
     system_state = requests.get(controller_address_base.format("system_info")).json()
-    num_leds = system_state["led_data"]["num_leds"]
+    contact = True
 except requests.exceptions.ConnectionError:
     logging.warning("Rover API server could not connect to controller.")
+    contact = False
+    
+# Necessary variables
+if contact:
+    num_leds = system_state["led_data"]["num_leds"]
+else:
     num_leds = 0
 
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if contact:
+        status = "Contacted the backend successfully."
+    else:
+        status = "Could not contact the backend! Better fix that."
+    return render_template("index.html", contact=contact)
 
 
 @app.route("/system_info")
