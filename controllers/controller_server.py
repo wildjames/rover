@@ -62,8 +62,8 @@ def motor_info():
         payload.append(
             {
                 "pin": m.pwm.pin,
-                "min_pulse": m.min_pulse,
-                "max_pulse": m.max_pulse,
+                "min_pulse": m.min_pulse_width,
+                "max_pulse": m.max_pulse_width,
                 "throttle": m.throttle,
                 "armed": m.armed,
             }

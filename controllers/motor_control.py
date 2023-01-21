@@ -15,6 +15,7 @@ logging.basicConfig(
 class ESCController:
     """Class for controlling an ESC using a Raspberry Pi and a PWM signal."""
     armed = False
+    throttle = 0.0
 
     def __init__(
         self,
@@ -104,6 +105,7 @@ class ESCController:
         # Then we're done
         logging.info("ESC armed")
         self.pwm.value = self.min_pulse_width
+        self.throttle = 0.0
         self.armed = True
 
     def stop(self):
@@ -115,6 +117,7 @@ class ESCController:
         """Emergency stop the ESC."""
         logging.info("Emergency stopping ESC")
         self.pwm.value = 0
+        self.throttle = 0.0
 
     def set_speed(self, speed: float):
         """Set the speed of the ESC, as a fraction of the maximum speed."""
@@ -130,3 +133,4 @@ class ESCController:
             "Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed*100.0, pwm_value)
         )
         self.pwm.value = pwm_value
+        self.throttle = speed
