@@ -46,7 +46,7 @@ def system_info():
     return info_dict
 
 
-@app.route("/motor_init", methods=["POST"])
+@app.route("/motor_init", methods=["GET"])
 def motor_init():
     global motors
 
@@ -59,7 +59,8 @@ def motor_init():
 
     return {"message": "success"}
 
-@app.route("/motor_arm", methods=["POST"])
+
+@app.route("/motor_arm", methods=["GET"])
 def motor_arm():
     global motors
 
@@ -69,6 +70,7 @@ def motor_arm():
         logging.info("Done")
 
     return {"message": "success"}
+
 
 @app.route("/motor_info", methods=["GET"])
 def motor_info():
@@ -83,13 +85,15 @@ def motor_info():
 
     payload = []
     for m in motors:
-        payload.append({
-            "pin": m.pwm.pin,
-            "min_pulse": m.min_pulse,
-            "max_pulse": m.max_pulse,
-            "throttle": m.throttle,
-            "armed": m.armed,
-        })
+        payload.append(
+            {
+                "pin": m.pwm.pin,
+                "min_pulse": m.min_pulse,
+                "max_pulse": m.max_pulse,
+                "throttle": m.throttle,
+                "armed": m.armed,
+            }
+        )
 
         info_dict["motor_data"]["motor_states"].append(payload)
 
@@ -110,7 +114,7 @@ def motor_calibrate():
     for index in to_calibrate:
         if not motors[index]:
             return {"message": "failure: Motor index {} does not exist".format(index)}
-        
+
     for index in to_calibrate:
         logging.info("Calibrating motor at index {}".format(index))
         m = motors[index]
@@ -120,11 +124,10 @@ def motor_calibrate():
     return {"message": "success"}
 
 
-
 @app.route("/motor_command", methods=["POST"])
 def motor_command():
     global motors
-    
+
     req_obj = request.json
 
     logging.info("Received motor command pairs (index, state): {}".format(req_obj))
@@ -132,10 +135,10 @@ def motor_command():
     for index, state in req_obj:
         if not motors[index]:
             return {"message": "failure: Motor index {} does not exist".format(index)}
-        
+
         if state < 0.0 or state > 1.0:
             return {"message": "failure: motor state must be between 0.0 and 1.0"}
-    
+
     for index, state in req_obj:
         motors[index].set_speed(state)
 

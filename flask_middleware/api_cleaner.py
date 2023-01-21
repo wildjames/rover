@@ -7,8 +7,8 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 
 logging.basicConfig(
-   filename="/home/rover/log/rover_flask.log",
-   filemode="a",
+    filename="/home/rover/log/rover_flask.log",
+    filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
@@ -44,10 +44,14 @@ def index():
         resp = requests.get(controller_address_base.format("ping")).json()
         if resp["message"] == "pong":
             logging.info("Rover API server successfully contacted controller.")
-        status_message = "Contacted the backend successfully - hardware control is available."
+        status_message = (
+            "Contacted the backend successfully - hardware control is available."
+        )
     except requests.exceptions.ConnectionError:
         logging.warning("Rover API server could not connect to controller.")
-        status_message = "Could not contact the backend! I don't have any hardware control."
+        status_message = (
+            "Could not contact the backend! I don't have any hardware control."
+        )
 
     return render_template("index.html", status_message=status_message)
 
@@ -113,6 +117,35 @@ def led_control():
     ).json()
 
     return response
+
+
+@app.route("/motor_init")
+def motor_init():
+    """Initializes the motors."""
+    response = requests.get(controller_address_base.format("motor_init")).json()
+    return response
+
+
+@app.route("/motor_arm", methods=["POST"])
+def motor_arm():
+    """Arms the motors."""
+    response = requests.get(controller_address_base.format("motor_arm")).json()
+    return response
+
+
+@app.route("/motor_info", method=["GET"])
+def motor_info():
+    """Returns a JSON object containing motor information."""
+    response = requests.get(controller_address_base.format("motor_info")).json()
+    return response
+
+
+@app.route("/motor_command", methods=["POST"])
+def motor_command():
+    reponse = requests.post(
+        controller_address_base.format("motor_command"), json=request.json
+    ).json()
+    return reponse
 
 
 if __name__ == "__main__":
