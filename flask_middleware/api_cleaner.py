@@ -7,7 +7,7 @@ from flask import Flask, render_template, request
 from flask_cors import CORS
 
 logging.basicConfig(
-   filename="/var/www/html/rover_flask.log",
+   filename="/home/rover/log/rover_flask.log",
    filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
