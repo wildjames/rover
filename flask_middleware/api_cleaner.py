@@ -27,7 +27,7 @@ try:
 except requests.exceptions.ConnectionError:
     logging.warning("Rover API server could not connect to controller.")
     contact = False
-    
+
 # Necessary variables
 if contact:
     num_leds = system_state["led_data"]["num_leds"]
@@ -37,10 +37,14 @@ else:
 
 @app.route("/")
 def index():
-    if contact:
+    try:
+        # # system configuration information gathering
+        requests.get(controller_address_base.format("system_info")).json()
         status_message = "Contacted the backend successfully - hardware control is available."
-    else:
+    except requests.exceptions.ConnectionError:
+        logging.warning("Rover API server could not connect to controller.")
         status_message = "Could not contact the backend! I don't have any hardware control."
+
     return render_template("index.html", status_message=status_message)
 
 
