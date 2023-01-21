@@ -21,7 +21,7 @@ class ESCController:
         self,
         pin,
         frequency: int = 50,
-        min_pulse_width: int = 500,
+        min_pulse_width: int = 1000,
         max_pulse_width: int = 2000,
     ):
         """The constructor for the ESC class.
