@@ -2,7 +2,7 @@ import logging
 from typing import List
 
 import led_control
-# import motor_control
+import motor_control
 
 from flask import Flask, request
 
@@ -19,8 +19,8 @@ logging.basicConfig(
 app = Flask(__name__)
 
 # Motor setup
-ESC_pins = [18]
-# motors: List[motor_control.ESCController] = []
+ESC_pins = [12]
+motors: List[motor_control.ESCController] = []
 
 
 @app.route("/ping", methods=["GET"])
@@ -46,39 +46,100 @@ def system_info():
     return info_dict
 
 
-# @app.route("/motor_init", methods=["POST"])
-# def motor_init():
-#     global motors
+@app.route("/motor_init", methods=["POST"])
+def motor_init():
+    global motors
 
-#     for pin in ESC_pins:
-#         # Create an ESC object to control the ESC on pin 18.
-#         esc = motor_control.ESCController(pin)
+    for pin in ESC_pins:
+        logging.info("Initializing ESC on pin {}".format(pin))
+        # Create an ESC object to control the ESC on pin 18.
+        esc = motor_control.ESCController(pin)
 
-#         # Start the ESC.
-#         esc.start()
+        motors.append(esc)
 
-#         motors.append(esc)
+    return {"message": "success"}
+
+@app.route("/motor_arm", methods=["POST"])
+def motor_arm():
+    global motors
+
+    for m in motors:
+        logging.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
+        m.arm()
+        logging.info("Done")
+
+    return {"message": "success"}
+
+@app.route("/motor_info", methods=["GET"])
+def motor_info():
+    global motors
+
+    info_dict = {
+        "motor_data": {
+            "num_motors": len(motors),
+            "motor_states": [],
+        }
+    }
+
+    payload = []
+    for m in motors:
+        payload.append({
+            "pin": m.pwm.pin,
+            "min_pulse": m.min_pulse,
+            "max_pulse": m.max_pulse,
+            "throttle": m.throttle,
+            "armed": m.armed,
+        })
+
+        info_dict["motor_data"]["motor_states"].append(payload)
+
+    logging.info("Returning motor info: {}".format(info_dict))
+
+    return info_dict
 
 
-# @app.route("/motor_command", methods=["POST"])
-# def motor_command():
-#     global motors
-    
-#     req_obj = request.json
+@app.route("/motor_calibrate", methods=["POST"])
+def motor_calibrate():
+    global motors
 
-#     logging.info("Received motor command pairs (index, state): {}".format(req_obj))
+    req_obj = request.json
+    to_calibrate = req_obj["target"]
 
-#     for index, state in req_obj:
-#         if not motors[index]:
-#             return {"message": "failure: Motor index {} does not exist".format(index)}
+    logging.info("Received motor calibration for index: {}".format(req_obj))
+
+    for index in to_calibrate:
+        if not motors[index]:
+            return {"message": "failure: Motor index {} does not exist".format(index)}
         
-#         if state < 0.0 or state > 1.0:
-#             return {"message": "failure: motor state must be between 0.0 and 1.0"}
-    
-#     for index, state in req_obj:
-#         motors[index].set_speed(state)
+    for index in to_calibrate:
+        logging.info("Calibrating motor at index {}".format(index))
+        m = motors[index]
+        logging.info("Motor is on pin {}".format(m.pwm.pin))
+        m.calibrate()
 
-#     return {"message": "success"}
+    return {"message": "success"}
+
+
+
+@app.route("/motor_command", methods=["POST"])
+def motor_command():
+    global motors
+    
+    req_obj = request.json
+
+    logging.info("Received motor command pairs (index, state): {}".format(req_obj))
+
+    for index, state in req_obj:
+        if not motors[index]:
+            return {"message": "failure: Motor index {} does not exist".format(index)}
+        
+        if state < 0.0 or state > 1.0:
+            return {"message": "failure: motor state must be between 0.0 and 1.0"}
+    
+    for index, state in req_obj:
+        motors[index].set_speed(state)
+
+    return {"message": "success"}
 
 
 @app.route("/led_command", methods=["POST"])

@@ -6,7 +6,6 @@ import logging
 # Interface for controlling an ESC (Electronic Speed Controller) using a Raspberry Pi
 # and a PWM (Pulse Width Modulation) signal.
 
-ESC_control_pins = [12]
 
 logging.basicConfig(
     level=logging.DEBUG,
