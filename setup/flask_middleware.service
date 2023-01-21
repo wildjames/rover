@@ -1,0 +1,14 @@
+[Unit]
+Description=Rover Flask Middleware Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=rover
+ExecStart=/usr/bin/env gunicorn -c /home/rover/rover/flask_middleware/api_cleaner_wsgi.py "api_cleaner:app"
+
+[Install]
+WantedBy=multi-user.target
