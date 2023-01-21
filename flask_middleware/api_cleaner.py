@@ -25,7 +25,7 @@ try:
     system_state = requests.get(controller_address_base.format("system_info")).json()
     num_leds = system_state["led_data"]["num_leds"]
 except requests.exceptions.ConnectionError:
-    logging.warn("Rover API server could not connect to controller.")
+    logging.warning("Rover API server could not connect to controller.")
     num_leds = 0
 
 
