@@ -37,8 +37,8 @@ class ESCController:
 
         # calculate the duty cycle that corresponds to the minumum and maximum pulse widths, from the frequency
 
-        self.min_pulse_width = min_pulse_width / 1000000
-        self.max_pulse_width = max_pulse_width / 1000000
+        self.min_pulse_width = min_pulse_width
+        self.max_pulse_width = max_pulse_width
 
         self.pwm.value = self.min_pulse_width
 
