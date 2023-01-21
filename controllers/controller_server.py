@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 # Motor setup
 ESC_pins = [18]
-motors: List[motor_control.ESCController] = []
+# motors: List[motor_control.ESCController] = []
 
 
 @app.route("/ping", methods=["GET"])
@@ -46,39 +46,39 @@ def system_info():
     return info_dict
 
 
-@app.route("/motor_init", methods=["POST"])
-def motor_init():
-    global motors
+# @app.route("/motor_init", methods=["POST"])
+# def motor_init():
+#     global motors
 
-    for pin in ESC_pins:
-        # Create an ESC object to control the ESC on pin 18.
-        esc = motor_control.ESCController(pin)
+#     for pin in ESC_pins:
+#         # Create an ESC object to control the ESC on pin 18.
+#         esc = motor_control.ESCController(pin)
 
-        # Start the ESC.
-        esc.start()
+#         # Start the ESC.
+#         esc.start()
 
-        motors.append(esc)
+#         motors.append(esc)
 
 
-@app.route("/motor_command", methods=["POST"])
-def motor_command():
-    global motors
+# @app.route("/motor_command", methods=["POST"])
+# def motor_command():
+#     global motors
     
-    req_obj = request.json
+#     req_obj = request.json
 
-    logging.info("Received motor command pairs (index, state): {}".format(req_obj))
+#     logging.info("Received motor command pairs (index, state): {}".format(req_obj))
 
-    for index, state in req_obj:
-        if not motors[index]:
-            return {"message": "failure: Motor index {} does not exist".format(index)}
+#     for index, state in req_obj:
+#         if not motors[index]:
+#             return {"message": "failure: Motor index {} does not exist".format(index)}
         
-        if state < 0.0 or state > 1.0:
-            return {"message": "failure: motor state must be between 0.0 and 1.0"}
+#         if state < 0.0 or state > 1.0:
+#             return {"message": "failure: motor state must be between 0.0 and 1.0"}
     
-    for index, state in req_obj:
-        motors[index].set_speed(state)
+#     for index, state in req_obj:
+#         motors[index].set_speed(state)
 
-    return {"message": "success"}
+#     return {"message": "success"}
 
 
 @app.route("/led_command", methods=["POST"])
