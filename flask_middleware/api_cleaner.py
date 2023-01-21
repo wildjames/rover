@@ -38,10 +38,10 @@ else:
 @app.route("/")
 def index():
     if contact:
-        status = "Contacted the backend successfully."
+        status_message = "Contacted the backend successfully - hardware control is available."
     else:
-        status = "Could not contact the backend! Better fix that."
-    return render_template("index.html", contact=contact)
+        status_message = "Could not contact the backend! I don't have any hardware control."
+    return render_template("index.html", status_message=status_message)
 
 
 @app.route("/system_info")
