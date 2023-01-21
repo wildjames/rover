@@ -74,14 +74,3 @@ class ESCController:
         pwm_value += self.min_pulse_width
 
         self.pwm.value = pwm_value
-
-
-motors: List[ESCController] = []
-for pin in ESC_control_pins:
-    # Create an ESC object to control the ESC on pin 18.
-    esc = ESCController(pin)
-
-    # Start the ESC.
-    esc.start()
-
-    motors.append(esc)

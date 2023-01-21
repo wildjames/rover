@@ -1,5 +1,6 @@
 import json
 import logging
+from typing import List
 
 import led_control
 import motor_control
@@ -17,6 +18,9 @@ logging.basicConfig(
 # Flask app setup
 app = Flask(__name__)
 
+
+ESC_pins = [18]
+motors = []
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -38,6 +42,21 @@ def system_info():
     logging.info("Returning system info: {}".format(info_dict))
 
     return info_dict
+
+
+@app.route("/motor_init", methods=["POST"])
+def motor_init():
+    global motors
+
+    for pin in ESC_pins:
+        # Create an ESC object to control the ESC on pin 18.
+        esc = motor_control.ESCController(pin)
+
+        # Start the ESC.
+        esc.start()
+
+        motors.append(esc)
+
 
 
 @app.route("/motor_command", methods=["POST"])
