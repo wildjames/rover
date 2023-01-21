@@ -16,7 +16,7 @@ class ESCController:
     def __init__(
         self,
         pin,
-        frequency: int = 1024,
+        frequency: int = 100,
         min_pulse_width: int = 0.0,
         max_pulse_width: int = 1.0,
     ):
