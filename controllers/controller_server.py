@@ -61,7 +61,7 @@ def motor_info():
     for m in motors:
         payload.append(
             {
-                "pin": m.pwm.pin,
+                "pin": str(m.pwm.pin),
                 "min_pulse": m.min_pulse_width,
                 "max_pulse": m.max_pulse_width,
                 "throttle": m.throttle,
