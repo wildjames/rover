@@ -18,9 +18,10 @@ logging.basicConfig(
 # Flask app setup
 app = Flask(__name__)
 
-
+# Motor setup
 ESC_pins = [18]
-motors = []
+motors: List[motor_control.ESCController] = []
+
 
 @app.route("/ping", methods=["GET"])
 def ping():
@@ -66,14 +67,14 @@ def motor_command():
     logging.info("Received motor command pairs (index, state): {}".format(req_obj))
 
     for index, state in req_obj:
-        if not motor_control.motors[index]:
+        if not motors[index]:
             return {"message": "failure: Motor index {} does not exist".format(index)}
         
         if state < 0.0 or state > 1.0:
             return {"message": "failure: motor state must be between 0.0 and 1.0"}
         
     for index, state in req_obj:
-        motor_control.motors[index].set_speed(state)
+        motors[index].set_speed(state)
 
     return {"message": "success"}
 
