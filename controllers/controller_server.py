@@ -126,20 +126,24 @@ def motor_calibrate():
 
 @app.route("/motor_command", methods=["POST"])
 def motor_command():
+    """Expects a JSON object containing a list of motor index and state pairs, 
+    keyed under "targets"
+    """
     global motors
 
     req_obj = request.json
+    command = req_obj["targets"]
 
-    logging.info("Received motor command pairs (index, state): {}".format(req_obj))
+    logging.info("Received motor command pairs (index, state): {}".format(command))
 
-    for index, state in req_obj:
+    for index, state in command:
         if not motors[index]:
             return {"message": "failure: Motor index {} does not exist".format(index)}
 
         if state < 0.0 or state > 1.0:
             return {"message": "failure: motor state must be between 0.0 and 1.0"}
 
-    for index, state in req_obj:
+    for index, state in command:
         motors[index].set_speed(state)
 
     return {"message": "success"}
