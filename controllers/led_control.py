@@ -1,18 +1,15 @@
 import logging
-
-import RPi.GPIO as GPIO
-
-# GPIO setup
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+from typing import List
+import gpiozero
 
 # LED Pin definition
-leds = [17, 27, 22]
+led_pins = [17, 27, 22]
 
 # Set up the pins
-for pin in leds:
-    GPIO.setup(pin, GPIO.OUT)
-    GPIO.output(pin, 0)
+leds: List[gpiozero.LED] = []
+for pin in led_pins:
+    led = gpiozero.LED(pin, initial_value=False)
+    leds.append(led)
     logging.info("Set up pin {} as GPIO.OUT".format(pin))
 
 
@@ -21,7 +18,7 @@ def set_led_state(index, state):
     if index >= len(leds):
         return False
     try:
-        GPIO.output(leds[index], state)
+        leds[index].value = state
     except:
         return False
     logging.debug("Set LED {} to state {}".format(index, state))
@@ -30,6 +27,6 @@ def set_led_state(index, state):
 
 def get_led_state():
     """Returns a list of the states of all LEDs."""
-    led_states = [(i, GPIO.input(led)) for i, led in enumerate(leds)]
+    led_states = [(led.pin.number, led.value) for led in leds]
     logging.debug("Got current LED states: {}".format(led_states))
     return led_states

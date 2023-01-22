@@ -16,6 +16,7 @@
 
         var slider = document.getElementById("throttleSlider");
         var output = document.getElementById("throttleValue");
+        var motor_init = document.getElementById("motorInit");
         
         output.innerHTML = slider.value; // Display the default slider value
         
@@ -36,7 +37,23 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
+                    
                     var ledStates = response.led_data.led_states;
+                    var motorStates = response.motor_data.motor_states;
+
+
+                    // Update the motor init button
+                    motor = motorStates[0];
+                    if (motor.started) {
+                        motor_init.style.backgroundColor = 'green';
+                        motor_init.textContent = 'Disable Motor';
+                        motor_init.setAttribute('data-state', 1);
+                    } else {
+                        motor_init.style.backgroundColor = 'red';
+                        motor_init.textContent = 'Enable Motor';
+                        motor_init.setAttribute('data-state', 0);
+                    }
+ 
 
                     // Update the color of the LEDs
                     var leds = [led0, led1, led2];

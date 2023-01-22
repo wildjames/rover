@@ -44,6 +44,8 @@ I lean towards the tank, since I worry about the load capacity of the cars.
 
 Read [this](https://blog.ampow.com/rc-brushless-motor-size-chart-choose-the-best/) for help choosing a motor. I think I'll want to be running a 6S battery for lower current draw, but that's gonna call for some step-down stuff to run the compute parts from. For motors, I think I want low-Kv and high voltage, so [these](https://www.aliexpress.com/item/1005001702756074.html) would do great. Plus they're slim, which helps. **Waterproofing**? For an ESC, I think I want to err on the high side of current rating. I think buy [these probably overkill](https://www.aliexpress.com/item/32986228623.html) motors, since I don't know much about the chassis
 
+Probably will want some 5010 750kv motors. They're high torque and slim, but I dunno how weatherproof they'll be.
+
 ## Power
 
 If I eyeball total power usage (when active) of the compute parts as about 5W for the raspberry pi, 400mA for the modem to give 3.6W while transmitting, call that 4W, and running two motors at about 30W each, I would guess about 40W total power draw while active. A 20W panel would then need to chage for 2 hours to recover that - if I could charge while driving, that gives me a 50% duty cycle on movement - but remember, you can only charge in the daytime, and a solar panel is unlikely to reach its full charging potential. 
@@ -52,7 +54,7 @@ For reference, I can find 20W solar panels on [aliexpress](https://www.aliexpres
 
 From this estimate, I would guess that a relatively standard 4,000mAh LiPo (which typically costs about £100, ouch!) would run the thing for about an hour; (4 Ah * 12V) / 40W = 72 minutes. a 6C motor is aroun £60, here is a [two-pack](https://www.amazon.co.uk/HRB-4000mAh-Battery-Quadcopter-Helicopter/dp/B06XT6L382) on Amazon, or [one 6s](https://www.hobbyrc.co.uk/gnb-4000mah-6s-50c-lipo-battery) on hobbyking.
 
-I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather.
+I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather. [UPS](https://www.waveshare.com/ups-module-3s.htm)
 
 ## Camera
 
@@ -88,6 +90,7 @@ Before anything else,
 sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y git python3-pip
 pip install -U pip
+pip install -r requirements.txt
 ```
 And set up the git instance with an SSH key. Then, clone this repo.
 
@@ -114,38 +117,41 @@ sudo apt-get install -y uv4l-webrtc
 
 
 
-## Start the LED controller:
-```
-sudo python3 controller/led_controller.py
-```
+## Start the hardware controller:
 
+The hardware is controlled by its own script. This has to be run with `sudo` priviledges and is interfaced with HTTP, so really shouldn't be exposed to the internet. So, it's only available on localhost, where a middleware API will forward commands to it. It's located in the script [`controller_server.py`](controllers/controller_server.py), and I've written a service configuration that should keep it running. 
 
-## Install python requirements
+First, check the configuration to make sure it will run ok. Then, 
 ```
-
-sudo pip3 install -r requirements.txt
+sudo cp setup/hardware_controller.service /etc/systemd/system/
+sudo systemctl enable hardware_controller
+sudo systemctl start hardware_controller
 ```
 
 
 ## Install and configure Apache2
 ```
-sudo apt-get install -y apache2
-```
-We want HTTPS, so install the related plugin
-```
-sudo a2enmod ssl
+sudo apt-get install -y nginx
 ```
 
 Really, we should get a proper signed SSL certificate. However, as a stopgap we can get a self-signed one.
 To create a new self-signed SSL certificate, with this command:
 ```
-sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+sudo mkdir /etc/nginx/SSL
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/SSL/selfsigned.key -out /etc/nginx/SSL/selfsigned.crt
 ```
 Note that this is not ideal for deployment, but will do for testing.
 
-Then, set up the flask app to be run by Apache2. To do this, I have provided a configuration in `setup/rover.conf`. Tweak that, and move it to `/etc/apache2/sites-available/`
+Then, set up the flask app to be run by nginx. To do this, I have provided a configuration in `setup/rover_server.nginx`. Tweak that, and move it to `/etc/nginx/sites-available/`
 ```
 sudo cp setup/rover.conf /etc/apache2/sites-available/
 ```
-Then, enable the site with `sudo a2ensite`, and choose `rover` from the list. Then, restart apache2 with `sudo systemctl restart apache2`.
-
+Then, enable the site by making a symlink in the `sites-enabled` directory
+```
+cd /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/rover_server.nginx .
+```
+and reload nginx
+```
+sudo systemctl reload nginx
+```

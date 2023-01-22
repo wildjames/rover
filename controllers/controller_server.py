@@ -38,25 +38,14 @@ def system_info():
         "led_data": {
             "num_leds": len(led_control.leds),
             "led_states": led_control.get_led_state(),
-        }
-    }
-
-    logging.info("Returning system info: {}".format(info_dict))
-
-    return info_dict
-
-
-@app.route("/motor_info", methods=["GET"])
-def motor_info():
-    global motors
-
-    info_dict = {
+        },
         "motor_data": {
             "num_motors": len(motors),
             "motor_states": [],
         }
     }
 
+    # Gather motor data
     payload = []
     for m in motors:
         payload.append(
@@ -65,13 +54,13 @@ def motor_info():
                 "min_pulse": m.min_pulse_width,
                 "max_pulse": m.max_pulse_width,
                 "throttle": m.throttle,
-                "armed": m.armed,
+                "started": m.started,
             }
         )
 
         info_dict["motor_data"]["motor_states"].append(payload)
 
-    logging.info("Returning motor info: {}".format(info_dict))
+    logging.info("Returning system info: {}".format(info_dict))
 
     return info_dict
 
