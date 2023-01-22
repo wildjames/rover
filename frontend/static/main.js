@@ -43,17 +43,18 @@
 
 
                     // Update the motor init button
-                    motor = motorStates[0];
-                    if (motor.started) {
-                        motor_init.style.backgroundColor = 'green';
-                        motor_init.textContent = 'Disable Motor';
-                        motor_init.setAttribute('data-state', 1);
-                    } else {
-                        motor_init.style.backgroundColor = 'red';
-                        motor_init.textContent = 'Enable Motor';
-                        motor_init.setAttribute('data-state', 0);
+                    if (response.motor_data.num_motors > 0) {
+                        motor = motorStates[0];
+                        if (motor.started) {
+                            motor_init.style.backgroundColor = 'green';
+                            motor_init.textContent = 'Disable Motor';
+                            motor_init.setAttribute('data-state', 1);
+                        } else {
+                            motor_init.style.backgroundColor = 'red';
+                            motor_init.textContent = 'Enable Motor';
+                            motor_init.setAttribute('data-state', 0);
+                        }
                     }
- 
 
                     // Update the color of the LEDs
                     var leds = [led0, led1, led2];
