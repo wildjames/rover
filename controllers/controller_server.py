@@ -149,6 +149,16 @@ def motor_command():
     return {"message": "success"}
 
 
+@app.route("/motor_stop", methods=["POST"])
+def motor_stop():
+    global motors
+
+    for m in motors:
+        m.stop()
+
+    return {"message": "success"}
+
+
 @app.route("/led_command", methods=["POST"])
 def led_command():
     req_obj = request.json
