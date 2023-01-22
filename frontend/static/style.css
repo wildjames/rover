@@ -10,13 +10,35 @@
 
 body {
 	background: white;
-	font-family: Arial,sans-serif;
+	font-family: Arial, sans-serif;
 	color: var(--grey);
+}
+
+div.horizontal-gap {
+	float: center;
+	overflow: hidden;
+	height: 0px;
+	width: 1px;
+}
+
+.center {
+	display: flex;
+	justify-content: center;
 }
 
 #server {
 	display: block;
 	margin: 0% auto 2%;
+}
+
+button {
+	border: none;
+	display: inline-block;
+	margin: 0% auto 2%;
+	padding: 0.5em 1em;
+	cursor: pointer;
+	color: #fff;
+	background-color: var(--spanish-orange);
 }
 
 #start {
@@ -39,16 +61,7 @@ canvas {
 	background-color: var(--midnight-green-eagle-green);
 	width: 640px;
 	height: 480px;
-}
-
-button {
-	border: none;
-	display: inline-block;
-	padding: 0.5em 1em;
-	margin: 1% auto 0;
-	cursor: pointer;
-	color: #fff;
-	background-color: var(--spanish-orange);
+	margin: auto;
 }
 
 button:hover {
@@ -57,4 +70,69 @@ button:hover {
 
 button:active {
 	background-color: var(--ruby-red);
+}
+
+
+.button-panel {
+	width: 100%;
+	max-width: 640px;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	/* border: 3px solid var(--tyrian-purple); */
+}
+
+
+.slidecontainer {
+	width: 100%;
+	max-width: 640px;
+	/* border: 3px solid var(--tyrian-purple); */
+}
+
+/* The slider itself */
+.slider {
+	-webkit-appearance: none;
+	/* Override default CSS styles */
+	appearance: none;
+	width: 100%;
+	/* Full-width */
+	height: 15px;
+	border-radius: 15px;
+	background: var(--grey);
+	outline: var(--tyrian-purple);
+	opacity: 0.7;
+	/* Set transparency (for mouse-over effects on hover) */
+	-webkit-transition: .2s;
+	/* 0.2 seconds transition on hover */
+	transition: opacity .2s;
+}
+
+/* Mouse-over effects */
+.slider:hover {
+	opacity: 1;
+	/* Fully shown on mouse-over */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	/* Override default look */
+	appearance: none;
+	width: 25px;
+	height: 25px;
+	border-radius: 15px;
+	background: var(--tyrian-purple);
+	/* Green background */
+	cursor: pointer;
+	/* Cursor on hover */
+}
+
+.slider::-moz-range-thumb {
+	width: 25px;
+	height: 25px;
+	border-radius: 15px;
+	background: var(--midnight-green-eagle-green);
+	/* Green background */
+	cursor: pointer;
+	/* Cursor on hover */
 }

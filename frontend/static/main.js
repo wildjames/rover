@@ -1,16 +1,28 @@
 (function () {
     var signalObj = null;
 
-    window.addEventListener('DOMContentLoaded', function () {
-        var isStreaming = false;
-        var start = document.getElementById('start');
-        var stop = document.getElementById('stop');
-        var led0 = document.getElementById('led0');
-        var led1 = document.getElementById('led1');
-        var led2 = document.getElementById('led2');
+    window.addEventListener('DOMContentLoaded', function () {        
         var canvas = document.getElementById('c');
         var video = document.getElementById('v');
         var ctx = canvas.getContext('2d');
+
+        var isStreaming = false;
+        var start = document.getElementById('start');
+        var stop = document.getElementById('stop');
+
+        var led0 = document.getElementById('led0');
+        var led1 = document.getElementById('led1');
+        var led2 = document.getElementById('led2');
+
+        var slider = document.getElementById("throttleSlider");
+        var output = document.getElementById("throttleValue");
+        
+        output.innerHTML = slider.value; // Display the default slider value
+        
+        // Update the current slider value (each time you drag the slider handle)
+        slider.oninput = function() {
+          output.innerHTML = this.value;
+        }
 
         // Every 100ms, I need to run a function
         setInterval(function () {
