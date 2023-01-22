@@ -153,6 +153,11 @@ def motor_stop():
     response = requests.post(controller_address_base.format("motor_stop")).json()
     return response
 
+@app.route("/motor_panic", methods=["POST"])
+def motor_panic():
+    response = requests.post(controller_address_base.format("motor_panic")).json()
+    return response
+
 if __name__ == "__main__":
     logging.info("Starting server")
     app.run(host="0.0.0.0", port=8000, use_reloader=True, threaded=True, debug=True)

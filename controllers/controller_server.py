@@ -159,6 +159,17 @@ def motor_stop():
     return {"message": "success"}
 
 
+@app.route("/motor_panic", methods=["POST"])
+def motor_panic():
+    global motors
+
+    for m in motors:
+        m.estop()
+
+    return {"message": "success"}
+
+
+
 @app.route("/led_command", methods=["POST"])
 def led_command():
     req_obj = request.json
