@@ -39,22 +39,6 @@
                     var response = JSON.parse(xhr.responseText);
                     
                     var ledStates = response.led_data.led_states;
-                    var motorStates = response.motor_data.motor_states;
-
-
-                    // Update the motor init button
-                    if (response.motor_data.num_motors > 0) {
-                        motor = motorStates[0];
-                        if (motor.started) {
-                            motor_init.style.backgroundColor = 'green';
-                            motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', 1);
-                        } else {
-                            motor_init.style.backgroundColor = 'red';
-                            motor_init.textContent = 'Enable Motor';
-                            motor_init.setAttribute('data-state', 0);
-                        }
-                    }
 
                     // Update the color of the LEDs
                     var leds = [led0, led1, led2];
@@ -80,10 +64,47 @@
                             led.style.backgroundColor = 'gray';
                         }
                     }
+
+
+                    var num_motors = response.motor_data.num_motors;
+
+                    // Update the motor init button
+                    if (num_motors > 0) {
+                        console.log("I have a motor!");
+                        var motorStates = response.motor_data.motor_states;
+                        motor = motorStates[0];
+                        if (motor.started) {
+                            motor_init.style.backgroundColor = 'green';
+                            motor_init.textContent = 'Disable Motor';
+                            motor_init.setAttribute('data-state', 1);
+                        } else {
+                            motor_init.style.backgroundColor = 'red';
+                            motor_init.textContent = 'Enable Motor';
+                            motor_init.setAttribute('data-state', 0);
+                        }
+                    }
                 }
             }
 
         }, 200);
+
+
+        motor_init.addEventListener('click', function (e) {
+            // I need to send a toggle message to the server. First, get the state of the motor
+            var state = this.getAttribute('data-state');
+            state = parseInt(state);
+
+            var xhr = new XMLHttpRequest();
+            if (state == 0) {
+                console.log("Sending init");
+                xhr.open('POST', '/api/motor_init', true);
+            } else {
+                console.log("Sending close");
+                xhr.open('POST', '/api/motor_close', true);
+            }
+            xhr.send();
+        });
+
 
         function toggleLed() {
             // I need to send a toggle message to the server. First, get the state of the LED

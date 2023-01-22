@@ -126,6 +126,13 @@ def motor_init():
     return response
 
 
+@app.route("/motor_close", methods=["POST"])
+def motor_close():
+    """Closes the motors."""
+    response = requests.post(controller_address_base.format("motor_close")).json()
+    return response
+
+
 @app.route("/motor_arm", methods=["POST"])
 def motor_arm():
     """Arms the motors."""
@@ -153,10 +160,12 @@ def motor_stop():
     response = requests.post(controller_address_base.format("motor_stop")).json()
     return response
 
+
 @app.route("/motor_panic", methods=["POST"])
 def motor_panic():
     response = requests.post(controller_address_base.format("motor_panic")).json()
     return response
+
 
 if __name__ == "__main__":
     logging.info("Starting server")

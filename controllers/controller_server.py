@@ -42,7 +42,7 @@ def system_info():
         "motor_data": {
             "num_motors": len(motors),
             "motor_states": [],
-        }
+        },
     }
 
     # Gather motor data
@@ -75,6 +75,17 @@ def motor_init():
         esc = motor_control.ESCController(pin)
 
         motors.append(esc)
+
+    return {"message": "success"}
+
+
+@app.route("/motor_close", methods=["POST"])
+def motor_close():
+    global motors
+
+    for m in motors:
+        logging.info("Closing ESC on pin {}".format(m.pwm.pin))
+        m.close()
 
     return {"message": "success"}
 
@@ -115,7 +126,7 @@ def motor_calibrate():
 
 @app.route("/motor_command", methods=["POST"])
 def motor_command():
-    """Expects a JSON object containing a list of motor index and state pairs, 
+    """Expects a JSON object containing a list of motor index and state pairs,
     keyed under "targets"
     """
     global motors
@@ -156,7 +167,6 @@ def motor_panic():
         m.estop()
 
     return {"message": "success"}
-
 
 
 @app.route("/led_command", methods=["POST"])
