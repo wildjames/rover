@@ -67,14 +67,14 @@ class ESCController:
         self._max_pulse_width = self.frequency * value / 1000000
 
     def init(self):
-        """Initialize the ESC GPIO connection"""
+        """Initialize the ESC GPIO connection. Sets the throttle to zero."""
         logging.debug("Initializing ESC on pin {}".format(self.pin))
         self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0.0)
         self.stop()
         self.started = True
 
     def close(self):
-        """Release the GPIO connection"""
+        """Release the GPIO connection. Sets the throttle to zero first, then disables the PWM signal."""
         logging.debug(f"Closing ESC on pin {self.pin}")
         self.stop()
         self.pwm.off()
@@ -131,14 +131,14 @@ class ESCController:
         self.stop()
 
     def stop(self):
-        """Stop the ESC."""
+        """Stop the motor, setting throttle to zero."""
         # Set the throttle to 0.
         self.set_speed(0)
 
     def estop(self):
         """Emergency stop the ESC. Bypass calculations, set PWM duty cycle to 0."""
         logging.info("Emergency stopping ESC")
-        self.pwm.value = 0
+        self.pwm.off()
         self.throttle = 0.0
 
     def set_speed(self, speed: float):

@@ -206,6 +206,12 @@
                         alert(message);
                     }
                 );
+            } else {
+                canvas.style.backgroundColor = 'var(--midnight-green-eagle-green)';
+                if (signalObj) {
+                    signalObj.hangup();
+                    signalObj = null;
+                }
             }
         }, false);
 
