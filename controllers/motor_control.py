@@ -8,7 +8,7 @@ import logging
 
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_controller.log",
+    filename="/home/rover/log/rover_controller_esc.log",
     filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -68,11 +68,13 @@ class ESCController:
 
     def init(self):
         """Initialize the ESC GPIO connection"""
+        logging.debug("Initializing ESC on pin {}".format(self.pin))
         self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0.0)
         self.started = True
 
     def close(self):
         """Release the GPIO connection"""
+        logging.debug(f"Closing ESC on pin {self.pin}")
         self.pwm.close()
         self.started = False
 

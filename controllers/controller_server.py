@@ -79,7 +79,7 @@ def motor_init():
 
     except Exception as e:
         logging.exception("Failed to initialize ESCs")
-        return {"message": "failure: {e}"}
+        return {"message": f"failure: {e}"}
 
     return {"message": "success"}
 
