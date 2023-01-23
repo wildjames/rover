@@ -125,6 +125,13 @@
             var payload = JSON.stringify({ "targets": [[0, value]] });
             console.log("Sending payload: " + payload);
             xhr.send(payload);
+
+            // print the response to the console
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Response: " + xhr.responseText);
+                }
+            }
         });
 
 
