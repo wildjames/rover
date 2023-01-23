@@ -75,7 +75,7 @@
                 
                     // Update the motor init button
                     if (num_motors > 0) {
-                        console.log("I have a motor!");
+                        console.log("I have a motor! " + num_motors);
                         var motorStates = response.motor_data.motor_states;
                         motor = motorStates[0];
                         console.log("Motor state: " + motor.started);
