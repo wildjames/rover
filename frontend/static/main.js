@@ -75,16 +75,12 @@
                 
                     // Update the motor init button
                     if (num_motors > 0) {
-                        console.log("I have a motor! " + num_motors);
-                        var motorStates = response.motor_data.motor_states;
-                        var motor = motorStates[0];
-                        console.log("Motor state: " + motor);
-                        var started = motor.started;
-                        console.log(started);
-                        if (started) {
+                        var motor = response.motor_data.motor_states[0];
+                        
+                        if (motor.started) {
                             motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', started ? 1 : 0);
+                            motor_init.setAttribute('data-state', motor.started ? 1 : 0);
                         } 
                     } 
                     
@@ -108,6 +104,20 @@
                 xhr.open('POST', '/api/motor_close', true);
             }
             xhr.send();
+        });
+
+        // When a click is released from the slider, I need to send a message to the control server
+        slider.addEventListener('mouseup', function (e) {
+            var value = parseFloat(this.value) / 100.0;
+            console.log("Sending throttle value: " + value);
+
+            // Make a POST request to the controller server
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            var payload = JSON.stringify({ "targets": [[0, value]] });
+            console.log("Sending payload: " + payload);
+            xhr.send(payload);
         });
 
 
