@@ -60,7 +60,7 @@ def system_info():
             }
         )
 
-    info_dict["motor_data"]["motor_states"].append(payload)
+    info_dict["motor_data"]["motor_states"]= payload
 
     logging.info("Returning system info: {}".format(info_dict))
 
