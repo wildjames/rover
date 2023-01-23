@@ -2,6 +2,15 @@ import logging
 from typing import List
 import gpiozero
 
+
+logging.basicConfig(
+    filename="/home/rover/log/rover_controller.log",
+    filemode="a",
+    format="[%(asctime)s] %(levelname)-8s    %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
+
 # LED Pin definition
 led_pins = [17, 27, 22]
 
