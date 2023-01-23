@@ -43,6 +43,7 @@ def system_info():
         },
         "motor_data": {
             "num_motors": len(motors),
+            "motor_states": [],
         },
     }
 
