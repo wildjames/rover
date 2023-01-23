@@ -69,12 +69,16 @@ def system_info():
 def motor_init():
     global motors
 
-    for pin in ESC_pins:
-        logging.info("Initializing ESC on pin {}".format(pin))
-        # Create an ESC object to control the ESC on pin 18.
-        esc = motor_control.ESCController(pin)
+    try:
+        for pin in ESC_pins:
+            logging.info("Initializing ESC on pin {}".format(pin))
+            # Create an ESC object to control the ESC on pin 18.
+            esc = motor_control.ESCController(pin)
 
-        motors.append(esc)
+            motors.append(esc)
+    except Exception as e:
+        logging.exception("Failed to initialize ESCs")
+        return {"message": "failure: {e}"}
 
     return {"message": "success"}
 
