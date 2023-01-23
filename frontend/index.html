@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./static/style.css">
+    <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
 
     <script src='./static/signalling.js'></script>
     <script src='./static/main.js'></script>
@@ -34,28 +35,31 @@
         <h1 class="center">Rover control interface</h1>
         <div class="center">
             <div>
+                <form class="center" id="token_form" name="API_Token"> 
+                    <input type=password id="api_token" size="32" placeholder="API Token"/>
+                </form>
+                <div class="horizontal_gap" style="height:15px"></div>
                 <div class="button-panel">
-                    <button id='start'
+                    <button id='streaming_toggle'
                         title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start
                         Streaming</button>
-                    <button id='stop'>Stop Streaming</button>
+                    <button id="motor_toggle" data-state=0>Enable Motor</button>
                 </div>
-                <video id='v'></video>
-                <canvas id='c'></canvas>
+                <video id='video'></video>
+                <canvas id='canvas'></canvas>
                 <div class="slidecontainer">
-                    <input type="range" min="0" max="100" value="0" class="slider" id="throttleSlider">
-                    <p class="center">Throttle: <span id="throttleValue"></span></p>
+                    <input type="range" min="0" max="100" value="0" class="slider" id="throttle_slider">
+                    <p class="center">Throttle: <span id="throttle_value"></span></p>
                 </div>
                 <div class="button-panel">
                     <button id="led0" data-state=0>Green</button>
                     <button id="led1" data-state=0>Yellow</button>
                     <button id="led2" data-state=0>Red</button>
-                    <button id="motorInit" data-state=0>Enable Motor</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="horizontal-gap" style="height:30px"></div>
+    <div class="horizontal-gap" style="height:15px"></div>
     <div class="center">
         <h3><a target="_blank" href="/api">Hardware controller status page</a></h3>
     </div>

@@ -2,36 +2,62 @@
     var signalObj = null;
 
     window.addEventListener('DOMContentLoaded', function () {        
-        var canvas = document.getElementById('c');
-        var video = document.getElementById('v');
+        var canvas = document.getElementById('canvas');
+        var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
 
         var isStreaming = false;
-        var start = document.getElementById('start');
-        var stop = document.getElementById('stop');
+        var stream_toggle = document.getElementById('streaming_toggle');
+
+        var token_input = document.getElementById("api_token")
 
         var led0 = document.getElementById('led0');
         var led1 = document.getElementById('led1');
         var led2 = document.getElementById('led2');
 
-        var slider = document.getElementById("throttleSlider");
-        var output = document.getElementById("throttleValue");
-        var motor_init = document.getElementById("motorInit");
+        var throttle_slider = document.getElementById("throttle_slider");
+        var throttle_text = document.getElementById("throttle_value");
+        var motor_init = document.getElementById("motor_toggle");
         
-        output.innerHTML = slider.value; // Display the default slider value
+        throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
         
         // Update the current slider value (each time you drag the slider handle)
-        slider.oninput = function() {
-          output.innerHTML = this.value;
+        throttle_slider.oninput = function() {
+          throttle_text.innerHTML = this.value;
         }
 
         // Every 100ms, I need to run a function
         setInterval(function () {
+            // If I'm streaming, set the button text to reflect that
+            if (isStreaming) {
+                stream_toggle.textContent = "Stop Streaming";
+                stream_toggle.style.backgroundColor = "red";
+            } else {
+                stream_toggle.textContent = "Start Streaming";
+                stream_toggle.style.backgroundColor = "black";
+            }
+            
+            // All API requests need to authenticated with a bearer token in the header
+            var token = token_input.value;
+            console.log('Token is "' + token + '"');
+            if (token == "") {
+                led0.style = null;
+                led1.style = null;
+                led2.style = null;
+
+                motor_init.style = null;
+                throttle_slider.value = 0
+                throttle_text.innerHTML = 0
+
+                return;
+            }
+
             // Send a GET request to the controller server for the system state
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
             xhr.open('GET', '/api/system_info', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send();
 
             xhr.onreadystatechange = function () {
@@ -84,16 +110,31 @@
                         } 
                     } 
                     
-                }
+                } else if (xhr.readyState === 4 && xhr.status === 403) {
+                    console.log("Not authorised to query Rover!");
+
+                    // Clear the button styles
+                    led0.style = null;
+                    led1.style = null;
+                    led2.style = null;
+    
+                    motor_init.style = null;
+                    throttle_slider.value = 0
+                    throttle_text.innerHTML = 0
+    
+                    return;
+                };
             }
 
         }, 200);
-
 
         motor_init.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the motor
             var state = this.getAttribute('data-state');
             state = parseInt(state);
+
+            // Auth token
+            var token = token_input.value;
 
             var xhr = new XMLHttpRequest();
             if (state == 0) {
@@ -103,11 +144,12 @@
                 console.log("Sending close");
                 xhr.open('POST', '/api/motor_close', true);
             }
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send();
         });
 
         // When a click is released from the slider, I need to send a message to the control server
-        slider.addEventListener('mouseup', function (e) {
+        throttle_slider.addEventListener('mouseup', function (e) {
             // If the motor is not initialized, do nothing
             var state = motor_init.getAttribute('data-state');
             state = parseInt(state);
@@ -119,11 +161,17 @@
             console.log("Sending throttle value: " + value);
 
             // Make a POST request to the controller server
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/api/motor_command', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
             var payload = JSON.stringify({ "targets": [[0, value]] });
             console.log("Sending payload: " + payload);
+            
+            // Auth token
+            var token = token_input.value;
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', '/api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send(payload);
 
             // print the response to the console
@@ -147,14 +195,20 @@
             var newState = state === 1 ? 0 : 1;
             console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
 
-            // Send a command POST request with a JSON payload to the controller server
-            var xhr = new XMLHttpRequest();
-            // Make the post request asynchronously
-            xhr.open('POST', '/api/led_control', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
             // The json payload is of the form {"states": [[1, newstate]]}
             var payload = JSON.stringify({ "states": [[ledIndex, newState]] });
             console.log("Sending payload: " + payload);
+            
+            // Auth token
+            var token = token_input.value;
+
+            // Send a command POST request with a JSON payload to the controller server
+            var xhr = new XMLHttpRequest();
+
+            // Make the post request asynchronously
+            xhr.open('POST', '/api/led_control', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send(payload);
         }
 
@@ -162,7 +216,7 @@
         led1.addEventListener('click', toggleLed, false);
         led2.addEventListener('click', toggleLed, false);
 
-        start.addEventListener('click', function (e) {
+        stream_toggle.addEventListener('click', function (e) {
             // This is the IP of the server running the camera stream.
             // TODO: Make sure that port 1002 is public!
             // TODO: Use a better way to get the address of the server
@@ -212,14 +266,6 @@
                     signalObj.hangup();
                     signalObj = null;
                 }
-            }
-        }, false);
-
-        stop.addEventListener('click', function (e) {
-            canvas.style.backgroundColor = 'var(--midnight-green-eagle-green)';
-            if (signalObj) {
-                signalObj.hangup();
-                signalObj = null;
             }
         }, false);
 

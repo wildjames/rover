@@ -5,6 +5,7 @@ import requests
 from auth_middleware import token_required
 from flask import Flask, render_template, request
 from flask_cors import CORS
+import os
 
 logging.basicConfig(
     filename="/home/rover/log/rover_flask.log",
@@ -17,9 +18,25 @@ logging.info("Loading flask script")
 
 controller_address_base = "http://localhost:8001/{}"
 
+# If a token exists, use it. Otherwise, generate one.
+token_location = os.path.join(os.path.dirname(__file__), "token.txt")
+if os.path.exists(token_location):
+    with open(token_location, 'r') as f:
+        token = f.read().strip()
+else:
+    import random
+    
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@£$%^&*"
+    token = "".join(random.choices(chars, k=32))
+    with open(token_location, 'w') as f:
+        f.write(token)
+
+
 # Flask app setup
 app = Flask(__name__)
+app.config['SECRET_KEY'] = token
 CORS(app)
+
 
 logging.info("Rover API server getting basic info.")
 try:
@@ -57,7 +74,7 @@ def index():
 
 
 @app.route("/system_info")
-# @token_required
+@token_required
 def system_info():
     """Returns a JSON object containing system information."""
 
@@ -68,7 +85,7 @@ def system_info():
 
 
 @app.route("/led_control", methods=["POST"])
-# @token_required
+@token_required
 def led_control():
     """Set the LED states to the defined states in the request JSON.
 
@@ -120,6 +137,7 @@ def led_control():
 
 
 @app.route("/motor_init", methods=["POST"])
+@token_required
 def motor_init():
     """Initializes the motors."""
     response = requests.post(controller_address_base.format("motor_init")).json()
@@ -127,6 +145,7 @@ def motor_init():
 
 
 @app.route("/motor_close", methods=["POST"])
+@token_required
 def motor_close():
     """Closes the motors."""
     response = requests.post(controller_address_base.format("motor_close")).json()
@@ -134,6 +153,7 @@ def motor_close():
 
 
 @app.route("/motor_arm", methods=["POST"])
+@token_required
 def motor_arm():
     """Arms the motors."""
     response = requests.post(controller_address_base.format("motor_arm")).json()
@@ -141,6 +161,7 @@ def motor_arm():
 
 
 @app.route("/motor_info", methods=["GET"])
+@token_required
 def motor_info():
     """Returns a JSON object containing motor information."""
     response = requests.get(controller_address_base.format("motor_info")).json()
@@ -148,6 +169,7 @@ def motor_info():
 
 
 @app.route("/motor_command", methods=["POST"])
+@token_required
 def motor_command():
     reponse = requests.post(
         controller_address_base.format("motor_command"), json=request.json
@@ -156,12 +178,14 @@ def motor_command():
 
 
 @app.route("/motor_stop", methods=["POST"])
+@token_required
 def motor_stop():
     response = requests.post(controller_address_base.format("motor_stop")).json()
     return response
 
 
 @app.route("/motor_panic", methods=["POST"])
+@token_required
 def motor_panic():
     response = requests.post(controller_address_base.format("motor_panic")).json()
     return response
