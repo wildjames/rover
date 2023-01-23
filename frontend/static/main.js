@@ -69,7 +69,7 @@
                     var num_motors = response.motor_data.num_motors;
 
                     // By default, assume the motor is not initialized
-                    motor_init.style.backgroundColor = 'red';
+                    motor_init.style.backgroundColor = 'black';
                     motor_init.textContent = 'Enable Motor';
                     motor_init.setAttribute('data-state', 0);
                 
@@ -79,9 +79,9 @@
                         var motorStates = response.motor_data.motor_states;
                         motor = motorStates[0];
                         if (motor.started) {
-                            motor_init.style.backgroundColor = 'green';
+                            motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', 1);
+                            motor_init.setAttribute('data-state', motor.started);
                         } 
                     } 
                     

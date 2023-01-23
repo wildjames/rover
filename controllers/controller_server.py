@@ -20,7 +20,9 @@ app = Flask(__name__)
 
 # Motor setup
 ESC_pins = [12]
-motors: List[motor_control.ESCController] = []
+motors: List[motor_control.ESCController] = [
+    motor_control.ESCController(pin, start_now=False) for pin in ESC_pins
+]
 
 
 @app.route("/ping", methods=["GET"])
@@ -69,13 +71,12 @@ def system_info():
 def motor_init():
     global motors
 
+    logging.info("Initializing ESCs")
     try:
-        for pin in ESC_pins:
-            logging.info("Initializing ESC on pin {}".format(pin))
+        for esc in motors:
             # Create an ESC object to control the ESC on pin 18.
-            esc = motor_control.ESCController(pin)
+            esc.init()
 
-            motors.append(esc)
     except Exception as e:
         logging.exception("Failed to initialize ESCs")
         return {"message": "failure: {e}"}
