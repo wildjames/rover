@@ -70,11 +70,14 @@ class ESCController:
         """Initialize the ESC GPIO connection"""
         logging.debug("Initializing ESC on pin {}".format(self.pin))
         self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0.0)
+        self.stop()
         self.started = True
 
     def close(self):
         """Release the GPIO connection"""
         logging.debug(f"Closing ESC on pin {self.pin}")
+        self.stop()
+        self.pwm.off()
         self.pwm.close()
         self.started = False
 
