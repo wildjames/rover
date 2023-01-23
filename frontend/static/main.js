@@ -108,6 +108,13 @@
 
         // When a click is released from the slider, I need to send a message to the control server
         slider.addEventListener('mouseup', function (e) {
+            // If the motor is not initialized, do nothing
+            var state = motor_init.getAttribute('data-state');
+            state = parseInt(state);
+            if (state === 0) {
+                return;
+            }
+
             var value = parseFloat(this.value) / 100.0;
             console.log("Sending throttle value: " + value);
 
