@@ -8,8 +8,8 @@ from flask import Flask, request
 
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_controller.log",
-    filemode="a",
+    # filename="/home/rover/log/rover_controller.log",
+    # filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
