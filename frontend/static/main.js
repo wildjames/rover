@@ -80,10 +80,10 @@
                         motor = motorStates[0];
                         console.log("Motor state: ");
                         console.log(motor);
-                        if (motor.started == true) {
+                        if (parseInt(motor.started) == 1) {
                             motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', motor.started);
+                            motor_init.setAttribute('data-state', parseInt(motor.started));
                         } 
                     } 
                     
