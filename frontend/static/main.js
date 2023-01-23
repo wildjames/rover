@@ -78,7 +78,8 @@
                         console.log("I have a motor! " + num_motors);
                         var motorStates = response.motor_data.motor_states;
                         motor = motorStates[0];
-                        console.log("Motor state: " + motor.started);
+                        console.log("Motor state: ");
+                        console.log(motor);
                         if (motor.started == true) {
                             motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
