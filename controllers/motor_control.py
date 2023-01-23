@@ -39,14 +39,12 @@ class ESCController:
         self.frequency = frequency
 
         if start_now:
-            self.start()
+            self.init()
 
         # calculate the duty cycle that corresponds to the minumum and maximum pulse widths, from the frequency
 
         self.min_pulse_width = min_pulse_width
         self.max_pulse_width = max_pulse_width
-
-        self.pwm.value = self.min_pulse_width
 
     @property
     def min_pulse_width(self):
@@ -66,7 +64,7 @@ class ESCController:
 
     def init(self):
         """Initialize the ESC GPIO connection"""
-        self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0)
+        self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0.0)
         self.started = True
 
     def close(self):
