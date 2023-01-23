@@ -148,8 +148,12 @@ def motor_command():
         if state < 0.0 or state > 1.0:
             return {"message": "failure: motor state must be between 0.0 and 1.0"}
 
-    for index, state in command:
-        motors[index].set_speed(state)
+    try:
+        for index, state in command:
+            motors[index].set_speed(state)
+    except:
+        logging.exception("Failed to set motor speed")
+        return {"message": "failure: Controller could not set motor speed"}
 
     return {"message": "success"}
 
