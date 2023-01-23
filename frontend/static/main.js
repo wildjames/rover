@@ -77,7 +77,7 @@
                     if (num_motors > 0) {
                         console.log("I have a motor! " + num_motors);
                         var motorStates = response.motor_data.motor_states;
-                        motor = motorStates[0];
+                        var motor = motorStates[0];
                         console.log("Motor state: " + motor);
                         var started = motor.started;
                         console.log(started);
