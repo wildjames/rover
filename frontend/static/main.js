@@ -79,11 +79,12 @@
                         var motorStates = response.motor_data.motor_states;
                         motor = motorStates[0];
                         console.log("Motor state: ");
-                        console.log(motor);
-                        if (parseInt(motor.started) == 1) {
+                        var started = motor.started == "true";
+                        console.log(started);
+                        if (started) {
                             motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', parseInt(motor.started));
+                            motor_init.setAttribute('data-state', started ? 1 : 0);
                         } 
                     } 
                     
