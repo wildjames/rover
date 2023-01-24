@@ -1,7 +1,7 @@
 (function () {
     var signalObj = null;
 
-    window.addEventListener('DOMContentLoaded', function () {        
+    window.addEventListener('DOMContentLoaded', function () {
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
@@ -18,13 +18,34 @@
         var throttle_slider = document.getElementById("throttle_slider");
         var throttle_text = document.getElementById("throttle_value");
         var motor_init = document.getElementById("motor_toggle");
-        
+
         throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
-        
+
         // Update the current slider value (each time you drag the slider handle)
-        throttle_slider.oninput = function() {
-          throttle_text.innerHTML = this.value;
+        throttle_slider.oninput = function () {
+            throttle_text.innerHTML = this.value;
         }
+
+        function clear_button_styles() {
+            // Sets the buttons to their default styles
+            led0.style = null;
+            led1.style = null;
+            led2.style = null;
+
+            motor_init.style = null;
+            throttle_slider.value = 0
+            throttle_text.innerHTML = 0
+
+        };
+
+        // Execute a function when the user presses a key on the keyboard
+        token_input.addEventListener("keypress", function (event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action
+                event.preventDefault();
+            }
+        });
 
         // Every 100ms, I need to run a function
         setInterval(function () {
@@ -36,19 +57,11 @@
                 stream_toggle.textContent = "Start Streaming";
                 stream_toggle.style.backgroundColor = "black";
             }
-            
+
             // All API requests need to authenticated with a bearer token in the header
             var token = token_input.value;
-            console.log('Token is "' + token + '"');
             if (token == "") {
-                led0.style = null;
-                led1.style = null;
-                led2.style = null;
-
-                motor_init.style = null;
-                throttle_slider.value = 0
-                throttle_text.innerHTML = 0
-
+                clear_button_styles();
                 return;
             }
 
@@ -63,7 +76,7 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
-                    
+
                     var ledStates = response.led_data.led_states;
 
                     // Update the color of the LEDs
@@ -98,30 +111,20 @@
                     motor_init.style.backgroundColor = 'black';
                     motor_init.textContent = 'Enable Motor';
                     motor_init.setAttribute('data-state', 0);
-                
+
                     // Update the motor init button
                     if (num_motors > 0) {
                         var motor = response.motor_data.motor_states[0];
-                        
+
                         if (motor.started) {
                             motor_init.style.backgroundColor = 'red';
                             motor_init.textContent = 'Disable Motor';
                             motor_init.setAttribute('data-state', motor.started ? 1 : 0);
-                        } 
-                    } 
-                    
-                } else if (xhr.readyState === 4 && xhr.status === 403) {
-                    console.log("Not authorised to query Rover!");
+                        }
+                    }
 
-                    // Clear the button styles
-                    led0.style = null;
-                    led1.style = null;
-                    led2.style = null;
-    
-                    motor_init.style = null;
-                    throttle_slider.value = 0
-                    throttle_text.innerHTML = 0
-    
+                } else if (xhr.readyState === 4 && xhr.status === 403) {
+                    clear_button_styles()
                     return;
                 };
             }
@@ -163,7 +166,7 @@
             // Make a POST request to the controller server
             var payload = JSON.stringify({ "targets": [[0, value]] });
             console.log("Sending payload: " + payload);
-            
+
             // Auth token
             var token = token_input.value;
 
@@ -178,7 +181,10 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Response: " + xhr.responseText);
-                }
+                } else if (xhr.readyState === 4 && xhr.status === 403) {
+                    clear_button_styles()
+                    return;
+                };
             }
         });
 
@@ -198,7 +204,7 @@
             // The json payload is of the form {"states": [[1, newstate]]}
             var payload = JSON.stringify({ "states": [[ledIndex, newState]] });
             console.log("Sending payload: " + payload);
-            
+
             // Auth token
             var token = token_input.value;
 
@@ -220,7 +226,7 @@
             // This is the IP of the server running the camera stream.
             // TODO: Make sure that port 1002 is public!
             // TODO: Use a better way to get the address of the server
-            var address = 'roverpi.local:1002/webrtc';
+            var address = 'wildjames.com/rover/video/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
 
@@ -296,25 +302,25 @@
         const gamepads = {};
 
         function gamepadHandler(event, connecting) {
-          const gamepad = event.gamepad;
-          // Note:
-          // gamepad === navigator.getGamepads()[gamepad.index]
-        
-          if (connecting) {
-            gamepads[gamepad.index] = gamepad;
-          } else {
-            delete gamepads[gamepad.index];
-          }
+            const gamepad = event.gamepad;
+            // Note:
+            // gamepad === navigator.getGamepads()[gamepad.index]
+
+            if (connecting) {
+                gamepads[gamepad.index] = gamepad;
+            } else {
+                delete gamepads[gamepad.index];
+            }
         }
-        
+
         window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
         window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
 
         window.addEventListener("gamepadconnected", (e) => {
             const gp = navigator.getGamepads()[e.gamepad.index];
             console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-              gp.index, gp.id,
-              gp.buttons.length, gp.axes.length);
-          });
+                gp.index, gp.id,
+                gp.buttons.length, gp.axes.length);
+        });
     });
 })();

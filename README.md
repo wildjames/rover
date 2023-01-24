@@ -115,8 +115,6 @@ sudo apt-get install -y uv4l-webrtc
 ```
 
 
-
-
 ## Start the hardware controller:
 
 The hardware is controlled by its own script. This has to be run with `sudo` priviledges and is interfaced with HTTP, so really shouldn't be exposed to the internet. So, it's only available on localhost, where a middleware API will forward commands to it. It's located in the script [`controller_server.py`](controllers/controller_server.py), and I've written a service configuration that should keep it running. 

@@ -7,7 +7,10 @@
   <meta name="keywords" content="">
   <meta name="description" content="">
   <title>Rover Flask</title>
-  <link rel="stylesheet" href="/api/static/style.css" media="screen">
+
+  <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
+  <link rel="stylesheet" href="./api/static/style.css">
+
   <link id="u-google-font" rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
   <style class="u-style">
@@ -67,7 +70,12 @@
         controller then runs the hardware, and returns the result. The result is then sent back to the client, and the
         client is none the wiser.
       </p>
-      <p>
+      <p class="u-text u-text-2">
+        Note that to access any of the API endpoints, you'll need to provide an auth token in the Authorization header
+        of the request. That token can be found on the server, in the flask directory. If you can't access that, tough!
+        Keep your paws off my rover!
+      </p>
+      <p class="u-text u-text-2">
         {{ status_message }}
       </p>
     </div>

@@ -10,7 +10,14 @@ def token_required(f):
     def decorated(*args, **kwargs):
 
         if "Authorization" in request.headers:
-            token = request.headers["Authorization"].split(" ")[1]
+            try:
+                token = request.headers["Authorization"].split(" ")[1]
+            except:
+                return {
+                    "message": "Authentication Token is missing!",
+                    "data": None,
+                    "error": "Unauthorized",
+                }, 401
 
         else:
             logging.debug("No token found in headers")
@@ -31,5 +38,3 @@ def token_required(f):
         return f(*args, **kwargs)
 
     return decorated
-
-
