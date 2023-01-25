@@ -68,7 +68,7 @@
             // Send a GET request to the controller server for the system state
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
-            xhr.open('GET', '/api/system_info', true);
+            xhr.open('GET', './api/system_info', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send();
@@ -142,10 +142,10 @@
             var xhr = new XMLHttpRequest();
             if (state == 0) {
                 console.log("Sending init");
-                xhr.open('POST', '/api/motor_init', true);
+                xhr.open('POST', './api/motor_init', true);
             } else {
                 console.log("Sending close");
-                xhr.open('POST', '/api/motor_close', true);
+                xhr.open('POST', './api/motor_close', true);
             }
             xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send();
@@ -172,7 +172,7 @@
 
             var xhr = new XMLHttpRequest();
 
-            xhr.open('POST', '/api/motor_command', true);
+            xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send(payload);
@@ -212,7 +212,7 @@
             var xhr = new XMLHttpRequest();
 
             // Make the post request asynchronously
-            xhr.open('POST', '/api/led_control', true);
+            xhr.open('POST', './api/led_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + token);
             xhr.send(payload);
@@ -226,7 +226,7 @@
             // This is the IP of the server running the camera stream.
             // TODO: Make sure that port 1002 is public!
             // TODO: Use a better way to get the address of the server
-            var address = 'wildjames.com/rover/video/webrtc';
+            var address = location.hostname + location.pathname + '/video/webrtc';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
 
