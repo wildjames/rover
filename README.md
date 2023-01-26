@@ -97,6 +97,10 @@ sudo apt-get install -y \
   libatlas-base-dev gcc libssl-dev python3-dev python3-pip \
   libjpeg62 musl-dev zlib1g-dev libjpeg-dev openssl git gunicorn
 ```
+Make the log directory for later,
+```
+mkdir /home/rover/logs
+```
 And finally, install the python packages we are going to need:
 ```
 pip install -U pip
@@ -120,7 +124,15 @@ Then, add the repo to `apt`
 curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
 echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
 sudo apt-get update
-sudo apt-get install -y uv4l-webrtc
+sudo apt-get install -y uv4l-webrtc uv4l-raspicam-extras
+sudo service uv4l_raspicam restart
+```
+
+Then, install my configuration for the webRTC server
+```
+sudo cp setup/uv4l-raspicam.conf /etc/uv4l/
+sudo service uv4l_raspicam enable
+sudo service uv4l_raspicam restart
 ```
 
 
