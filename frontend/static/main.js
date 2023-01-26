@@ -10,6 +10,8 @@
         var stream_toggle = document.getElementById('streaming_toggle');
 
         var token_input = document.getElementById("api_token")
+        var api_token = "";
+        var valid_api_token = false;
 
         var led0 = document.getElementById('led0');
         var led1 = document.getElementById('led1');
@@ -38,12 +40,35 @@
 
         };
 
+        function pingRover() {
+            // Send a GET request to the controller server root
+            var xhr = new XMLHttpRequest();
+            // Make the get request asynchronously
+            xhr.open('GET', './api/ping', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send();
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Server responded to that API token!")
+                    valid_api_token = true;
+                } else if (xhr.readyState === 4 && xhr.status != 200) {
+                    console.log("Could not access API with that token");
+                    valid_api_token = false;
+                }
+            }
+        }
+
         // Execute a function when the user presses a key on the keyboard
         token_input.addEventListener("keypress", function (event) {
             // If the user presses the "Enter" key on the keyboard
             if (event.key === "Enter") {
                 // Cancel the default action
                 event.preventDefault();
+        
+                api_token = token_input.value;
+                pingRover();
             }
         });
 
@@ -59,8 +84,7 @@
             }
 
             // All API requests need to authenticated with a bearer token in the header
-            var token = token_input.value;
-            if (token == "") {
+            if (!valid_api_token) {
                 clear_button_styles();
                 return;
             }
@@ -70,7 +94,7 @@
             // Make the get request asynchronously
             xhr.open('GET', './api/system_info', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + token);
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
             xhr.onreadystatechange = function () {
@@ -121,6 +145,9 @@
                             motor_init.textContent = 'Disable Motor';
                             motor_init.setAttribute('data-state', motor.started ? 1 : 0);
                         }
+                    } else {
+                        throttle_slider.value = 0
+                        throttle_text.innerHTML = 0
                     }
 
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
@@ -136,8 +163,11 @@
             var state = this.getAttribute('data-state');
             state = parseInt(state);
 
-            // Auth token
-            var token = token_input.value;
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
 
             var xhr = new XMLHttpRequest();
             if (state == 0) {
@@ -147,8 +177,11 @@
                 console.log("Sending close");
                 xhr.open('POST', './api/motor_close', true);
             }
-            xhr.setRequestHeader("Authorization", "Bearer " + token);
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
+
+            // TODO: When I get a response, I should update the throttle slider
+            
         });
 
         // When a click is released from the slider, I need to send a message to the control server
@@ -167,14 +200,17 @@
             var payload = JSON.stringify({ "targets": [[0, value]] });
             console.log("Sending payload: " + payload);
 
-            // Auth token
-            var token = token_input.value;
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
 
             var xhr = new XMLHttpRequest();
 
             xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + token);
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(payload);
 
             // print the response to the console
@@ -205,8 +241,11 @@
             var payload = JSON.stringify({ "states": [[ledIndex, newState]] });
             console.log("Sending payload: " + payload);
 
-            // Auth token
-            var token = token_input.value;
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
 
             // Send a command POST request with a JSON payload to the controller server
             var xhr = new XMLHttpRequest();
@@ -214,7 +253,7 @@
             // Make the post request asynchronously
             xhr.open('POST', './api/led_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + token);
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(payload);
         }
 

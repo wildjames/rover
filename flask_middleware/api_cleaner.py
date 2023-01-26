@@ -73,6 +73,12 @@ def index():
     return render_template("index.html", status_message=status_message)
 
 
+@app.route("/ping")
+@token_required
+def ping():
+    return "pong"
+
+
 @app.route("/system_info")
 @token_required
 def system_info():
