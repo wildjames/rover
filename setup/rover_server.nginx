@@ -22,6 +22,10 @@ server {
 
 	server_name _;
 
+	ssl						on;
+	ssl_certificate			/etc/nginx/SSL/selfsigned.crt;
+	ssl_certificate_key		/etc/nginx/SSL/selfsigned.key;
+
 	location / {
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.
