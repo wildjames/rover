@@ -88,16 +88,25 @@ I think it may be better to stream states and commands over WebRTC similar to vi
 Before anything else, 
 ```
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install -y git python3-pip
+curl https://sh.rustup.rs -sSf | sh
+```
+There are then some apt-get installs to do:
+```
+sudo apt-get install -y \
+  build-essential libpq-dev libssl-dev libffi-dev nginx \
+  libatlas-base-dev gcc libssl-dev python3-dev python3-pip \
+  libjpeg62 musl-dev zlib1g-dev libjpeg-dev openssl git gunicorn
+```
+And finally, install the python packages we are going to need:
+```
 pip install -U pip
 pip install -r requirements.txt
 ```
-And set up the git instance with an SSH key. Then, clone this repo.
+
+Set up the git instance with an SSH key. Then, clone this repo.
 
 ## Install `uv4l`
-https://www.linux-projects.org/uv4l/installation/
-
-This works on here: http://192.168.1.170:1002/ I have cloned over the web code, it's in `facedetection`. See what you can do with that.
+[Original instructions](https://www.linux-projects.org/uv4l/installation/)
 
 ```
 sudo rpi-update
@@ -117,7 +126,7 @@ sudo apt-get install -y uv4l-webrtc
 
 ## Start the hardware controller:
 
-The hardware is controlled by its own script. This has to be run with `sudo` priviledges and is interfaced with HTTP, so really shouldn't be exposed to the internet. So, it's only available on localhost, where a middleware API will forward commands to it. It's located in the script [`controller_server.py`](controllers/controller_server.py), and I've written a service configuration that should keep it running. 
+The hardware is controlled by its own script. This has to be run with `sudo` privileges and is interfaced with HTTP, so really shouldn't be exposed to the internet. So, it's only available on localhost, where a middleware API will forward commands to it. It's located in the script [`controller_server.py`](controllers/controller_server.py), and I've written a service configuration that should keep it running. 
 
 First, check the configuration to make sure it will run ok. Then, 
 ```
@@ -127,10 +136,19 @@ sudo systemctl start hardware_controller
 ```
 
 
-## Install and configure Apache2
+## Start the Flask API server
+
+The hardware server is not exposed to the network. Rather, it is interacted with via a second flask server. This is a security feature - I don't want a sudo-level server that any random person can access, even if they do need API tokens. 
+
+This has a service to keep it going, so setup is similar to the backend controller
 ```
-sudo apt-get install -y nginx
+sudo cp setup/flask_middleware.service /etc/systemd/system/
+sudo systemctl enable flask_middleware
+sudo systemctl start flask_middleware
 ```
+
+
+## Install and configure nginx
 
 Really, we should get a proper signed SSL certificate. However, as a stopgap we can get a self-signed one.
 To create a new self-signed SSL certificate, with this command:
@@ -142,7 +160,7 @@ Note that this is not ideal for deployment, but will do for testing.
 
 Then, set up the flask app to be run by nginx. To do this, I have provided a configuration in `setup/rover_server.nginx`. Tweak that, and move it to `/etc/nginx/sites-available/`
 ```
-sudo cp setup/rover.conf /etc/apache2/sites-available/
+sudo cp setup/rover_server.nginx /etc/nginx/sites-available/
 ```
 Then, enable the site by making a symlink in the `sites-enabled` directory
 ```
