@@ -1,7 +1,8 @@
-server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+upstream video {
+	server roverpi.local:1002;
+}
 
+server {
 	# SSL configuration
 	listen 443 ssl default_server;
 	listen [::]:443 ssl default_server;
@@ -33,6 +34,13 @@ server {
 		proxy_set_header X-Forwarded-Proto $scheme;
 		proxy_set_header X-Forwarded-Host $host;
 		proxy_set_header X-Forwarded-Prefix /api;
+	}
+
+	location /video/ {
+		proxy_pass https://roverpi.local:1002/;
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
 	}
 
 	# deny access to .htaccess files, if Apache's document root
