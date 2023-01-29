@@ -58,6 +58,10 @@ def system_info():
             "num_motors": len(motors),
             "motor_states": [],
         },
+        "sleep_data": {
+            "sleep_threshold": SLEEP_THRESHOLD,
+            "enable_sleep": int(ENABLE_SLEEP),
+        },
     }
 
     # Gather motor data
@@ -80,9 +84,9 @@ def system_info():
     return info_dict
 
 
-@app.route("/configure_inactivity", methods=["POST"])
+@app.route("/configure_sleep", methods=["POST"])
 @keep_alive
-def configure_inactivity():
+def configure_sleep():
     """Sets the inactivity timeout for the keep alive middleware.
     
     JSON payload:
@@ -97,13 +101,13 @@ def configure_inactivity():
 
     data = request.json
     
-    if "timeout" in data:
-        SLEEP_THRESHOLD = data["timeout"]
+    if "sleep_threshold" in data:
+        SLEEP_THRESHOLD = data["sleep_threshold"]
         logger.info("Set inactivity timeout to {}".format(SLEEP_THRESHOLD))
     
     if "enable_sleep" in data:
         logger.info("Received enable_sleep: {}".format(data["enable_sleep"]))
-        ENABLE_SLEEP = data["enable_sleep"].lower() == 'true'
+        ENABLE_SLEEP = data["enable_sleep"].lower() == "true"
         logger.info("Set enable_sleep to {}".format(ENABLE_SLEEP))
 
     return {"message": "success"}

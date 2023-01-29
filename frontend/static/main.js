@@ -13,6 +13,9 @@
         var api_token = "";
         var valid_api_token = false;
 
+        var sleep_toggle = document.getElementById("sleep-enabled");
+        var sleep_time = document.getElementById("sleep-time");
+
         var led0 = document.getElementById('led0');
         var led1 = document.getElementById('led1');
         var led2 = document.getElementById('led2');
@@ -66,13 +69,44 @@
             if (event.key === "Enter") {
                 // Cancel the default action
                 event.preventDefault();
-        
+
                 api_token = token_input.value;
                 pingRover();
             }
         });
 
-        // Every 100ms, I need to run a function
+        sleep_toggle.addEventListener("click", function (event) {
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
+
+            var packet = JSON.stringify({
+                "sleep_enabled": sleep_toggle.getAttribute("data-state"),
+                "sleep_time": sleep_time.value
+            });
+            console.log("sending json:");
+            console.log(packet);
+
+            // Send a POST request to the controller server /api/configure_sleep endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', './api/configure_sleep', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(packet);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Server responded to that API token!")
+                    valid_api_token = true;
+                } else if (xhr.readyState === 4 && xhr.status != 200) {
+                    console.log("Could not access API with that token");
+                    valid_api_token = false;
+                }
+            }
+        });
+
+        // I periodically get the system state from the server
         setInterval(function () {
             // If I'm streaming, set the button text to reflect that
             if (isStreaming) {
@@ -128,15 +162,13 @@
                         }
                     }
 
-
-                    var num_motors = response.motor_data.num_motors;
-
                     // By default, assume the motor is not initialized
                     motor_init.style.backgroundColor = 'black';
                     motor_init.textContent = 'Enable Motor';
                     motor_init.setAttribute('data-state', 0);
 
                     // Update the motor init button
+                    var num_motors = response.motor_data.num_motors;
                     if (num_motors > 0) {
                         var motor = response.motor_data.motor_states[0];
 
@@ -148,6 +180,17 @@
                     } else {
                         throttle_slider.value = 0
                         throttle_text.innerHTML = 0
+                    }
+
+                    // update the sleep_enable state
+                    var sleep_enable = response.sleep_data.sleep_enabled;
+                    sleep_toggle.setAttribute("data-state", sleep_enable);
+                    if (sleep_enable) {
+                        sleep_toggle.style.backgroundColor = 'red';
+                        sleep_toggle.textContent = 'Disable Inactivity Sleep';
+                    } else {
+                        sleep_toggle.style.backgroundColor = 'black';
+                        sleep_toggle.textContent = 'Enable Inactivity Sleep';
                     }
 
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
@@ -181,7 +224,7 @@
             xhr.send();
 
             // TODO: When I get a response, I should update the throttle slider
-            
+
         });
 
         // When a click is released from the slider, I need to send a message to the control server

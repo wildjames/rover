@@ -89,20 +89,20 @@ def system_info():
     return system_state
 
 
-@app.route("/configure_inactivity", methods=["POST"])
+@app.route("/configure_sleep", methods=["POST"])
 @token_required
-def configure_inactivity():
+def configure_sleep():
     data = request.json
 
     payload = {}
 
-    if "timeout" in data.keys():
-        payload["timeout"] = data["timeout"]
+    if "sleep_threshold" in data.keys():
+        payload["sleep_threshold"] = data["sleep_threshold"]
     if "enable_sleep" in data.keys():
         payload["enable_sleep"] = data["enable_sleep"]
 
     response = requests.post(
-        controller_address_base.format("configure_inactivity"), json=payload
+        controller_address_base.format("configure_sleep"), json=payload
     ).json()
 
     return response
