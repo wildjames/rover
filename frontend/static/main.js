@@ -8,6 +8,7 @@
 
         var isStreaming = false;
         var stream_toggle = document.getElementById('streaming_toggle');
+	var stream_uri = "wss://wildjames.com/rover/video";
 
         var token_input = document.getElementById("api_token")
         var api_token = "";
@@ -263,15 +264,15 @@
 
         stream_toggle.addEventListener('click', function (e) {
             // This is the IP of the server running the camera stream.
-            // TODO: Make sure that port 1002 is public!
-            // TODO: Use a better way to get the address of the server
-            var address = location.hostname + location.pathname + '/video/webrtc';
+            var address = location.hostname + location.pathname + '/video';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
             var wsurl = protocol + '//' + address;
+            //var wsurl = stream_uri;
 
             if (!isStreaming) {
                 // Change the canvas color to white
                 canvas.style.backgroundColor = 'var(--tyrian-purple)';
+                canvas.style.cursor = 'progress';
 
                 signalObj = new signal(wsurl,
                     function (stream) {
@@ -293,6 +294,7 @@
                         }
                     },
                     function (error) {
+                        canvas.style.cursor = "default";
                         alert(error);
                     },
                     function () {
@@ -300,8 +302,10 @@
                         video.srcObject = null;
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         isStreaming = false;
+                        canvas.style.cursor = "default";
                     },
                     function (message) {
+                        canvas.style.cursor = "default";
                         alert(message);
                     }
                 );
@@ -320,6 +324,7 @@
                 canvas.setAttribute('width', video.videoWidth);
                 canvas.setAttribute('height', video.videoHeight);
                 isStreaming = true;
+                canvas.style.cursor = "default";
             }
         }, false);
 
