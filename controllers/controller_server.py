@@ -15,7 +15,7 @@ import os
 
 import led_control
 import motor_control
-from keep_alive_middleware import keep_alive, check_inactivity, ENABLE_SLEEP, SLEEP_THRESHOLD
+import keep_alive_middleware 
 
 from flask import Flask, request
 
@@ -27,7 +27,7 @@ app = Flask(__name__)
 
 # Run the activity monitor if we are NOT in the main thread, if the reloader is enabled.
 if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-    check_inactivity()
+    keep_alive_middleware.check_inactivity()
 
 # Motor setup
 ESC_pins = [12]
@@ -37,7 +37,7 @@ motors: List[motor_control.ESCController] = [
 
 
 @app.route("/ping", methods=["GET"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def ping():
     """Returns a JSON object containing a message."""
     logger.info("Received ping request")
@@ -45,7 +45,7 @@ def ping():
 
 
 @app.route("/system_info", methods=["GET"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def system_info():
     """Returns a JSON object containing system information."""
 
@@ -59,8 +59,8 @@ def system_info():
             "motor_states": [],
         },
         "sleep_data": {
-            "sleep_threshold": SLEEP_THRESHOLD,
-            "enable_sleep": int(ENABLE_SLEEP),
+            "sleep_threshold": keep_alive_middleware.SLEEP_THRESHOLD,
+            "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
         },
     }
 
@@ -85,7 +85,7 @@ def system_info():
 
 
 @app.route("/configure_sleep", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def configure_sleep():
     """Sets the inactivity timeout for the keep alive middleware.
     
@@ -97,7 +97,7 @@ def configure_sleep():
 
     both are optional.
     """
-    global SLEEP_THRESHOLD, ENABLE_SLEEP
+    global keep_alive_middleware
 
     logger.debug("Received sleep configuration")
     logger.debug("Request data: {}".format(request.json))
@@ -105,19 +105,19 @@ def configure_sleep():
     data = request.json
     
     if "sleep_threshold" in data:
-        SLEEP_THRESHOLD = data["sleep_threshold"]
-        logger.info("Set inactivity timeout to {}".format(SLEEP_THRESHOLD))
+        keep_alive_middleware.SLEEP_THRESHOLD = data["sleep_threshold"]
+        logger.info("Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD))
     
     if "enable_sleep" in data:
         logger.info("Received enable_sleep: {}".format(data["enable_sleep"]))
-        ENABLE_SLEEP = bool(data["enable_sleep"])
-        logger.info("Set enable_sleep to {}".format(ENABLE_SLEEP))
+        keep_alive_middleware.ENABLE_SLEEP = bool(data["enable_sleep"])
+        logger.info("Set enable_sleep to {}".format(keep_alive_middleware.ENABLE_SLEEP))
     
     return {"message": "success"}
 
 
 @app.route("/motor_init", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_init():
     global motors
 
@@ -135,7 +135,7 @@ def motor_init():
 
 
 @app.route("/motor_close", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_close():
     global motors
 
@@ -147,7 +147,7 @@ def motor_close():
 
 
 @app.route("/motor_arm", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_arm():
     global motors
 
@@ -160,7 +160,7 @@ def motor_arm():
 
 
 @app.route("/motor_calibrate", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_calibrate():
     global motors
 
@@ -183,7 +183,7 @@ def motor_calibrate():
 
 
 @app.route("/motor_command", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_command():
     """Expects a JSON object containing a list of motor index and state pairs,
     keyed under "targets"
@@ -213,7 +213,7 @@ def motor_command():
 
 
 @app.route("/motor_stop", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_stop():
     global motors
 
@@ -224,7 +224,7 @@ def motor_stop():
 
 
 @app.route("/motor_panic", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def motor_panic():
     global motors
 
@@ -235,7 +235,7 @@ def motor_panic():
 
 
 @app.route("/led_command", methods=["POST"])
-@keep_alive
+@keep_alive_middleware.keep_alive
 def led_command():
     req_obj = request.json
 
