@@ -89,6 +89,26 @@ def system_info():
     return system_state
 
 
+@app.route("/configure_inactivity", methods=["POST"])
+@token_required
+def configure_inactivity():
+    data = request.json
+
+    payload = {}
+
+    if "timeout" in data.keys():
+        payload["timeout"] = data["timeout"]
+    if "enable_sleep" in data.keys():
+        payload["enable_sleep"] = data["enable_sleep"]
+
+    response = requests.post(
+        controller_address_base.format("configure_inactivity"), json=payload
+    ).json()
+
+    return response
+    
+
+
 @app.route("/led_control", methods=["POST"])
 @token_required
 def led_control():

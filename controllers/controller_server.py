@@ -15,7 +15,7 @@ import os
 
 import led_control
 import motor_control
-from keep_alive_middleware import keep_alive, check_inactivity
+from keep_alive_middleware import keep_alive, check_inactivity, ENABLE_SLEEP, SLEEP_THRESHOLD
 
 from flask import Flask, request
 
@@ -78,6 +78,35 @@ def system_info():
     logger.info("Returning system info: {}".format(info_dict))
 
     return info_dict
+
+
+@app.route("/configure_inactivity", methods=["POST"])
+@keep_alive
+def configure_inactivity():
+    """Sets the inactivity timeout for the keep alive middleware.
+    
+    JSON payload:
+    {
+        "timeout": <int>,
+        "enable_sleep": <bool>
+    }
+
+    both are optional.
+    """
+    logger.info("Received inactivity timeout request")
+
+    data = request.json
+    
+    if "timeout" in data:
+        SLEEP_THRESHOLD = data["timeout"]
+        logger.info("Set inactivity timeout to {}".format(SLEEP_THRESHOLD))
+    
+    if "enable_sleep" in data:
+        logger.info("Received enable_sleep: {}".format(data["enable_sleep"]))
+        ENABLE_SLEEP = data["enable_sleep"].lower() == 'true'
+        logger.info("Set enable_sleep to {}".format(ENABLE_SLEEP))
+
+    return {"message": "success"}
 
 
 @app.route("/motor_init", methods=["POST"])

@@ -49,7 +49,7 @@ def check_inactivity():
             from subprocess import call
             call("sudo shutdown -P now", shell=True)
         else:
-            logger.info("Would have sent the computer to sleep")
+            logger.critical("Would have sent the computer to sleep")
             last_message = time.time()
 
         # TODO: Send a signal to the sleepypi to shutdown the raspberry pi.
