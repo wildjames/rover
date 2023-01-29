@@ -12,7 +12,6 @@
         
         function handleForm(event) { 
             event.preventDefault();
-            save();
         } 
         
         form.addEventListener('submit', handleForm);
