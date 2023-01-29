@@ -24,6 +24,7 @@
             xhr.open('GET', rover_waypoint_url + waypoint_ping_suffix, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.timeout = 500; // time in milliseconds
             xhr.send();
 
             xhr.onreadystatechange = function () {
