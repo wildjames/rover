@@ -75,37 +75,6 @@
             }
         });
 
-        sleep_toggle.addEventListener("click", function (event) {
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var packet = JSON.stringify({
-                "sleep_enabled": sleep_toggle.getAttribute("data-state"),
-                "sleep_time": sleep_time.value
-            });
-            console.log("sending json:");
-            console.log(packet);
-
-            // Send a POST request to the controller server /api/configure_sleep endpoint
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', './api/configure_sleep', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(packet);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Server responded to that API token!")
-                    valid_api_token = true;
-                } else if (xhr.readyState === 4 && xhr.status != 200) {
-                    console.log("Could not access API with that token");
-                    valid_api_token = false;
-                }
-            }
-        });
-
         // I periodically get the system state from the server
         setInterval(function () {
             // If I'm streaming, set the button text to reflect that
@@ -384,29 +353,63 @@
             }, 33);
         }, false);
 
-        // Should detect gamepad connection and disconnection
-        const gamepads = {};
+        sleep_toggle.addEventListener("click", function (event) {
+            // suppress the default action of the button
+            event.preventDefault();
 
-        function gamepadHandler(event, connecting) {
-            const gamepad = event.gamepad;
-            // Note:
-            // gamepad === navigator.getGamepads()[gamepad.index]
-
-            if (connecting) {
-                gamepads[gamepad.index] = gamepad;
-            } else {
-                delete gamepads[gamepad.index];
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
             }
-        }
 
-        window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
-        window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+            var packet = JSON.stringify({
+                "sleep_enabled": sleep_toggle.getAttribute("data-state"),
+                "sleep_time": sleep_time.value
+            });
+            console.log("sending json:");
+            console.log(packet);
 
-        window.addEventListener("gamepadconnected", (e) => {
-            const gp = navigator.getGamepads()[e.gamepad.index];
-            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-                gp.index, gp.id,
-                gp.buttons.length, gp.axes.length);
+            // Send a POST request to the controller server /api/configure_sleep endpoint
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', './api/configure_sleep', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(packet);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Server responded to that API token!")
+                    valid_api_token = true;
+                } else if (xhr.readyState === 4 && xhr.status != 200) {
+                    console.log("Could not access API with that token");
+                    valid_api_token = false;
+                }
+            }
         });
+
+        // // Should detect gamepad connection and disconnection
+        // const gamepads = {};
+
+        // function gamepadHandler(event, connecting) {
+        //     const gamepad = event.gamepad;
+        //     // Note:
+        //     // gamepad === navigator.getGamepads()[gamepad.index]
+
+        //     if (connecting) {
+        //         gamepads[gamepad.index] = gamepad;
+        //     } else {
+        //         delete gamepads[gamepad.index];
+        //     }
+        // }
+
+        // window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
+        // window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+
+        // window.addEventListener("gamepadconnected", (e) => {
+        //     const gp = navigator.getGamepads()[e.gamepad.index];
+        //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+        //         gp.index, gp.id,
+        //         gp.buttons.length, gp.axes.length);
+        // });
     });
 })();
