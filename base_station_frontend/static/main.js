@@ -71,7 +71,7 @@
             }
         });
 
-        rover_address.addEventListener("oninput", function () {
+        rover_address.addEventListener("keypress", function (event) {
             console.log("Rover address changed to: " + rover_waypoint_url);
             rover_waypoint_url = rover_address.value;
         });
