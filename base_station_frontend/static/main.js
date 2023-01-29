@@ -43,8 +43,8 @@
             if (!wake_signal) {
                 console.log("Creating a wake signal");
                 pingRover();
-                // set an interval function that pings the rover every 5 seconds
-                wake_interval = setInterval(pingRover, 5000);
+                // set an interval function that pings the rover every second
+                wake_interval = setInterval(pingRover, 1000);
                 wake_signal = true;
             } else {
                 console.log("Stopping the wake signal");
