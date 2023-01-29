@@ -72,8 +72,8 @@
         });
 
         rover_address.addEventListener("keypress", function (event) {
-            console.log("Rover address changed to: " + rover_waypoint_url);
             rover_waypoint_url = rover_address.value;
+            console.log("Rover address changed to: " + rover_waypoint_url);
         });
 
         // Execute a function when the user presses a key on the keyboard
