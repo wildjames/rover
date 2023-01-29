@@ -1,6 +1,8 @@
 import logging
 from typing import List
 
+import werkzeug
+
 import led_control
 import motor_control
 from keep_alive_middleware import keep_alive, check_inactivity
@@ -16,9 +18,8 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-# This will periodically check how long since the last activity, and sleep the 
-# computer if it's been a while.
-check_inactivity()
+if werkzeug.serving.is_running_from_reloader():
+    check_inactivity()
 
 # Flask app setup
 app = Flask(__name__)
@@ -207,4 +208,4 @@ def led_command():
 
 
 if __name__ in "__main__":
-    app.run(host="localhost", port=8001, use_reloader=True, threaded=True, debug=True)
+    app.run(host="localhost", port=8001, use_reloader=False, threaded=True, debug=True)
