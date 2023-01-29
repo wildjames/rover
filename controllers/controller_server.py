@@ -1,4 +1,13 @@
 import logging
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    filename="/home/rover/log/rover_controller.log",
+    filemode="a",
+    format="[%(asctime)s] %(levelname)-8s    %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
+
 from typing import List
 
 import os
@@ -10,13 +19,6 @@ from keep_alive_middleware import keep_alive, check_inactivity
 from flask import Flask, request
 
 
-logging.basicConfig(
-    # filename="/home/rover/log/rover_controller.log",
-    # filemode="a",
-    format="[%(asctime)s] %(levelname)-8s    %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    level=logging.DEBUG,
-)
 
 
 # Flask app setup

@@ -1,19 +1,12 @@
+import logging
+logger = logging.getLogger(__name__)
+
 import time
 import gpiozero
 from typing import List
-import logging
 
 # Interface for controlling an ESC (Electronic Speed Controller) using a Raspberry Pi
 # and a PWM (Pulse Width Modulation) signal.
-
-
-logging.basicConfig(
-    # filename="/home/rover/log/rover_controller_esc.log",
-    # filemode="a",
-    format="[%(asctime)s] %(levelname)-8s    %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    level=logging.DEBUG,
-)
 
 
 class ESCController:
@@ -68,14 +61,14 @@ class ESCController:
 
     def init(self):
         """Initialize the ESC GPIO connection. Sets the throttle to zero."""
-        logging.debug("Initializing ESC on pin {}".format(self.pin))
+        logger.debug("Initializing ESC on pin {}".format(self.pin))
         self.pwm = gpiozero.PWMOutputDevice(self.pin, frequency=self.frequency, initial_value=0.0)
         self.stop()
         self.started = True
 
     def close(self):
         """Release the GPIO connection. Sets the throttle to zero first, then disables the PWM signal."""
-        logging.debug(f"Closing ESC on pin {self.pin}")
+        logger.debug(f"Closing ESC on pin {self.pin}")
         self.stop()
         self.pwm.off()
         self.pwm.close()
@@ -83,20 +76,20 @@ class ESCController:
 
     def calibrate(self):
         """Calibrate the ESC. Interactive, as it requires the user to disconnect and reconnect the battery."""
-        logging.info("Disconnect the battery, hit enter when done")
+        logger.info("Disconnect the battery, hit enter when done")
         input("> ")
 
-        logging.info("Sending maximum pulse width")
+        logger.info("Sending maximum pulse width")
         self.pwm.value = self.max_pulse_width
 
-        logging.info("Connect the battery, hit enter when done")
+        logger.info("Connect the battery, hit enter when done")
         input("> ")
 
         time.sleep(2)
-        logging.info("Sending minimum pulse width")
+        logger.info("Sending minimum pulse width")
         self.pwm.value = self.min_pulse_width
 
-        logging.info("OK")
+        logger.info("OK")
 
     def arm(self):
         """Start the ESC wakeup handshake.
@@ -108,25 +101,25 @@ class ESCController:
 
         After the handshake, the ESC will be ready to receive a throttle 0 signal.
         """
-        logging.info("Arming ESC")
+        logger.info("Arming ESC")
 
         # Set the pulse width to the minimum.
-        logging.info("Sending minimum pulse width")
+        logger.info("Sending minimum pulse width")
         self.pwm.value = self.min_pulse_width
         time.sleep(3)
 
         # Set the pulse width to the maximum.
-        logging.info("Sending maximum pulse width")
+        logger.info("Sending maximum pulse width")
         self.pwm.value = self.max_pulse_width
         time.sleep(5)
 
         # Set the pulse width to the minimum
-        logging.info("Sending minimum pulse width")
+        logger.info("Sending minimum pulse width")
         self.pwm.value = self.min_pulse_width
         time.sleep(2)
 
         # Then we're done
-        logging.info("ESC armed")
+        logger.info("ESC armed")
         self.armed = True
         self.stop()
 
@@ -137,7 +130,7 @@ class ESCController:
 
     def estop(self):
         """Emergency stop the ESC. Bypass calculations, set PWM duty cycle to 0."""
-        logging.info("Emergency stopping ESC")
+        logger.info("Emergency stopping ESC")
         self.pwm.off()
         self.throttle = 0.0
 
@@ -147,10 +140,10 @@ class ESCController:
         pwm_value = (self.max_pulse_width - self.min_pulse_width) * speed
         pwm_value += self.min_pulse_width
 
-        logging.info(
+        logger.info(
             "Setting ESC speed to {:.1f}% (duty cycle {:.3f})".format(speed*100.0, pwm_value)
         )
         if not self.armed:
-            logging.warn("ESC not armed!")
+            logger.warn("ESC not armed!")
         self.pwm.value = pwm_value
         self.throttle = speed
