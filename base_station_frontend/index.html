@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html style="font-size: 16px;">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="keywords" content="">
+  <meta name="description" content="">
+  <title>Rover Flask</title>
+
+  <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
+  <link rel="stylesheet" href="./static/style.css">
+  <script src='./static/main.js'></script>
+
+  <link id="u-google-font" rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+  <style class="u-style">
+    .u-section-2 .u-sheet-1 {
+      min-height: 697px
+    }
+
+    .u-section-2 .u-line-1 {
+      width: 194px;
+      margin: 60px auto 0 0
+    }
+
+    .u-section-2 .u-text-1 {
+      font-size: 4.5rem;
+      margin: 30px 218px 0 0
+    }
+
+    .u-section-2 .u-text-2 {
+      margin: 20px 218px 60px 0
+    }
+
+    @media (max-width: 1199px) {
+      .u-section-2 .u-text-1 {
+        margin-right: 18px
+      }
+
+      .u-section-2 .u-text-2 {
+        margin-right: 18px
+      }
+    }
+
+    @media (max-width: 991px) {
+      .u-section-2 .u-text-1 {
+        margin-right: auto
+      }
+
+      .u-section-2 .u-text-2 {
+        margin-right: auto
+      }
+    }
+  </style>
+  <meta name="theme-color" content="#ffce3e">
+
+</head>
+
+<body class="u-body">
+
+  <section class="u-align-left u-clearfix u-typography-custom-page-typography-15--Basic-Headlines u-white u-section-2"
+    id="sec-bef4">
+    <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
+      <div class="u-border-6 u-border-palette-1-base u-line u-line-horizontal u-line-1"></div>
+      <h1 class="u-text u-title u-text-1">Rover Base Station</h1>
+      <p class="u-text u-text-2">
+        The rover moves - so, it doesn't exactly have a static address. This page acts as a portal to the rover's server
+        page,
+        which is hosted on the rover itself. To save power, the rover will shut down after a period of inactivity, so
+        most of the time
+        the actual control server will not be reachable.
+      </p>
+      <p class="u-text u-text-2">
+        To tell the rover to wake up, click the button below. This will begin sending signals to the rover, and when it
+        wakes up next,
+        a response will be recieved and you can log into the control page. While the control page is open, the rover
+        will stay awake.
+      </p>
+      <form class="center" id="token_form" name="API_Token">
+        <label for="api_token">API Token: </label>
+        <input type=password id="api_token" size="32" placeholder="API Token" />
+        <button id="send-wakeup">Wake Rover</button>
+      </form>
+    </div>
+  </section>
+
+</body>
+
+</html>

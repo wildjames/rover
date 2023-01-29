@@ -8,7 +8,6 @@
 
         var isStreaming = false;
         var stream_toggle = document.getElementById('streaming_toggle');
-	var stream_uri = "wss://wildjames.com/rover/video";
 
         var token_input = document.getElementById("api_token")
         var api_token = "";
