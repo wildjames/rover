@@ -37,11 +37,6 @@
             motor_init.style = null;
             throttle_slider.value = 0
             throttle_text.innerHTML = 0
-
-            sleep_toggle.style = null;
-            sleep_toggle.textContent = "Inactivity Sleep";
-            sleep_time.textContent = "";
-
         };
 
         function pingRover() {
