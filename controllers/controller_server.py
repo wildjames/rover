@@ -3,7 +3,7 @@ from typing import List
 
 import led_control
 import motor_control
-from keep_alive_middleware import keep_alive
+from keep_alive_middleware import keep_alive, check_inactivity
 
 from flask import Flask, request
 
@@ -15,6 +15,10 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     level=logging.DEBUG,
 )
+
+# This will periodically check how long since the last activity, and sleep the 
+# computer if it's been a while.
+check_inactivity()
 
 # Flask app setup
 app = Flask(__name__)
