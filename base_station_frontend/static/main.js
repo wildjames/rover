@@ -37,6 +37,11 @@
                     valid_api_token = false;
                     wake_status.textContent = "🔴";
                 }
+
+                if (wake_signal) {
+                    // Catch a race condition
+                    wake_status.textContent = "⚪";
+                }
             }
         }
 
