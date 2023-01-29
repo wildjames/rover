@@ -42,13 +42,14 @@ def check_inactivity():
     logger.info("Checking last activity... It has been {:.3f} seconds since a command".format(delta_time))
     if delta_time > SLEEP_THRESHOLD:
         if ENABLE_SLEEP:
+            logger.critical("Inactivity threshold reached. Sending computer to sleep.")
             # Easy way
             from subprocess import call
             call("sudo shutdown -P now", shell=True)
         else:
             logger.info("Would have sent the computer to sleep")
             last_message = time.time()
-            
+
         # TODO: Send a signal to the sleepypi to shutdown the raspberry pi.
 
     logger.info("Will check for inactivity again in {:.3f} seconds".format(time_to_next_check))
