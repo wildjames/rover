@@ -3,6 +3,7 @@ from typing import List
 
 import led_control
 import motor_control
+from keep_alive_middleware import keep_alive
 
 from flask import Flask, request
 
@@ -26,6 +27,7 @@ motors: List[motor_control.ESCController] = [
 
 
 @app.route("/ping", methods=["GET"])
+@keep_alive
 def ping():
     """Returns a JSON object containing a message."""
     logging.info("Received ping request")
@@ -33,6 +35,7 @@ def ping():
 
 
 @app.route("/system_info", methods=["GET"])
+@keep_alive
 def system_info():
     """Returns a JSON object containing system information."""
 
@@ -68,6 +71,7 @@ def system_info():
 
 
 @app.route("/motor_init", methods=["POST"])
+@keep_alive
 def motor_init():
     global motors
 
@@ -85,6 +89,7 @@ def motor_init():
 
 
 @app.route("/motor_close", methods=["POST"])
+@keep_alive
 def motor_close():
     global motors
 
@@ -96,6 +101,7 @@ def motor_close():
 
 
 @app.route("/motor_arm", methods=["POST"])
+@keep_alive
 def motor_arm():
     global motors
 
@@ -108,6 +114,7 @@ def motor_arm():
 
 
 @app.route("/motor_calibrate", methods=["POST"])
+@keep_alive
 def motor_calibrate():
     global motors
 
@@ -130,6 +137,7 @@ def motor_calibrate():
 
 
 @app.route("/motor_command", methods=["POST"])
+@keep_alive
 def motor_command():
     """Expects a JSON object containing a list of motor index and state pairs,
     keyed under "targets"
@@ -159,6 +167,7 @@ def motor_command():
 
 
 @app.route("/motor_stop", methods=["POST"])
+@keep_alive
 def motor_stop():
     global motors
 
@@ -169,6 +178,7 @@ def motor_stop():
 
 
 @app.route("/motor_panic", methods=["POST"])
+@keep_alive
 def motor_panic():
     global motors
 
@@ -179,6 +189,7 @@ def motor_panic():
 
 
 @app.route("/led_command", methods=["POST"])
+@keep_alive
 def led_command():
     req_obj = request.json
 
