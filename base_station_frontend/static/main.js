@@ -37,6 +37,7 @@
 
         rover_address.addEventListener("onchange", function () {
             rover_waypoint_url = rover_address.value + "/api/ping";
+            console.log("Rover address changed to: " + rover_waypoint_url);
         });
 
         // Execute a function when the user presses a key on the keyboard
@@ -45,6 +46,7 @@
             if (event.key === "Enter") {
                 // Cancel the default action
                 event.preventDefault();
+                console.log("Enter key pressed");
 
                 if (wake_signal) {
                     // set an interval function that pings the rover every 5 seconds
