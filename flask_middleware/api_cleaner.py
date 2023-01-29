@@ -89,28 +89,28 @@ def system_info():
     return system_state
 
 
-@app.route("/configure_sleep", methods=["POST"])
+@app.route("/config", methods=["POST"])
 @token_required
-def configure_sleep():
+def config():
     data = request.json
 
-    logger.debug(f"Rover received sleep configuration request: {data}")
+    logger.debug(f"Rover received configuration request: {data}")
 
     payload = {}
 
-    if "sleep_threshold" in data.keys():
-        value = data["sleep_threshold"]
+    if "sleep_time" in data.keys():
+        value = data["sleep_time"]
         if value:
             try:
                 value = float(value)
             except ValueError:
                 logger.error(f"Sleep threshold value {value} is not a float.")
-                return {"message": "failure: Sleep threshold value is not a float."}
+                return {"message": "failure: sleep_time value is not a float."}
 
-            payload["sleep_threshold"] = value
+            payload["sleep_time"] = value
 
-    if "enable_sleep" in data.keys():
-        value = data["enable_sleep"]
+    if "sleep_enable" in data.keys():
+        value = data["sleep_enable"]
         if value != "" or value is not None:
             try:
                 value = int(value)
@@ -122,12 +122,12 @@ def configure_sleep():
                 logger.error(f"Enable sleep value {value} is not 0 or 1.")
                 return {"message": "failure: Enable sleep value is not 0 or 1."}
             
-            payload["enable_sleep"] = value
+            payload["sleep_enable"] = value
 
     logger.debug("Passing forward payload: {}".format(payload))
 
     response = requests.post(
-        controller_address_base.format("configure_sleep"), json=payload
+        controller_address_base.format("config"), json=payload
     ).json()
 
     return response
