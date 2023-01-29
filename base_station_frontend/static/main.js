@@ -1,14 +1,23 @@
 (function () {
     window.addEventListener('DOMContentLoaded', function () {
-        var wake_button = document.getElementById("send-wakeup");
         var token_input = document.getElementById("api-token");
+        var rover_address = document.getElementById("rover-address");
+        var wake_status = document.getElementById("wake-status");
+        var rover_waypoint_url = "https://wildjames.com/rover/api/ping";
+        var wake_signal = false;
+        var wake_interval;
         var api_token = "";
 
+
         function pingRover() {
-            // Send a GET request to the controller server root
+            console.log("Pinging rover...");
+            // Get the API token from the input field
+            api_token = token_input.value;
+
+            // Send a GET request to the controller ping endpoint
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
-            xhr.open('GET', './api/ping', true);
+            xhr.open('GET', rover_waypoint_url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
@@ -17,16 +26,27 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
+                    wake_status.textContent = "🟢";
                 } else if (xhr.readyState === 4 && xhr.status != 200) {
                     console.log("Could not access API with that token");
                     valid_api_token = false;
+                    wake_status.textContent = "🔴";
                 }
             }
         }
 
         wake_button.addEventListener('click', function () {
-            api_token = token_input.value;
-            pingRover()
+            if (wake_signal) {
+                // set an interval function that pings the rover every 5 seconds
+                wake_interval = setInterval(pingRover, 5000);
+            } else {
+                // stop the timer
+                clearInterval(wake_interval);
+            }
+        });
+
+        rover_address.addEventListener("onchange", function () {
+            rover_waypoint_url = rover_address.value;
         });
 
         // Execute a function when the user presses a key on the keyboard

@@ -66,21 +66,20 @@
       <h1 class="u-text u-title u-text-1">Rover Base Station</h1>
       <p class="u-text u-text-2">
         The rover moves - so, it doesn't exactly have a static address. This page acts as a portal to the rover's server
-        page,
-        which is hosted on the rover itself. To save power, the rover will shut down after a period of inactivity, so
-        most of the time
-        the actual control server will not be reachable.
+        page, which is hosted on the rover itself. To save power, the rover will shut down after a period of inactivity,
+        so most of the time the actual control server will not be reachable.
       </p>
       <p class="u-text u-text-2">
         To tell the rover to wake up, click the button below. This will begin sending signals to the rover, and when it
-        wakes up next,
-        a response will be recieved and you can log into the control page. While the control page is open, the rover
-        will stay awake.
+        wakes up next, a response will be recieved and you can log into the control page. While the control page is
+        open, the rover will stay awake.
       </p>
       <form class="center" id="token_form" name="API_Token">
+        <label for="api_token">Rover Address: </label>
+        <input type=password id="rover-address" size="32" placeholder="Rover Address" />
         <label for="api_token">API Token: </label>
         <input type=password id="api-token" size="32" placeholder="API Token" />
-        <button id="send-wakeup">Wake Rover</button>
+        <lable id="wake-status">⚪</button>
       </form>
     </div>
   </section>
