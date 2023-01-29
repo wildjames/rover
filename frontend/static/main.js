@@ -381,6 +381,8 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
+                    var response = JSON.parse(xhr.responseText);
+                    console.log("Response: " + response);
                     valid_api_token = true;
                 } else if (xhr.readyState === 4 && xhr.status != 200) {
                     console.log("Could not access API with that token");
