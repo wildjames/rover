@@ -9,7 +9,7 @@ import threading
 
 
 # Time in seconds to go to sleep after inactivity.
-SLEEP_THRESHOLD = 30
+SLEEP_THRESHOLD = 300
 
 last_message = time.time()
 
@@ -41,4 +41,4 @@ def check_inactivity():
     time_to_next_check = SLEEP_THRESHOLD - delta_time
     logger.info("Will check for inactivity again in {:.3f} seconds".format(time_to_next_check))
     
-    threading.Timer(5, check_inactivity).start()
+    threading.Timer(time_to_next_check, check_inactivity).start()
