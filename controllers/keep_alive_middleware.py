@@ -11,7 +11,7 @@ import threading
 # Time in seconds to go to sleep after inactivity.
 SLEEP_THRESHOLD = 300
 # Enable variable
-ENABLE_SLEEP = True
+ENABLE_SLEEP = False
 
 last_message = time.time()
 
