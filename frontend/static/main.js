@@ -365,7 +365,7 @@
             }
 
             var packet = JSON.stringify({
-                "sleep_enabled": sleep_toggle.getAttribute("data-state"),
+                "sleep_enabled": sleep_toggle.getAttribute("data-state") == 1 ? 0 : 1,
                 "sleep_time": sleep_time.value
             });
             console.log("sending json:");
