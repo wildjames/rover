@@ -37,7 +37,7 @@ def check_inactivity():
     global last_message
 
     delta_time = time.time() - last_message
-    time_to_next_check = SLEEP_THRESHOLD - delta_time
+    time_to_next_check = (SLEEP_THRESHOLD - delta_time) / 2
 
     logger.info("Checking last activity... It has been {:.3f} seconds since a command".format(delta_time))
     if delta_time > SLEEP_THRESHOLD:
