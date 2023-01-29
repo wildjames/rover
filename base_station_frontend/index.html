@@ -74,17 +74,31 @@
         wakes up next, a response will be recieved and you can log into the control page. While the control page is
         open, the rover will stay awake.
       </p>
-      <form id="token_form" name="API_Token">
-        <p>
-          <label for="rover-address">Rover Address: </label>
-          <input type=url id="rover-address" size="32" placeholder="Rover Address" />
-        </p>
-        <p>
-          <label for="api_token">API Token: </label>
-          <input type=password id="api-token" size="32" placeholder="API Token" />
-          <label id="wake-status">⚪</button>
-        </p>
-      </form>
+
+      <table>
+        <form>
+          <tr>
+            <td>
+              <label for="rover-address">Rover Address: </label>
+            </td>
+            <td>
+              <input type=url id="rover-address" size="32" placeholder="Rover Address" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="api_token">API Token: </label>
+            </td>
+            <td>
+              <input type=password id="api-token" size="32" placeholder="API Token" />
+            </td>
+            <td>
+              <label id="wake-status">⚪</button>
+            </td>
+          </tr>
+        </form>
+      </table>
+
     </div>
   </section>
 

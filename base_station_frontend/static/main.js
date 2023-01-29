@@ -51,13 +51,17 @@
                 console.log("Wake signal is currently: " + wake_signal);
 
                 if (!wake_signal) {
+                    console.log("Creating a wake signal");
+                    pingRover();
                     // set an interval function that pings the rover every 5 seconds
                     wake_interval = setInterval(pingRover, 5000);
                     wake_signal = true;
                 } else {
+                    console.log("Stopping the wake signal");
                     // stop the timer
                     clearInterval(wake_interval);
                     wake_signal = false;
+                    wake_status.textContent = "⚪";
                 }
             }
         });
