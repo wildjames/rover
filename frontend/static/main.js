@@ -366,7 +366,7 @@
             }
 
             var packet = JSON.stringify({
-                "enable_sleep": sleep_toggle.getAttribute("data-state") == 1 ? 0 : 1,
+                "enable_sleep": sleep_toggle.getAttribute("data-state"),
                 "sleep_threshold": sleep_time.value
             });
             console.log("sending json:");
@@ -395,6 +395,7 @@
         sleep_toggle.addEventListener("click", function (event) {
             // suppress the default action of the button
             event.preventDefault();
+            sleep_toggle.setAttribute("data-state", sleep_toggle.getAttribute("data-state") === 1 ? 0 : 1);
             submit_sleep_config();
         });
 
