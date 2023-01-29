@@ -58,7 +58,7 @@
                     valid_api_token = false;
                 }
             }
-        }
+        };
 
         // Execute a function when the user presses a key on the keyboard
         token_input.addEventListener("keypress", function (event) {
