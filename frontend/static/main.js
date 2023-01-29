@@ -152,7 +152,9 @@
                     }
 
                     // update the sleep_enable state
-                    var sleep_enable = response.sleep_data.sleep_enabled;
+                    var sleep_enable = response.sleep_data.enable_sleep;
+                    console.log("Sleep enable: " + sleep_enable);
+                    sleep_enable = parseInt(sleep_enable);
                     sleep_toggle.setAttribute("data-state", sleep_enable);
                     if (sleep_enable) {
                         sleep_toggle.style.backgroundColor = 'red';
