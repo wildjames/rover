@@ -359,10 +359,7 @@
             }, 33);
         }, false);
 
-        sleep_toggle.addEventListener("click", function (event) {
-            // suppress the default action of the button
-            event.preventDefault();
-
+        function submit_sleep_config() {
             if (!valid_api_token) {
                 clear_button_styles();
                 return;
@@ -393,6 +390,17 @@
                     valid_api_token = false;
                 }
             }
+        }
+
+        sleep_toggle.addEventListener("click", function (event) {
+            // suppress the default action of the button
+            event.preventDefault();
+            submit_sleep_config();
+        });
+
+        sleep_time.addEventListener("submit", function (event) {
+            event.preventDefault();
+            submit_sleep_config();
         });
 
         // // Should detect gamepad connection and disconnection
