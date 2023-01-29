@@ -94,6 +94,8 @@ def system_info():
 def configure_sleep():
     data = request.json
 
+    logger.debug(f"Rover received sleep configuration request: {data}")
+
     payload = {}
 
     if "sleep_threshold" in data.keys():
