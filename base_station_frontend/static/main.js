@@ -3,6 +3,8 @@
         var token_input = document.getElementById("api-token");
         var rover_address = document.getElementById("rover-address");
         var wake_status = document.getElementById("wake-status");
+        var go_to_rover_button = document.getElementById("go-to-rover");
+
         var rover_waypoint_url = "https://wildjames.com/rover/";
         var wake_signal = false;
         var wake_interval;
@@ -51,6 +53,14 @@
                 wake_status.textContent = "⚪";
             }
         }
+
+        go_to_rover_button.addEventListener("click", function () {
+            console.log("Going to rover");
+            window.open(rover_waypoint_url, '_blank').focus();
+            if (wake_signal) {
+                wakeRover();
+            }
+        });
 
         rover_address.addEventListener("onchange", function () {
             console.log("Rover address changed to: " + rover_waypoint_url);
