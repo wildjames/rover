@@ -8,16 +8,16 @@ The rover design goal is to build a remote-controlled vehicle, that is capable o
 # Software
 
 The control software I'm building right now has the following stack:
-- Apache2 server
+- Nginx server
   - handles authentication and URL routing
 - Flask app
   - Frontend code, web interface
   - parses JSON input from the operator and passes commands to be executed to the hardware controller
-- Hardware controller script(s?)
+- Hardware controller script
   - Interfaces with the GPIO pins (requires root to do this)
   - runs its own HTTP server, with its own API. This, however, runs as root so is not publicly accessible.
 - Camera WebRTC host, `uv4l`
-  - Again, running it's own server. This one has to be publicly accessible, though.
+  - Again, running its own server. This one has to be publicly accessible, though.
 
 # Hardware
 
@@ -30,9 +30,11 @@ This [4G base station](https://www.waveshare.com/product/sim7600g-h-4g-dtu.htm) 
 - Operating current
   - idle: 10~30mA @12V
   - transmit: 80~450mA @12V (depending on the network condition)
-If I'm running off a LiPo bank, the voltage won't be an issue, but drawing 30mA even when idle might be a bit much. Not really a way around it though!
+If I'm running off a LiPo bank, the voltage won't be an issue, but drawing 30mA even when idle might be a bit much. Not really a way around it though! When powered down at least, I can cut the power to it completely.
 
 It might be fun to have a LoRa modem as well, as a backup in case I drive somewhere that means I lose signal. That way, so long as I know its rough coordinates, I can drive out and re-establish communications.
+
+I should 100% get some apple air tags and fuse them to the chassis somehow, as a backup.
 
 ## Motion
 
@@ -54,7 +56,7 @@ For reference, I can find 20W solar panels on [aliexpress](https://www.aliexpres
 
 From this estimate, I would guess that a relatively standard 4,000mAh LiPo (which typically costs about £100, ouch!) would run the thing for about an hour; (4 Ah * 12V) / 40W = 72 minutes. a 6C motor is aroun £60, here is a [two-pack](https://www.amazon.co.uk/HRB-4000mAh-Battery-Quadcopter-Helicopter/dp/B06XT6L382) on Amazon, or [one 6s](https://www.hobbyrc.co.uk/gnb-4000mah-6s-50c-lipo-battery) on hobbyking.
 
-I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather. [UPS](https://www.waveshare.com/ups-module-3s.htm)
+I should also get something to function as a mini UPS for the controller and modem. That way, I can still communicate with the rover even if I run the main batteries all the way down, which is likely. Especially if there's a run of poor weather. [UPS](https://www.waveshare.com/ups-module-3s.htm). That UPS turned out to be not very good. Instead, I'm going to go down the route of having an Arduino that cuts power to the pi when its idle
 
 ## Camera
 
@@ -76,7 +78,6 @@ rover@RoverPi:/usr/local/www/rover $ sudo service uv4l_raspicam restart
 I think it may be better to stream states and commands over WebRTC similar to video... This may be somewhat tricky to learn though.
 
 ## TODO
-- Fix apache
 - Write a motor interface - xbox controllers?
 - WebRTC LED states?
 - WebRTC LED control?
@@ -108,32 +109,6 @@ pip install -r requirements.txt
 ```
 
 Set up the git instance with an SSH key. Then, clone this repo.
-
-## Install `uv4l`
-[Original instructions](https://www.linux-projects.org/uv4l/installation/)
-
-```
-sudo rpi-update
-echo /opt/vc/lib/ | sudo tee /etc/ld.so.conf.d/vc.conf
-sudo ldconfig
-```
-
-Then, using the `sudo raspi-config` tool, enable legacy camera support. While you're there, increase the GPU memory to its maximum value.
-Then, add the repo to `apt`
-```
-curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
-echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
-sudo apt-get update
-sudo apt-get install -y uv4l-webrtc uv4l-raspicam-extras
-sudo service uv4l_raspicam restart
-```
-
-Then, install my configuration for the webRTC server
-```
-sudo cp setup/uv4l-raspicam.conf /etc/uv4l/
-sudo service uv4l_raspicam enable
-sudo service uv4l_raspicam restart
-```
 
 
 ## Start the hardware controller:
@@ -182,4 +157,30 @@ sudo ln -s /etc/nginx/sites-available/rover_server.nginx .
 and reload nginx
 ```
 sudo systemctl reload nginx
+```
+
+
+## Install `uv4l`
+[Original instructions](https://www.linux-projects.org/uv4l/installation/)
+
+```
+sudo rpi-update
+echo /opt/vc/lib/ | sudo tee /etc/ld.so.conf.d/vc.conf
+sudo ldconfig
+```
+
+Then, using the `sudo raspi-config` tool, enable legacy camera support. While you're there, increase the GPU memory to its maximum value.
+Then, add the repo to `apt`
+```
+curl https://www.linux-projects.org/listing/uv4l_repo/lpkey.asc | sudo apt-key add -
+echo "deb https://www.linux-projects.org/listing/uv4l_repo/raspbian/stretch stretch main" | sudo tee /etc/apt/sources.list.d/uv4l.list
+sudo apt-get update
+sudo apt-get install -y uv4l uv4l-raspicam
+sudo apt-get install -y uv4l uv4l-server uv4l-uvc uv4l-server uv4l-webrtc uv4l-xmpp-bridge
+```
+
+Then, install my configuration for the webRTC server and reboot the computer to force a clean state
+```
+sudo cp setup/uv4l-raspicam.conf /etc/uv4l/
+sudo reboot
 ```
