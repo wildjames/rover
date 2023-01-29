@@ -124,6 +124,8 @@ def configure_sleep():
             
             payload["enable_sleep"] = value
 
+    logger.debug("Passing forward payload: {}".format(payload))
+
     response = requests.post(
         controller_address_base.format("configure_sleep"), json=payload
     ).json()
