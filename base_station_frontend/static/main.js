@@ -8,6 +8,7 @@
         var wake_interval;
         var api_token = "";
 
+        rover_address.value = rover_waypoint_url;
 
         function pingRover() {
             console.log("Pinging rover at " + rover_waypoint_url);
@@ -36,8 +37,8 @@
         }
 
         rover_address.addEventListener("onchange", function () {
-            rover_waypoint_url = rover_address.value + "/api/ping";
             console.log("Rover address changed to: " + rover_waypoint_url);
+            rover_waypoint_url = rover_address.value + "/api/ping";
         });
 
         // Execute a function when the user presses a key on the keyboard
