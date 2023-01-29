@@ -6,11 +6,12 @@
         var go_to_rover_button = document.getElementById("go-to-rover");
 
         var rover_waypoint_url = "https://wildjames.com/rover/";
+        var waypoint_ping_suffix = "/api/ping";
         var wake_signal = false;
         var wake_interval;
         var api_token = "";
 
-        rover_address.value = rover_waypoint_url;
+        rover_address.value = rover_waypoint_url + waypoint_ping_suffix;
 
         function pingRover() {
             console.log("Pinging rover at " + rover_waypoint_url);
@@ -64,7 +65,7 @@
 
         rover_address.addEventListener("onchange", function () {
             console.log("Rover address changed to: " + rover_waypoint_url);
-            rover_waypoint_url = rover_address.value + "/api/ping";
+            rover_waypoint_url = rover_address.value + waypoint_ping_suffix;
         });
 
         // Execute a function when the user presses a key on the keyboard
