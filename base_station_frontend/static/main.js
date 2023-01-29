@@ -36,6 +36,22 @@
             }
         }
 
+        function wakeRover() {
+            if (!wake_signal) {
+                console.log("Creating a wake signal");
+                pingRover();
+                // set an interval function that pings the rover every 5 seconds
+                wake_interval = setInterval(pingRover, 5000);
+                wake_signal = true;
+            } else {
+                console.log("Stopping the wake signal");
+                // stop the timer
+                clearInterval(wake_interval);
+                wake_signal = false;
+                wake_status.textContent = "⚪";
+            }
+        }
+
         rover_address.addEventListener("onchange", function () {
             console.log("Rover address changed to: " + rover_waypoint_url);
             rover_waypoint_url = rover_address.value + "/api/ping";
@@ -48,22 +64,13 @@
                 // Cancel the default action
                 event.preventDefault();
                 console.log("Enter key pressed");
-                console.log("Wake signal is currently: " + wake_signal);
 
-                if (!wake_signal) {
-                    console.log("Creating a wake signal");
-                    pingRover();
-                    // set an interval function that pings the rover every 5 seconds
-                    wake_interval = setInterval(pingRover, 5000);
-                    wake_signal = true;
-                } else {
-                    console.log("Stopping the wake signal");
-                    // stop the timer
-                    clearInterval(wake_interval);
-                    wake_signal = false;
-                    wake_status.textContent = "⚪";
-                }
+                wakeRover();
             }
+        });
+
+        wake_status.addEventListener("click", function () {
+            wakeRover();
         });
     });
 })();
