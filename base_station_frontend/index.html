@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="keywords" content="">
   <meta name="description" content="">
-  <title>Rover Flask</title>
+  <title>Rover BaseStation</title>
 
   <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
   <link rel="stylesheet" href="./static/style.css">
@@ -72,9 +72,9 @@
       <p class="u-text u-text-2">
         To tell the rover to wake up, click the button below. This will begin sending signals to the rover, and when it
         wakes up next, a response will be recieved and you can log into the control page. While the control page is
-        open, the rover will stay awake.
+        open, the rover will stay awake. Be warned - since I serve the rover control page via CloudFlare, a cached
+        version of the site might be available even if the robot is offline!
       </p>
-
       <table>
         <form>
           <tr>
