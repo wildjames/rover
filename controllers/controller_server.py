@@ -107,7 +107,7 @@ def configure_sleep():
     
     if "enable_sleep" in data:
         logger.info("Received enable_sleep: {}".format(data["enable_sleep"]))
-        ENABLE_SLEEP = data["enable_sleep"].lower() == "true"
+        ENABLE_SLEEP = bool(data["enable_sleep"])
         logger.info("Set enable_sleep to {}".format(ENABLE_SLEEP))
 
     return {"message": "success"}

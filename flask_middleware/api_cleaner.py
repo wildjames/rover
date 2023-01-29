@@ -97,9 +97,28 @@ def configure_sleep():
     payload = {}
 
     if "sleep_threshold" in data.keys():
-        payload["sleep_threshold"] = data["sleep_threshold"]
+        value = data["sleep_threshold"]
+        try:
+            value = float(value)
+        except ValueError:
+            logger.error(f"Sleep threshold value {value} is not a float.")
+            return {"message": "failure: Sleep threshold value is not a float."}
+
+        payload["sleep_threshold"] = value
+
     if "enable_sleep" in data.keys():
-        payload["enable_sleep"] = data["enable_sleep"]
+        value = data["enable_sleep"]
+        try:
+            value = int(value)
+        except ValueError:
+            logger.error(f"Enable sleep value {value} is not an int.")
+            return {"message": "failure: Enable sleep value is not an int."}
+
+        if not (value == 0 or value == 1):
+            logger.error(f"Enable sleep value {value} is not 0 or 1.")
+            return {"message": "failure: Enable sleep value is not 0 or 1."}
+        
+        payload["enable_sleep"] = value
 
     response = requests.post(
         controller_address_base.format("configure_sleep"), json=payload
