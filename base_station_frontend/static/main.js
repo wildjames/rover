@@ -5,23 +5,23 @@
         var wake_status = document.getElementById("wake-status");
         var go_to_rover_button = document.getElementById("go-to-rover");
 
-        var rover_waypoint_url = "https://wildjames.com/rover/";
+        var rover_waypoint_url = "https://wildjames.com/rover";
         var waypoint_ping_suffix = "/api/ping";
         var wake_signal = false;
         var wake_interval;
         var api_token = "";
 
-        rover_address.value = rover_waypoint_url + waypoint_ping_suffix;
+        rover_address.value = rover_waypoint_url;
 
         function pingRover() {
-            console.log("Pinging rover at " + rover_waypoint_url);
+            console.log("Pinging rover at " + rover_waypoint_url + waypoint_ping_suffix);
             // Get the API token from the input field
             api_token = token_input.value;
 
             // Send a GET request to the controller ping endpoint
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
-            xhr.open('GET', rover_waypoint_url, true);
+            xhr.open('GET', rover_waypoint_url + waypoint_ping_suffix, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
@@ -65,7 +65,7 @@
 
         rover_address.addEventListener("onchange", function () {
             console.log("Rover address changed to: " + rover_waypoint_url);
-            rover_waypoint_url = rover_address.value + waypoint_ping_suffix;
+            rover_waypoint_url = rover_address.value;
         });
 
         // Execute a function when the user presses a key on the keyboard
