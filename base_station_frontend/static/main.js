@@ -3,7 +3,7 @@
         var token_input = document.getElementById("api-token");
         var rover_address = document.getElementById("rover-address");
         var wake_status = document.getElementById("wake-status");
-        var rover_waypoint_url = "https://wildjames.com/rover/api/ping";
+        var rover_waypoint_url = "https://wildjames.com/rover/";
         var wake_signal = false;
         var wake_interval;
         var api_token = "";
@@ -35,18 +35,8 @@
             }
         }
 
-        wake_button.addEventListener('click', function () {
-            if (wake_signal) {
-                // set an interval function that pings the rover every 5 seconds
-                wake_interval = setInterval(pingRover, 5000);
-            } else {
-                // stop the timer
-                clearInterval(wake_interval);
-            }
-        });
-
         rover_address.addEventListener("onchange", function () {
-            rover_waypoint_url = rover_address.value;
+            rover_waypoint_url = rover_address.value + "/api/ping";
         });
 
         // Execute a function when the user presses a key on the keyboard
@@ -56,8 +46,15 @@
                 // Cancel the default action
                 event.preventDefault();
 
-                api_token = token_input.value;
-                pingRover();
+                if (wake_signal) {
+                    // set an interval function that pings the rover every 5 seconds
+                    wake_interval = setInterval(pingRover, 5000);
+                    wake_signal = true;
+                } else {
+                    // stop the timer
+                    clearInterval(wake_interval);
+                    wake_signal = false;
+                }
             }
         });
     });
