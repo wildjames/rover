@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-import werkzeug
+import os
 
 import led_control
 import motor_control
@@ -18,11 +18,13 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-if werkzeug.serving.is_running_from_reloader():
-    check_inactivity()
 
 # Flask app setup
 app = Flask(__name__)
+
+# Run the activity monitor if we are NOT in the main thread, if the reloader is enabled.
+if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+    check_inactivity()
 
 # Motor setup
 ESC_pins = [12]
