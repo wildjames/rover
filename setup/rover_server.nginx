@@ -40,15 +40,15 @@ server {
 		proxy_set_header X-Forwarded-Prefix /api;
 	}
 
-	location /video/ {
-		proxy_pass https://roverpi.local:1002/;
+	location /video {
+		proxy_pass https://roverpi.local:8090/stream/webrtc;
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "upgrade";
 	}
 
 	location /uv4l {
-		proxy_pass http://roverpi.local:8888/;
+		proxy_pass https://roverpi.local:8888/;
 	}
 
 	# deny access to .htaccess files, if Apache's document root
