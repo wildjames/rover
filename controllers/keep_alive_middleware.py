@@ -23,7 +23,7 @@ def keep_alive(f):
         global last_message
         
         delta_time = time.time() - last_message
-        logger.debug("It has been {:.3f} seconds since the last message".format(delta_time))
+        logger.debug("Recieved a message that registers as keepalive activity.")
         last_message = time.time()
 
         return f(*args, **kwargs)
@@ -37,7 +37,9 @@ def check_inactivity():
     global last_message
 
     delta_time = time.time() - last_message
-    time_to_next_check = (SLEEP_THRESHOLD - delta_time) / 2
+    
+    # Add 10 seconds to the earliest time I would sleep.
+    time_to_next_check = (SLEEP_THRESHOLD - delta_time) + 10 
 
     logger.info("Checking last activity... It has been {:.3f} seconds since a command".format(delta_time))
     if delta_time > SLEEP_THRESHOLD:
