@@ -32,16 +32,16 @@
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
                     wake_status.textContent = "🟢";
+                    return;
                 } else if (xhr.readyState === 4) {
                     console.log("Could not access API with that token");
                     valid_api_token = false;
                     wake_status.textContent = "🔴";
+                    return;
                 }
 
-                if (wake_signal) {
-                    // Catch a race condition
-                    wake_status.textContent = "⚪";
-                }
+                // Catch a race condition
+                wake_status.textContent = "⚪";
             }
         }
 
