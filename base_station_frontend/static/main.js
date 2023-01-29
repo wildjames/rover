@@ -10,7 +10,7 @@
 
 
         function pingRover() {
-            console.log("Pinging rover...");
+            console.log("Pinging rover at " + rover_waypoint_url);
             // Get the API token from the input field
             api_token = token_input.value;
 
