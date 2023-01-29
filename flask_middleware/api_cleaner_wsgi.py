@@ -1,4 +1,14 @@
 #! /usr/bin/python3
+import logging
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(
+    filename="/home/rover/log/rover_flask.log",
+    filemode="a",
+    format="[%(asctime)s] %(levelname)-8s    %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=logging.DEBUG,
+)
 
 import sys
 import os
@@ -14,5 +24,3 @@ from api_cleaner import app as application
 application.wsgi_app = ProxyFix(
     application.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
 )
-import logging
-logging.basicConfig(stream=sys.stdout)

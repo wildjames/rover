@@ -1,5 +1,7 @@
-from functools import wraps
 import logging
+logger = logging.getLogger(__name__)
+
+from functools import wraps
 
 from flask import request, abort
 from flask import current_app
@@ -20,7 +22,7 @@ def token_required(f):
                 }, 401
 
         else:
-            logging.debug("No token found in headers")
+            logger.debug("No token found in headers")
             return {
                 "message": "Authentication Token is missing!",
                 "data": None,
@@ -28,7 +30,7 @@ def token_required(f):
             }, 401
 
         if token != current_app.config["SECRET_KEY"]:
-            logging.debug(
+            logger.debug(
                 f"Token found in headers, but is incorrect. Recieved: {token} | Expected: {current_app.config['SECRET_KEY']}"
             )
             return {
