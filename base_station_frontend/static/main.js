@@ -47,8 +47,9 @@
                 // Cancel the default action
                 event.preventDefault();
                 console.log("Enter key pressed");
+                console.log("Wake signal is currently: " + wake_signal);
 
-                if (wake_signal) {
+                if (!wake_signal) {
                     // set an interval function that pings the rover every 5 seconds
                     wake_interval = setInterval(pingRover, 5000);
                     wake_signal = true;
