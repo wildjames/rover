@@ -1,6 +1,7 @@
 (function () {
 
     window.addEventListener('DOMContentLoaded', function () {
+        var form = document.getElementById("config-form");
         var token_input = document.getElementById("api-token");
 
         var sleep_toggle = document.getElementById("enable-shutdown");
@@ -8,6 +9,14 @@
 
         var save_button = document.getElementById("save-button");
 
+        
+        function handleForm(event) { 
+            event.preventDefault();
+            save();
+        } 
+        
+        form.addEventListener('submit', handleForm);
+        
 
         function save() {
             console.log("Saving...");
@@ -23,9 +32,10 @@
 
             console.log("Sending data");
             console.log(data);
+            console.log("Token: " + token);
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/config", true);
+            xhr.open("POST", "./api/config", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader('Authorization', 'Bearer ' + token);
             xhr.send(JSON.stringify(data));

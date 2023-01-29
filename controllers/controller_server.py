@@ -84,9 +84,9 @@ def system_info():
     return info_dict
 
 
-@app.route("/configure_sleep", methods=["POST"])
+@app.route("/config", methods=["POST"])
 @keep_alive_middleware.keep_alive
-def configure_sleep():
+def config():
     """Sets the inactivity timeout for the keep alive middleware.
     
     JSON payload:
@@ -99,18 +99,18 @@ def configure_sleep():
     """
     global keep_alive_middleware
 
-    logger.debug("Received sleep configuration")
+    logger.debug("Received configuration")
     logger.debug("Request data: {}".format(request.json))
 
     data = request.json
     
-    if "sleep_threshold" in data:
-        keep_alive_middleware.SLEEP_THRESHOLD = data["sleep_threshold"]
+    if "sleep_time" in data:
+        keep_alive_middleware.SLEEP_THRESHOLD = data["sleep_time"]
         logger.info("Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD))
     
-    if "enable_sleep" in data:
-        logger.info("Received enable_sleep: {}".format(data["enable_sleep"]))
-        keep_alive_middleware.ENABLE_SLEEP = bool(data["enable_sleep"])
+    if "sleep_enable" in data:
+        logger.info("Received enable_sleep: {}".format(data["sleep_enable"]))
+        keep_alive_middleware.ENABLE_SLEEP = bool(data["sleep_enable"])
         logger.info("Set enable_sleep to {}".format(keep_alive_middleware.ENABLE_SLEEP))
     
     return {"message": "success"}
