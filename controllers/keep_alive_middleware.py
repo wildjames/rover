@@ -34,7 +34,7 @@ def check_inactivity():
     If it's been more than SLEEP_THRESHOLD seconds, send the computer to sleep."""
     delta_time = time.time() - last_message
     
-    logger.info("Checking last activity... It has been {:.3f} seconds.")
+    logger.info("Checking last activity... It has been {:.3f} seconds.".format(delta_time))
     if delta_time > SLEEP_THRESHOLD:
         logger.warning("I NEED TO SLEEP")
     
