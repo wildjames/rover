@@ -38,4 +38,4 @@ def check_inactivity():
     if delta_time > SLEEP_THRESHOLD:
         logger.warning("I NEED TO SLEEP")
     
-    threading.Timer(10, check_inactivity).start()
+    threading.Timer(1, check_inactivity).start()
