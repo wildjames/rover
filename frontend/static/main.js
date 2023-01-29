@@ -9,7 +9,7 @@
         var isStreaming = false;
         var stream_toggle = document.getElementById('streaming_toggle');
 
-        var token_input = document.getElementById("api_token")
+        var token_input = document.getElementById("api_token");
         var api_token = "";
         var valid_api_token = false;
 

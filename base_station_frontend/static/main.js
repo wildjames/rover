@@ -6,19 +6,6 @@
         var token_input = document.getElementById("api-token");
         var api_token = "";
         
-        // Execute a function when the user presses a key on the keyboard
-        token_input.addEventListener("keypress", function (event) {
-            // If the user presses the "Enter" key on the keyboard
-            if (event.key === "Enter") {
-                // Cancel the default action
-                event.preventDefault();
-        
-                api_token = token_input.value;
-                pingRover();
-            }
-        });
-
-
         function pingRover() {
             // Send a GET request to the controller server root
             var xhr = new XMLHttpRequest();
@@ -40,8 +27,23 @@
         }
 
         wake_button.addEventListener('click', function () {
+            api_token = token_input.value;
             pingRover();
         });
+
+        // Execute a function when the user presses a key on the keyboard
+        token_input.addEventListener("keypress", function (event) {
+            // If the user presses the "Enter" key on the keyboard
+            if (event.key === "Enter") {
+                // Cancel the default action
+                event.preventDefault();
+        
+                api_token = token_input.value;
+                pingRover();
+            }
+        });
+
+
     });
 
 }());
