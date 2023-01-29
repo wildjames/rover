@@ -32,7 +32,7 @@
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
                     wake_status.textContent = "🟢";
-                } else if (xhr.readyState === 4 && xhr.status != 200) {
+                } else if (xhr.readyState === 4) {
                     console.log("Could not access API with that token");
                     valid_api_token = false;
                     wake_status.textContent = "🔴";
