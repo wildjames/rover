@@ -111,7 +111,7 @@ def configure_sleep():
 
     if "enable_sleep" in data.keys():
         value = data["enable_sleep"]
-        if value:
+        if value != "" or value is not None:
             try:
                 value = int(value)
             except ValueError:
