@@ -1,4 +1,5 @@
 import logging
+
 logger = logging.getLogger(__name__)
 
 from typing import Dict
@@ -17,20 +18,20 @@ controller_address_base = "http://localhost:8001/{}"
 # If a token exists, use it. Otherwise, generate one.
 token_location = os.path.join(os.path.dirname(__file__), "token.txt")
 if os.path.exists(token_location):
-    with open(token_location, 'r') as f:
+    with open(token_location, "r") as f:
         token = f.read().strip()
 else:
     import random
-    
+
     chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@£$%^&*"
     token = "".join(random.choices(chars, k=32))
-    with open(token_location, 'w') as f:
+    with open(token_location, "w") as f:
         f.write(token)
 
 
 # Flask app setup
 app = Flask(__name__)
-app.config['SECRET_KEY'] = token
+app.config["SECRET_KEY"] = token
 CORS(app)
 
 
@@ -69,10 +70,12 @@ def index():
     return render_template("index.html", status_message=status_message)
 
 
-@app.route("/ping")
+@app.route("/ping", methods=["GET"])
 @token_required
 def ping():
-    return "pong"
+    logger.info("Received ping request")
+    response = requests.get(controller_address_base.format("ping")).json()
+    return response
 
 
 @app.route("/system_info")

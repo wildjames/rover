@@ -1,5 +1,6 @@
 import logging
 logger = logging.getLogger(__name__)
+
 logging.basicConfig(
     filename="/home/rover/log/rover_controller.log",
     filemode="a",
@@ -39,7 +40,7 @@ motors: List[motor_control.ESCController] = [
 @keep_alive
 def ping():
     """Returns a JSON object containing a message."""
-    logging.info("Received ping request")
+    logger.info("Received ping request")
     return {"message": "pong"}
 
 
@@ -74,7 +75,7 @@ def system_info():
 
     info_dict["motor_data"]["motor_states"]= payload
 
-    logging.info("Returning system info: {}".format(info_dict))
+    logger.info("Returning system info: {}".format(info_dict))
 
     return info_dict
 
@@ -84,14 +85,14 @@ def system_info():
 def motor_init():
     global motors
 
-    logging.info("Initializing ESCs")
+    logger.info("Initializing ESCs")
     try:
         for esc in motors:
             # Create an ESC object to control the ESC on pin 18.
             esc.init()
 
     except Exception as e:
-        logging.exception("Failed to initialize ESCs")
+        logger.exception("Failed to initialize ESCs")
         return {"message": f"failure: {e}"}
 
     return {"message": "success"}
@@ -103,7 +104,7 @@ def motor_close():
     global motors
 
     for m in motors:
-        logging.info("Closing ESC on pin {}".format(m.pwm.pin))
+        logger.info("Closing ESC on pin {}".format(m.pwm.pin))
         m.close()
 
     return {"message": "success"}
@@ -115,9 +116,9 @@ def motor_arm():
     global motors
 
     for m in motors:
-        logging.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
+        logger.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
         m.arm()
-        logging.info("Done")
+        logger.info("Done")
 
     return {"message": "success"}
 
@@ -130,16 +131,16 @@ def motor_calibrate():
     req_obj = request.json
     to_calibrate = req_obj["target"]
 
-    logging.info("Received motor calibration for index: {}".format(req_obj))
+    logger.info("Received motor calibration for index: {}".format(req_obj))
 
     for index in to_calibrate:
         if not motors[index]:
             return {"message": "failure: Motor index {} does not exist".format(index)}
 
     for index in to_calibrate:
-        logging.info("Calibrating motor at index {}".format(index))
+        logger.info("Calibrating motor at index {}".format(index))
         m = motors[index]
-        logging.info("Motor is on pin {}".format(m.pwm.pin))
+        logger.info("Motor is on pin {}".format(m.pwm.pin))
         m.calibrate()
 
     return {"message": "success"}
@@ -156,7 +157,7 @@ def motor_command():
     req_obj = request.json
     command = req_obj["targets"]
 
-    logging.info("Received motor command pairs (index, state): {}".format(command))
+    logger.info("Received motor command pairs (index, state): {}".format(command))
 
     for index, state in command:
         if not motors[index]:
@@ -169,7 +170,7 @@ def motor_command():
         for index, state in command:
             motors[index].set_speed(state)
     except:
-        logging.exception("Failed to set motor speed")
+        logger.exception("Failed to set motor speed")
         return {"message": "failure: Controller could not set motor speed"}
 
     return {"message": "success"}
@@ -202,7 +203,7 @@ def motor_panic():
 def led_command():
     req_obj = request.json
 
-    logging.info("Received LED command pairs (index, state): {}".format(req_obj))
+    logger.info("Received LED command pairs (index, state): {}".format(req_obj))
 
     for led, state in req_obj:
         if not led_control.set_led_state(led, state):
