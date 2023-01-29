@@ -97,6 +97,8 @@ def configure_sleep():
 
     both are optional.
     """
+    global SLEEP_THRESHOLD, ENABLE_SLEEP
+
     logger.info("Received inactivity timeout request")
 
     data = request.json
