@@ -13,9 +13,6 @@
         var api_token = "";
         var valid_api_token = false;
 
-        var sleep_toggle = document.getElementById("sleep-enabled");
-        var sleep_time = document.getElementById("sleep-time");
-
         var led0 = document.getElementById('led0');
         var led1 = document.getElementById('led1');
         var led2 = document.getElementById('led2');
@@ -391,18 +388,6 @@
                 }
             }
         }
-
-        sleep_toggle.addEventListener("click", function (event) {
-            // suppress the default action of the button
-            event.preventDefault();
-            sleep_toggle.setAttribute("data-state", sleep_toggle.getAttribute("data-state") === 1 ? 0 : 1);
-            submit_sleep_config();
-        });
-
-        sleep_time.addEventListener("submit", function (event) {
-            event.preventDefault();
-            submit_sleep_config();
-        });
 
         // // Should detect gamepad connection and disconnection
         // const gamepads = {};
