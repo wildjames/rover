@@ -18,4 +18,6 @@ def keep_alive(f):
         
         last_message = current_time
 
+        return f(*args, **kwargs)
+
     return decorated
