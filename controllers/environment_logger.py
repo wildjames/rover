@@ -31,7 +31,7 @@ def log_environment():
         with open(LOGFILE, "w") as f:
             f.write("variable,timestamp,value\n")
 
-    logger.debug("Appending environment data to file.")
+    logger.debug(f"Appending environment data to file: {LOGFILE}")
     with open(LOGFILE, "a") as f:
         # Gather data
         f.write(
@@ -49,6 +49,7 @@ def log_environment():
                 datetime.now().isoformat(), psutil.virtual_memory().percent
             )
         )
+    logger.debug("Finished appending environment data to file.")
 
     # Schedule the next run
     if LOG_THREAD is not None:
