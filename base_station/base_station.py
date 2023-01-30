@@ -41,14 +41,17 @@ def receive_data():
     # Then, since the file will contain many duplicate entries, it is sorted and duplicates are removed.
     logger.debug("Removing duplicates from local logs")
     with open(LOGLOCATION, "r", encoding="utf-8") as f:
-        lines = [line.split(",") for line in f.readlines()]
-
+        lines = f.readlines()
     lines = list(set(lines))
+
+    logger.debug("Sorting by timestamp")
+    lines = [l.split(",") for l in lines]
     lines.sort(key=lambda x: x[1])
 
     logger.debug("Saving local logs")
     with open(LOGLOCATION, "w", encoding="utf-8") as f:
-        f.writelines(lines)
+        for line in lines:
+            f.write(",".join(line))
 
     logger.debug("OK")
 
