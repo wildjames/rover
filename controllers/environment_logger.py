@@ -51,11 +51,6 @@ def log_environment():
         )
     logger.debug("Finished appending environment data to file.")
 
-    # Schedule the next run
-    if LOG_THREAD is not None:
-        logger.debug("Existing log thread found. Cancelling.")
-        LOG_THREAD.cancel()
-
     LOG_THREAD = threading.Timer(LOG_INTERVAL, log_environment)
     LOG_THREAD.start()
 
@@ -69,11 +64,6 @@ def upload_logs():
     # The base station will then parse the file and store it in a database.
     resp = requests.post(UPLOAD_ADDRESS, files={"file": open(LOGFILE, "rb")})
     logger.debug("Response from base station: {}".format(resp.text))
-
-    # Schedule the next run
-    if UPLOAD_THREAD is not None:
-        logger.debug("Existing upload thread found. Cancelling.")
-        UPLOAD_THREAD.cancel()
 
     UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs)
     UPLOAD_THREAD.start()
