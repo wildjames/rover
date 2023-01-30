@@ -2,14 +2,14 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
+from datetime import datetime, timedelta
 from typing import Dict
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
 import os
 
-LOGLOCATION = "/home/pi/rover/log/rover_environment.log"
+LOGLOCATION = "/home/pi/rover/log/rover_environment_{}.log"
 
 logger.info("Loading flask script")
 
@@ -27,7 +27,10 @@ def receive_data():
     logger.info("Received log file update")
     file = request.get_data()
 
-    # The file is uploaded using the request.files dictionary
+    time = datetime.now()
+    monday = time - timedelta(days=time.weekday())
+    weekstring = monday.strftime("%Y-%m-%d")
+    filename = LOGLOCATION.format(weekstring)
 
     # The file is transmitted using open(filename, "rb") on the client side.
     # This means that the file is transmitted as a byte stream.
@@ -35,12 +38,12 @@ def receive_data():
     # The file is decoded using the utf-8 encoding.
     # The file is then saved to the server.
     logger.debug("Appending recieved file to local logs")
-    with open(LOGLOCATION, "a", encoding="utf-8") as f:
+    with open(filename, "a", encoding="utf-8") as f:
         f.write(file.decode("utf-8"))
 
     # Then, since the file will contain many duplicate entries, it is sorted and duplicates are removed.
     logger.debug("Removing duplicates from local logs")
-    with open(LOGLOCATION, "r", encoding="utf-8") as f:
+    with open(filename, "r", encoding="utf-8") as f:
         lines = f.readlines()
     lines = list(set(lines))
 
@@ -49,7 +52,7 @@ def receive_data():
     lines.sort(key=lambda x: x[1])
 
     logger.debug("Saving local logs")
-    with open(LOGLOCATION, "w", encoding="utf-8") as f:
+    with open(filename, "w", encoding="utf-8") as f:
         for line in lines:
             f.write(",".join(line))
 

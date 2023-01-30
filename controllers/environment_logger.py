@@ -6,6 +6,7 @@ import gpiozero
 import os
 import threading
 from datetime import datetime
+
 import psutil
 import requests
 
@@ -26,10 +27,6 @@ def log_environment():
         <variablename>,<timestamp>,<value>
     """
     global LOG_THREAD
-
-    if not os.path.exists(LOGFILE):
-        with open(LOGFILE, "w") as f:
-            f.write("variable,timestamp,value\n")
 
     logger.debug(f"Appending environment data to file: {LOGFILE}")
     with open(LOGFILE, "a") as f:
