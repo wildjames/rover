@@ -10,7 +10,7 @@ from datetime import datetime
 import psutil
 import requests
 
-LOGFILE = "/home/rover/log/rover_environment.log"
+LOGFILE = "/home/rover/rover/log/rover_environment.log"
 LOG_INTERVAL = 60
 LOG_PURGE_INTERVAL = 60 * 60 * 24 * 7  # 1 week
 LOG_THREAD: threading.Thread = None
