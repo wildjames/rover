@@ -253,4 +253,4 @@ def led_command():
 
 
 if __name__ in "__main__":
-    app.run(host="localhost", port=8001, use_reloader=True, threaded=True, debug=True)
+    app.run(host="localhost", port=8001, use_reloader=False, threaded=False, debug=True)
