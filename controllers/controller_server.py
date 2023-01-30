@@ -89,10 +89,10 @@ def system_info():
 def config():
     """Sets the inactivity timeout for the keep alive middleware.
     
-    JSON payload:
+    JSON payload can have:
     {
-        "timeout": <int>,
-        "enable_sleep": <bool>
+        "sleep_time": <int>,
+        "sleep_enable": <bool>
     }
 
     both are optional.

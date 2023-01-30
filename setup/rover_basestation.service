@@ -1,0 +1,14 @@
+[Unit]
+Description=Rover Flask Middleware Service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=pi
+ExecStart=/usr/bin/gunicorn -c /home/rover/rover/base_station/base_station_wsgi.py --forwarded-allow-ips="*" "api_cleaner:app"
+
+[Install]
+WantedBy=multi-user.target
