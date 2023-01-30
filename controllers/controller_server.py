@@ -16,6 +16,7 @@ import os
 import led_control
 import motor_control
 import keep_alive_middleware 
+import environment_logger
 
 from flask import Flask, request
 
@@ -78,6 +79,14 @@ def system_info():
         )
 
     info_dict["motor_data"]["motor_states"]= payload
+
+    # Fetch the environment sensor data
+    environment_data = ""
+    if os.path.exists(environment_logger.LOGFILE):
+        with open(environment_logger.LOGFILE, "r") as f:
+            environment_data = f.read()
+    
+    info_dict["environment_data"] = environment_data
 
     logger.info("Returning system info: {}".format(info_dict))
 

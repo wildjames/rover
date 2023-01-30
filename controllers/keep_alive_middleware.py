@@ -14,6 +14,8 @@ SLEEP_THRESHOLD = 300
 # Enable variable
 ENABLE_SLEEP = False
 
+SLEEP_THREAD = None
+
 last_message = time.time()
 
 
@@ -23,11 +25,8 @@ def keep_alive(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         global last_message
-
-        delta_time = time.time() - last_message
         logger.debug("Recieved a message that registers as keepalive activity.")
         last_message = time.time()
-
         return f(*args, **kwargs)
 
     return decorated
@@ -37,6 +36,7 @@ def check_inactivity():
     """Check how long its been since the last activity.
     If it's been more than SLEEP_THRESHOLD seconds, send the computer to sleep."""
     global last_message
+    global SLEEP_THREAD
 
     delta_time = time.time() - last_message
 
@@ -69,4 +69,8 @@ def check_inactivity():
         "Will check for inactivity again in {:.3f} seconds".format(time_to_next_check)
     )
 
-    threading.Timer(time_to_next_check, check_inactivity).start()
+    if SLEEP_THREAD is not None:
+        SLEEP_THREAD.cancel()
+
+    SLEEP_THREAD = threading.Timer(time_to_next_check, check_inactivity)
+    SLEEP_THREAD.start()
