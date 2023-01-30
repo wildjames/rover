@@ -14,7 +14,7 @@ LOG_INTERVAL = 60
 LOG_PURGE_INTERVAL = 60 * 60 * 24 * 7  # 1 week
 LOG_THREAD: threading.Thread = None
 
-UPLOAD_ADDRESS = "https://wildjames.com/rover/receive_data"
+UPLOAD_ADDRESS = "https://wildjames.com/base/receive_data"
 UPLOAD_INTERVAL = 300  # seconds
 UPLOAD_THREAD: threading.Thread = None
 
