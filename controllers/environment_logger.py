@@ -14,7 +14,7 @@ LOG_INTERVAL = 60
 LOG_PURGE_INTERVAL = 60 * 60 * 24 * 7  # 1 week
 LOG_THREAD: threading.Thread = None
 
-UPLOAD_ADDRESS = "http://wildjames.com/rover/receive_data"
+UPLOAD_ADDRESS = "https://wildjames.com/rover/receive_data"
 UPLOAD_INTERVAL = 300  # seconds
 UPLOAD_THREAD: threading.Thread = None
 
@@ -51,7 +51,7 @@ def log_environment():
         )
     logger.debug("Finished appending environment data to file.")
 
-    LOG_THREAD = threading.Timer(LOG_INTERVAL, log_environment)
+    LOG_THREAD = threading.Timer(LOG_INTERVAL, log_environment, daemon=True)
     LOG_THREAD.start()
 
 
@@ -65,5 +65,5 @@ def upload_logs():
     resp = requests.post(UPLOAD_ADDRESS, files={"file": open(LOGFILE, "rb")})
     logger.debug("Response from base station: {}".format(resp.text))
 
-    UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs)
+    UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs, daemon=True)
     UPLOAD_THREAD.start()
