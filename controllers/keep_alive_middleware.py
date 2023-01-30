@@ -73,4 +73,5 @@ def check_inactivity():
         SLEEP_THREAD.cancel()
 
     SLEEP_THREAD = threading.Timer(time_to_next_check, check_inactivity)
+    SLEEP_THREAD.daemon = True
     SLEEP_THREAD.start()
