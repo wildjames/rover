@@ -40,9 +40,7 @@ def log_environment():
             )
         )
         f.write(
-            "cpu_usage,{},{}\n".format(
-                datetime.now().isoformat(), psutil.cpu_percent()
-            )
+            "cpu_usage,{},{}\n".format(datetime.now().isoformat(), psutil.cpu_percent())
         )
         f.write(
             "memory_usage,{},{}\n".format(
@@ -51,7 +49,8 @@ def log_environment():
         )
     logger.debug("Finished appending environment data to file.")
 
-    LOG_THREAD = threading.Timer(LOG_INTERVAL, log_environment, daemon=True)
+    LOG_THREAD = threading.Timer(LOG_INTERVAL, log_environment)
+    LOG_THREAD.daemon = True
     LOG_THREAD.start()
 
 
@@ -65,5 +64,6 @@ def upload_logs():
     resp = requests.post(UPLOAD_ADDRESS, files={"file": open(LOGFILE, "rb")})
     logger.debug("Response from base station: {}".format(resp.text))
 
-    UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs, daemon=True)
+    UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs)
+    UPLOAD_THREAD.daemon = True
     UPLOAD_THREAD.start()
