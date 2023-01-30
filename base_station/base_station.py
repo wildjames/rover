@@ -19,3 +19,13 @@ CORS(app)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/receive_data", methods=["POST"])
+def receive_data():
+    data = request.get_json()
+    logger.info("Received data: {}".format(data))
+    
+    # TODO: Write a script on the rover that will post updates to this endpoint.
+    # Then, make sure it's logged to file.
+
+    return "OK"

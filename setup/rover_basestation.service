@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=pi
-ExecStart=/usr/bin/gunicorn -c /home/rover/rover/base_station/base_station_wsgi.py --forwarded-allow-ips="*" "api_cleaner:app"
+ExecStart=/home/pi/.local/bin/gunicorn -c /home/pi/rover/base_station/base_station_wsgi.py --forwarded-allow-ips="*" "base_station:app"
 
 [Install]
 WantedBy=multi-user.target

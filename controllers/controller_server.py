@@ -59,7 +59,7 @@ def system_info():
             "motor_states": [],
         },
         "sleep_data": {
-            "sleep_threshold": keep_alive_middleware.SLEEP_THRESHOLD,
+            "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
             "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
         },
     }
