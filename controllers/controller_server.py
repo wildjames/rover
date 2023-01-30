@@ -30,6 +30,9 @@ app = Flask(__name__)
 if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     keep_alive_middleware.check_inactivity()
 
+    environment_logger.log_environment()
+    environment_logger.upload_logs()
+
 # Motor setup
 ESC_pins = [12]
 motors: List[motor_control.ESCController] = [
@@ -79,14 +82,6 @@ def system_info():
         )
 
     info_dict["motor_data"]["motor_states"]= payload
-
-    # Fetch the environment sensor data
-    environment_data = ""
-    if os.path.exists(environment_logger.LOGFILE):
-        with open(environment_logger.LOGFILE, "r") as f:
-            environment_data = f.read()
-    
-    info_dict["environment_data"] = environment_data
 
     logger.info("Returning system info: {}".format(info_dict))
 

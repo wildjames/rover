@@ -22,10 +22,14 @@ def index():
 
 @app.route("/receive_data", methods=["POST"])
 def receive_data():
+    """Recieve an uploaded log file and save it to the server."""
     data = request.get_json()
     logger.info("Received data: {}".format(data))
     
-    # TODO: Write a script on the rover that will post updates to this endpoint.
-    # Then, make sure it's logged to file.
+    # The file is uploaded using the request.files dictionary
+    uploaded_file = request.files["file"]
+
+    # print the logs
+    print(uploaded_file.read())
 
     return "OK"
