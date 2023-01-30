@@ -2,7 +2,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(
-    filename="/home/rover/log/rover_controller.log",
+    filename="/home/rover/rover/log/rover_controller.log",
     filemode="a",
     format="[%(asctime)s] %(levelname)-8s    %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",

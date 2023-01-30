@@ -33,10 +33,6 @@ def receive_data():
     filename = LOGLOCATION.format(weekstring)
 
     # The file is transmitted using open(filename, "rb") on the client side.
-    # This means that the file is transmitted as a byte stream.
-    # The file is received as a byte stream, and must be decoded.
-    # The file is decoded using the utf-8 encoding.
-    # The file is then saved to the server.
     logger.debug("Appending recieved file to local logs")
     with open(filename, "a", encoding="utf-8") as f:
         f.write(file.decode("utf-8"))
