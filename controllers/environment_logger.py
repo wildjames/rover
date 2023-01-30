@@ -67,6 +67,7 @@ def upload_logs():
     # The logs get pushed to the base station as a single file.
     # The base station will then parse the file and store it in a database.
     resp = requests.post(UPLOAD_ADDRESS, files={"file": open(LOGFILE, "rb")})
+    logger.debug("Response from base station: {}".format(resp.text))
 
     # Schedule the next run
     if UPLOAD_THREAD is not None:
