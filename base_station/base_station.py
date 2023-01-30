@@ -19,3 +19,17 @@ CORS(app)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/receive_data", methods=["POST"])
+def receive_data():
+    """Recieve an uploaded log file and save it to the server."""
+    data = request.get_json()
+    logger.info("Received data: {}".format(data))
+    
+    # The file is uploaded using the request.files dictionary
+    uploaded_file = request.files["file"]
+
+    # print the logs
+    print(uploaded_file.read())
+
+    return "OK"

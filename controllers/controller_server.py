@@ -16,6 +16,7 @@ import os
 import led_control
 import motor_control
 import keep_alive_middleware 
+import environment_logger
 
 from flask import Flask, request
 
@@ -28,6 +29,9 @@ app = Flask(__name__)
 # Run the activity monitor if we are NOT in the main thread, if the reloader is enabled.
 if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     keep_alive_middleware.check_inactivity()
+
+    environment_logger.log_environment()
+    environment_logger.upload_logs()
 
 # Motor setup
 ESC_pins = [12]
@@ -59,7 +63,7 @@ def system_info():
             "motor_states": [],
         },
         "sleep_data": {
-            "sleep_threshold": keep_alive_middleware.SLEEP_THRESHOLD,
+            "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
             "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
         },
     }
@@ -249,4 +253,4 @@ def led_command():
 
 
 if __name__ in "__main__":
-    app.run(host="localhost", port=8001, use_reloader=False, threaded=True, debug=True)
+    app.run(host="localhost", port=8001, use_reloader=True, threaded=True, debug=True)
