@@ -61,7 +61,10 @@ def upload_logs():
     logger.debug("Uploading environment logs file to base station.")
     # The logs get pushed to the base station as a single file.
     # The base station will then parse the file and store it in a database.
-    resp = requests.post(UPLOAD_ADDRESS, files={"file": open(LOGFILE, "rb")})
+    headers = {"content-type": "application/x-www-form-urlencoded"}
+    files = {"file": open(LOGFILE, "rb")}
+    resp = requests.post(UPLOAD_ADDRESS, data=files, verify=False, headers=headers)
+
     logger.debug("Response from base station: {}".format(resp.text))
 
     UPLOAD_THREAD = threading.Timer(UPLOAD_INTERVAL, upload_logs)
