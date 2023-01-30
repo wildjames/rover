@@ -9,7 +9,7 @@ from datetime import datetime
 import psutil
 import requests
 
-LOGFILE = "/home/rover/rover/rover_environment.log"
+LOGFILE = "/home/rover/log/rover_environment.log"
 LOG_INTERVAL = 60
 LOG_PURGE_INTERVAL = 60 * 60 * 24 * 7  # 1 week
 LOG_THREAD: threading.Thread = None
@@ -31,17 +31,22 @@ def log_environment():
         with open(LOGFILE, "w") as f:
             f.write("variable,timestamp,value\n")
 
+    logger.debug("Appending environment data to file.")
     with open(LOGFILE, "a") as f:
         # Gather data
         f.write(
             "temperature,{},{}\n".format(
-                datetime.isoformat(), gpiozero.CPUTemperature().temperature
+                datetime.now().isoformat(), gpiozero.CPUTemperature().temperature
             )
         )
-        f.write("cpu_usage,{},{}\n".format(datetime.isoformat(), psutil.cpu_percent()))
+        f.write(
+            "cpu_usage,{},{}\n".format(
+                datetime.now().isoformat(), psutil.cpu_percent()
+            )
+        )
         f.write(
             "memory_usage,{},{}\n".format(
-                datetime.isoformat(), psutil.virtual_memory().percent
+                datetime.now().isoformat(), psutil.virtual_memory().percent
             )
         )
 
