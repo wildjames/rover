@@ -23,11 +23,10 @@ def index():
 @app.route("/receive_data", methods=["POST"])
 def receive_data():
     """Recieve an uploaded log file and save it to the server."""
-    data = request.data
-    logger.info("Received data: {}".format(data))
-    
+    logger.info("Received a request: {}".format(request))
+    file = request.get_data()
+
     # The file is uploaded using the request.files dictionary
-    uploaded_file = data["file"]
-    logger.info("Received file: {}".format(uploaded_file))
+    logger.info("Received file: {}".format(file))
 
     return "OK"

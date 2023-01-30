@@ -62,8 +62,10 @@ def upload_logs():
     # The logs get pushed to the base station as a single file.
     # The base station will then parse the file and store it in a database.
     headers = {"content-type": "application/x-www-form-urlencoded"}
-    files = {"file": open(LOGFILE, "rb")}
-    resp = requests.post(UPLOAD_ADDRESS, data=files, verify=False, headers=headers)
+    with open(LOGFILE, "rb") as payload:
+        resp = requests.post(
+            UPLOAD_ADDRESS, data=payload, verify=False, headers=headers
+        )
 
     logger.debug("Response from base station: {}".format(resp.text))
 
