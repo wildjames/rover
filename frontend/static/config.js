@@ -19,7 +19,7 @@
         // I periodically get the system state from the server
         function get_current_config() {
             var api_token = token_input.value;
-            
+
             // Send a GET request to the controller server for the system state
             var xhr = new XMLHttpRequest();
             // Make the get request asynchronously
@@ -31,6 +31,9 @@
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
+
+                    console.log("Got this response:");
+                    console.log(response);
 
                     // update the sleep_enable state
                     var sleep_enable = response.sleep_data.enable_sleep;
