@@ -55,6 +55,7 @@
                 } else if (xhr.readyState === 4 && xhr.status != 200) {
                     console.log("Could not access API with that token");
                     valid_api_token = false;
+                    alert("Invalid API token!")
                 }
             }
         };
@@ -68,10 +69,6 @@
 
                 api_token = token_input.value;
                 pingRover();
-
-                if (!valid_api_token) {
-                    alert("Invalid API token!")
-                }
             }
         });
 
