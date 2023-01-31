@@ -1,4 +1,5 @@
 import logging
+
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(
@@ -15,12 +16,10 @@ import os
 
 import led_control
 import motor_control
-import keep_alive_middleware 
+import keep_alive_middleware
 import environment_logger
 
 from flask import Flask, request
-
-
 
 
 # Flask app setup
@@ -43,7 +42,7 @@ motors: List[motor_control.ESCController] = [
 @app.route("/ping", methods=["GET"])
 @keep_alive_middleware.keep_alive
 def ping():
-    """Returns a JSON object containing a message."""
+    """Returns a JSON with no useful information. Functions as a keepalive endpoint."""
     logger.info("Received ping request")
     return {"message": "pong"}
 
@@ -52,6 +51,7 @@ def ping():
 @keep_alive_middleware.keep_alive
 def system_info():
     """Returns a JSON object containing system information."""
+    logger.info("Received a request for system information")
 
     info_dict = {
         "led_data": {
@@ -65,6 +65,11 @@ def system_info():
         "sleep_data": {
             "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
             "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
+        },
+        "environment_logger": {
+            "log_interval": environment_logger.LOG_INTERVAL,
+            "log_purge_interval": environment_logger.LOG_PURGE_INTERVAL,
+            "upload_interval": environment_logger.UPLOAD_INTERVAL,
         },
     }
 
@@ -81,7 +86,7 @@ def system_info():
             }
         )
 
-    info_dict["motor_data"]["motor_states"]= payload
+    info_dict["motor_data"]["motor_states"] = payload
 
     logger.info("Returning system info: {}".format(info_dict))
 
@@ -91,8 +96,8 @@ def system_info():
 @app.route("/config", methods=["POST"])
 @keep_alive_middleware.keep_alive
 def config():
-    """Sets the inactivity timeout for the keep alive middleware.
-    
+    """Sets any internal variables used by the rover.
+
     JSON payload can have:
     {
         "sleep_time": <int>,
@@ -107,16 +112,18 @@ def config():
     logger.debug("Request data: {}".format(request.json))
 
     data = request.json
-    
+
     if "sleep_time" in data:
         keep_alive_middleware.SLEEP_THRESHOLD = data["sleep_time"]
-        logger.info("Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD))
-    
+        logger.info(
+            "Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD)
+        )
+
     if "sleep_enable" in data:
         logger.info("Received enable_sleep: {}".format(data["sleep_enable"]))
         keep_alive_middleware.ENABLE_SLEEP = bool(data["sleep_enable"])
         logger.info("Set enable_sleep to {}".format(keep_alive_middleware.ENABLE_SLEEP))
-    
+
     return {"message": "success"}
 
 
