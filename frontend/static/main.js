@@ -68,6 +68,10 @@
 
                 api_token = token_input.value;
                 pingRover();
+
+                if (!valid_api_token) {
+                    alert("Invalid API token!")
+                }
             }
         });
 
@@ -85,7 +89,6 @@
             // All API requests need to authenticated with a bearer token in the header
             if (!valid_api_token) {
                 clear_button_styles();
-                alert("Invalid API token!");
                 return;
             }
 
