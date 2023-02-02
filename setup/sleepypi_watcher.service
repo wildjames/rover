@@ -1,0 +1,15 @@
+[Unit]
+Description=SleepyPi Handshake service
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=0
+User=root
+ExecStart=/usr/bin/python3 /home/rover/bin/SleepyPi/shutdowncheck.py
+
+[Install]
+WantedBy=multi-user.target
