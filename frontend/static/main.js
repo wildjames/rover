@@ -1,7 +1,7 @@
-(function () {
+(function() {
     var signalObj = null;
 
-    window.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('DOMContentLoaded', function() {
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
@@ -24,7 +24,7 @@
         throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
 
         // Update the current slider value (each time you drag the slider handle)
-        throttle_slider.oninput = function () {
+        throttle_slider.oninput = function() {
             throttle_text.innerHTML = this.value;
         }
 
@@ -48,19 +48,20 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
                 } else if (xhr.readyState === 4 && xhr.status != 200) {
                     console.log("Could not access API with that token");
                     valid_api_token = false;
+                    alert("Invalid API token!")
                 }
             }
         };
 
         // Execute a function when the user presses a key on the keyboard
-        token_input.addEventListener("keypress", function (event) {
+        token_input.addEventListener("keypress", function(event) {
             // If the user presses the "Enter" key on the keyboard
             if (event.key === "Enter") {
                 // Cancel the default action
@@ -72,7 +73,7 @@
         });
 
         // I periodically get the system state from the server
-        setInterval(function () {
+        setInterval(function() {
             // If I'm streaming, set the button text to reflect that
             if (isStreaming) {
                 stream_toggle.textContent = "Stop Streaming";
@@ -96,7 +97,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
@@ -147,28 +148,15 @@
                         throttle_text.innerHTML = 0
                     }
 
-                    // update the sleep_enable state
-                    var sleep_enable = response.sleep_data.enable_sleep;
-                    console.log("Sleep enable: " + sleep_enable);
-                    sleep_enable = parseInt(sleep_enable);
-                    sleep_toggle.setAttribute("data-state", sleep_enable);
-                    if (sleep_enable) {
-                        sleep_toggle.style.backgroundColor = 'red';
-                        sleep_toggle.textContent = 'Disable Inactivity Sleep';
-                    } else {
-                        sleep_toggle.style.backgroundColor = 'black';
-                        sleep_toggle.textContent = 'Enable Inactivity Sleep';
-                    }
-
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
                     clear_button_styles()
                     return;
                 };
             }
 
-        }, 5000);
+        }, 100);
 
-        motor_init.addEventListener('click', function (e) {
+        motor_init.addEventListener('click', function(e) {
             // I need to send a toggle message to the server. First, get the state of the motor
             var state = this.getAttribute('data-state');
             state = parseInt(state);
@@ -195,7 +183,7 @@
         });
 
         // When a click is released from the slider, I need to send a message to the control server
-        throttle_slider.addEventListener('mouseup', function (e) {
+        throttle_slider.addEventListener('mouseup', function(e) {
             // If the motor is not initialized, do nothing
             var state = motor_init.getAttribute('data-state');
             state = parseInt(state);
@@ -207,7 +195,11 @@
             console.log("Sending throttle value: " + value);
 
             // Make a POST request to the controller server
-            var payload = JSON.stringify({ "targets": [[0, value]] });
+            var payload = JSON.stringify({
+                "targets": [
+                    [0, value]
+                ]
+            });
             console.log("Sending payload: " + payload);
 
             // All API requests need to authenticated with a bearer token in the header
@@ -224,7 +216,7 @@
             xhr.send(payload);
 
             // print the response to the console
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Response: " + xhr.responseText);
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
@@ -248,7 +240,11 @@
             console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
 
             // The json payload is of the form {"states": [[1, newstate]]}
-            var payload = JSON.stringify({ "states": [[ledIndex, newState]] });
+            var payload = JSON.stringify({
+                "states": [
+                    [ledIndex, newState]
+                ]
+            });
             console.log("Sending payload: " + payload);
 
             // All API requests need to authenticated with a bearer token in the header
@@ -271,7 +267,7 @@
         led1.addEventListener('click', toggleLed, false);
         led2.addEventListener('click', toggleLed, false);
 
-        stream_toggle.addEventListener('click', function (e) {
+        stream_toggle.addEventListener('click', function(e) {
             // This is the IP of the server running the camera stream.
             var address = location.hostname + location.pathname + '/video';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
@@ -284,7 +280,7 @@
                 canvas.style.cursor = 'progress';
 
                 signalObj = new signal(wsurl,
-                    function (stream) {
+                    function(stream) {
                         console.log('got a stream!');
 
                         // Play the stream in browser. Need to handle promises properly.
@@ -293,27 +289,27 @@
 
                         if (playPromise !== undefined) {
                             playPromise.then(_ => {
-                                // Automatic playback started!
-                                // Show playing UI.
-                            })
+                                    // Automatic playback started!
+                                    // Show playing UI.
+                                })
                                 .catch(error => {
                                     // Auto-play was prevented
                                     // Show paused UI.
                                 });
                         }
                     },
-                    function (error) {
+                    function(error) {
                         canvas.style.cursor = "default";
                         alert(error);
                     },
-                    function () {
+                    function() {
                         console.log('websocket closed. bye bye!');
                         video.srcObject = null;
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         isStreaming = false;
                         canvas.style.cursor = "default";
                     },
-                    function (message) {
+                    function(message) {
                         canvas.style.cursor = "default";
                         alert(message);
                     }
@@ -328,7 +324,7 @@
         }, false);
 
         // Wait until the video stream can play
-        video.addEventListener('canplay', function (e) {
+        video.addEventListener('canplay', function(e) {
             if (!isStreaming) {
                 canvas.setAttribute('width', video.videoWidth);
                 canvas.setAttribute('height', video.videoHeight);
@@ -338,9 +334,9 @@
         }, false);
 
         // Wait for the video to start to play
-        video.addEventListener('play', function () {
+        video.addEventListener('play', function() {
             // Every 33 milliseconds copy the video image to the canvas
-            setInterval(function () {
+            setInterval(function() {
                 if (video.paused || video.ended) {
                     return;
                 }
@@ -371,7 +367,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(packet);
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
                     var response = JSON.parse(xhr.responseText);

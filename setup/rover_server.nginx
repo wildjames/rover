@@ -1,6 +1,7 @@
-upstream video {
-	server roverpi.local:1002;
-}
+#upstream video {
+#	proxy_pass https://127.0.0.1:8090;
+#}
+
 
 server {
 	# SSL configuration
@@ -45,10 +46,6 @@ server {
 		proxy_http_version 1.1;
 		proxy_set_header Upgrade $http_upgrade;
 		proxy_set_header Connection "upgrade";
-	}
-
-	location /uv4l {
-		proxy_pass https://roverpi.local:8888/;
 	}
 
 	# deny access to .htaccess files, if Apache's document root

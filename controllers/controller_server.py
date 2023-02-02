@@ -36,7 +36,7 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
 @app.route("/ping", methods=["GET"])
 @keep_alive_middleware.keep_alive
 def ping():
-    """Returns a JSON object containing a message."""
+    """Returns a JSON with no useful information. Functions as a keepalive endpoint."""
     logger.info("Received ping request")
     return {"message": "pong"}
 
@@ -45,6 +45,7 @@ def ping():
 @keep_alive_middleware.keep_alive
 def system_info():
     """Returns a JSON object containing system information."""
+    logger.info("Received a request for system information")
 
     info_dict = {
         "led_data": {
@@ -58,6 +59,11 @@ def system_info():
         "sleep_data": {
             "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
             "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
+        },
+        "environment_logger": {
+            "log_interval": environment_logger.LOG_INTERVAL,
+            "log_purge_interval": environment_logger.LOG_PURGE_INTERVAL,
+            "upload_interval": environment_logger.UPLOAD_INTERVAL,
         },
     }
 
