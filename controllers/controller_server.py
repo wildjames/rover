@@ -1,4 +1,5 @@
 import logging
+
 logger = logging.getLogger(__name__)
 
 logging.basicConfig(
@@ -9,18 +10,16 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-from typing import List
+from typing import Dict
 
 import os
 
 import led_control
 import motor_control
-import keep_alive_middleware 
+import keep_alive_middleware
 import environment_logger
 
 from flask import Flask, request
-
-
 
 
 # Flask app setup
@@ -33,17 +32,11 @@ if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
     environment_logger.log_environment()
     environment_logger.upload_logs()
 
-# Motor setup
-ESC_pins = [12]
-motors: List[motor_control.ESCController] = [
-    motor_control.ESCController(pin, start_now=False) for pin in ESC_pins
-]
-
 
 @app.route("/ping", methods=["GET"])
 @keep_alive_middleware.keep_alive
 def ping():
-    """Returns a JSON object containing a message."""
+    """Returns a JSON with no useful information. Functions as a keepalive endpoint."""
     logger.info("Received ping request")
     return {"message": "pong"}
 
@@ -52,6 +45,7 @@ def ping():
 @keep_alive_middleware.keep_alive
 def system_info():
     """Returns a JSON object containing system information."""
+    logger.info("Received a request for system information")
 
     info_dict = {
         "led_data": {
@@ -59,20 +53,26 @@ def system_info():
             "led_states": led_control.get_led_state(),
         },
         "motor_data": {
-            "num_motors": len(motors),
+            "num_motors": len(motor_control.ESC_CONTROLLERS),
             "motor_states": [],
         },
         "sleep_data": {
             "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
             "enable_sleep": int(keep_alive_middleware.ENABLE_SLEEP),
         },
+        "environment_logger": {
+            "log_interval": environment_logger.LOG_INTERVAL,
+            "log_purge_interval": environment_logger.LOG_PURGE_INTERVAL,
+            "upload_interval": environment_logger.UPLOAD_INTERVAL,
+        },
     }
 
     # Gather motor data
     payload = []
-    for m in motors:
+    for idex, m in motor_control.ESC_CONTROLLERS:
         payload.append(
             {
+                "motor": idex,
                 "pin": m.pin,
                 "min_pulse": m.min_pulse_width,
                 "max_pulse": m.max_pulse_width,
@@ -81,7 +81,7 @@ def system_info():
             }
         )
 
-    info_dict["motor_data"]["motor_states"]= payload
+    info_dict["motor_data"]["motor_states"] = payload
 
     logger.info("Returning system info: {}".format(info_dict))
 
@@ -91,8 +91,8 @@ def system_info():
 @app.route("/config", methods=["POST"])
 @keep_alive_middleware.keep_alive
 def config():
-    """Sets the inactivity timeout for the keep alive middleware.
-    
+    """Sets configuration for internal variables.
+
     JSON payload can have:
     {
         "sleep_time": <int>,
@@ -107,135 +107,88 @@ def config():
     logger.debug("Request data: {}".format(request.json))
 
     data = request.json
-    
+
     if "sleep_time" in data:
         keep_alive_middleware.SLEEP_THRESHOLD = data["sleep_time"]
-        logger.info("Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD))
-    
+        logger.info(
+            "Set inactivity timeout to {}".format(keep_alive_middleware.SLEEP_THRESHOLD)
+        )
+
     if "sleep_enable" in data:
         logger.info("Received enable_sleep: {}".format(data["sleep_enable"]))
         keep_alive_middleware.ENABLE_SLEEP = bool(data["sleep_enable"])
         logger.info("Set enable_sleep to {}".format(keep_alive_middleware.ENABLE_SLEEP))
-    
-    return {"message": "success"}
-
-
-@app.route("/motor_init", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_init():
-    global motors
-
-    logger.info("Initializing ESCs")
-    try:
-        for esc in motors:
-            # Create an ESC object to control the ESC on pin 18.
-            esc.init()
-
-    except Exception as e:
-        logger.exception("Failed to initialize ESCs")
-        return {"message": f"failure: {e}"}
 
     return {"message": "success"}
 
 
-@app.route("/motor_close", methods=["POST"])
+@app.route("/motor_control", methods=["POST"])
 @keep_alive_middleware.keep_alive
-def motor_close():
-    global motors
+def motor_control():
+    """Control motors.
+    The JSON payload should contain dictionaries, with at least the key "commnand": <str>,
+    followed by any other keys required for the command.
+    Sometimes, this will also include a motor index, one of:
+        fr: front right
+        fl: front left
+        br: back right
+        bl: back left
+    If a list of commands is sent, they will be executed in order.
 
-    for m in motors:
-        logger.info("Closing ESC on pin {}".format(m.pwm.pin))
-        m.close()
+    Commands take a dict with two keys:
+        - command: The command to execute.
+        - payload: The payload for the command.
 
-    return {"message": "success"}
+    - init_motors: Initialize the motors, using the set configuration.
+        Structure:
+        {
+            "command": "init_motors",
+            "payload:" ["fr", "fl", "br", "bl"],
+        }
 
+    - set_motor_config: Set the configuration for the motors.
+        Structure:
+        {
+            "command": "set_motor_config",
+            "payload": {
+                "fr": {...},
+            },
+        }
 
-@app.route("/motor_arm", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_arm():
-    global motors
-
-    for m in motors:
-        logger.info("Controller is arming ESC on pin {}".format(m.pwm.pin))
-        m.arm()
-        logger.info("Done")
-
-    return {"message": "success"}
-
-
-@app.route("/motor_calibrate", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_calibrate():
-    global motors
-
-    req_obj = request.json
-    to_calibrate = req_obj["target"]
-
-    logger.info("Received motor calibration for index: {}".format(req_obj))
-
-    for index in to_calibrate:
-        if not motors[index]:
-            return {"message": "failure: Motor index {} does not exist".format(index)}
-
-    for index in to_calibrate:
-        logger.info("Calibrating motor at index {}".format(index))
-        m = motors[index]
-        logger.info("Motor is on pin {}".format(m.pwm.pin))
-        m.calibrate()
-
-    return {"message": "success"}
-
-
-@app.route("/motor_command", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_command():
-    """Expects a JSON object containing a list of motor index and state pairs,
-    keyed under "targets"
+    - set_motor_throttle: Set the throttle for the motors.
+        Structure:
+        {
+            "command": "set_motor_throttle",
+            "payload": {
+                "fr": 0.5,
+            },
+        }
     """
-    global motors
+    logger.info("Received motor control request")
+    logger.debug("Request data: {}".format(request.json))
 
-    req_obj = request.json
-    command = req_obj["targets"]
+    data = request.json
 
-    logger.info("Received motor command pairs (index, state): {}".format(command))
+    response = {"message": "success", "command_status": []}
 
-    for index, state in command:
-        if not motors[index]:
-            return {"message": "failure: Motor index {} does not exist".format(index)}
+    if isinstance(data, list):
+        logger.info("Received list of commands")
+        for command in data:
+            logger.info("Executing command: {}".format(command))
+            is_ok = motor_control.execute_command(command)
+            response["command_status"].append(is_ok)
 
-        if state < 0.0 or state > 1.0:
-            return {"message": "failure: motor state must be between 0.0 and 1.0"}
+    elif isinstance(data, dict):
+        logger.info("Received single command")
+        is_ok = motor_control.execute_command(data)
+        response["command_status"].append(is_ok)
 
-    try:
-        for index, state in command:
-            motors[index].set_speed(state)
-    except:
-        logger.exception("Failed to set motor speed")
-        return {"message": "failure: Controller could not set motor speed"}
+    else:
+        # I don't actually think this code is reachable, but just in case...
+        logger.error("Invalid data type: {}".format(type(data)))
+        return {"message": "failure: invalid data type"}
 
-    return {"message": "success"}
-
-
-@app.route("/motor_stop", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_stop():
-    global motors
-
-    for m in motors:
-        m.stop()
-
-    return {"message": "success"}
-
-
-@app.route("/motor_panic", methods=["POST"])
-@keep_alive_middleware.keep_alive
-def motor_panic():
-    global motors
-
-    for m in motors:
-        m.estop()
-
-    return {"message": "success"}
+    return response
 
 
 @app.route("/led_command", methods=["POST"])
