@@ -166,7 +166,7 @@ echo 'Link Serial Port to Arduino IDE...'
 if [ $RPi3 != true ] || [ $RPi4 != true ]; then
     # Anything other than Rpi 3
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/80-sleepypi.rules
-    mv /home/pi/80-sleepypi.rules /etc/udev/rules.d/
+    mv /home/rover/80-sleepypi.rules /etc/udev/rules.d/
 fi
 # Note: On Rpi3 or 4 GPIO serial port defaults to ttyS0 which is what we want
 
@@ -212,40 +212,40 @@ fi
 ## Adding the Sleepy Pi to the Arduino environment
 echo 'Adding the Sleepy Pi to the Arduino environment...'
 # ...setup sketchbook
-mkdir -p /home/pi/sketchbook
+mkdir -p /home/rover/sketchbook
 # ...setup sketchbook/libraries
-mkdir -p /home/pi/sketchbook/libraries
+mkdir -p /home/rover/sketchbook/libraries
 # .../sketchbook/hardware
-mkdir -p /home/pi/sketchbook/hardware
+mkdir -p /home/rover/sketchbook/hardware
 # .../sketchbook/hardware/sleepy_pi2
-if [ -d "/home/pi/sketchbook/hardware/sleepy_pi2" ]; then
+if [ -d "/home/rover/sketchbook/hardware/sleepy_pi2" ]; then
     echo "sketchbook/hardware/sleepy_pi2 exists - skipping..."
 else
-    mkdir /home/pi/sketchbook/hardware/sleepy_pi2
+    mkdir /home/rover/sketchbook/hardware/sleepy_pi2
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/boards.txt
-    mv boards.txt /home/pi/sketchbook/hardware/sleepy_pi2
+    mv boards.txt /home/rover/sketchbook/hardware/sleepy_pi2
 fi
 
 # .../sketchbook/hardware/sleepy_pi
-if [ -d "/home/pi/sketchbook/hardware/sleepy_pi" ]; then
+if [ -d "/home/rover/sketchbook/hardware/sleepy_pi" ]; then
     echo "sketchbook/hardware/sleepy_pi exists - skipping..."
 else
-    mkdir /home/pi/sketchbook/hardware/sleepy_pi
+    mkdir /home/rover/sketchbook/hardware/sleepy_pi
     wget https://raw.githubusercontent.com/SpellFoundry/Sleepy-Pi-Setup/master/boards.txt
-    mv boards.txt /home/pi/sketchbook/hardware/sleepy_pi
+    mv boards.txt /home/rover/sketchbook/hardware/sleepy_pi
 fi
 
 ## Setup the Sleepy Pi Libraries
 echo 'Setting up the Sleepy Pi Libraries...'
-cd /home/pi/sketchbook/libraries/
-if [ -d "/home/pi/sketchbook/libraries/SleepyPi2" ]; then
+cd /home/rover/sketchbook/libraries/
+if [ -d "/home/rover/sketchbook/libraries/SleepyPi2" ]; then
     echo "SleepyPi2 Library exists - skipping..."
     # could do a git pull here?
 else
     echo "Installing SleepyPi 2 Library..."
     git clone https://github.com/SpellFoundry/SleepyPi2.git
 fi
-if [ -d "/home/pi/sketchbook/libraries/SleepyPi" ]; then
+if [ -d "/home/rover/sketchbook/libraries/SleepyPi" ]; then
     echo "SleepyPi Library exists - skipping..."
     # could do a git pull here?
 else
@@ -253,25 +253,25 @@ else
     git clone https://github.com/SpellFoundry/SleepyPi.git
 fi
 
-if [ -d "/home/pi/sketchbook/libraries/Time" ]; then
+if [ -d "/home/rover/sketchbook/libraries/Time" ]; then
     echo "Time Library exists - skipping..."
 else
     echo "Installing Time Library..."
     git clone https://github.com/PaulStoffregen/Time.git
 fi
 
-if [ -d "/home/pi/sketchbook/libraries/LowPower" ]; then
+if [ -d "/home/rover/sketchbook/libraries/LowPower" ]; then
     echo "LowPower Library exists - skipping..."
 else
     echo "Installing LowPower Library..."
     git clone https://github.com/rocketscream/Low-Power.git
     # rename the directory as Arduino doesn't like the dash
-    mv /home/pi/sketchbook/libraries/Low-Power /home/pi/sketchbook/libraries/LowPower
+    mv /home/rover/sketchbook/libraries/Low-Power /home/rover/sketchbook/libraries/LowPower
 fi
 
 
  # Sleepy Pi 1
-if [ -d "/home/pi/sketchbook/libraries/DS1374RTC" ]; then
+if [ -d "/home/rover/sketchbook/libraries/DS1374RTC" ]; then
     echo "DS1374RTC Library exists - skipping..."
 else
     echo "Installing DS1374RTC Library..."
@@ -279,7 +279,7 @@ else
 fi
 
 # Sleepy Pi 2
-if [ -d "/home/pi/sketchbook/libraries/PCF8523" ]; then
+if [ -d "/home/rover/sketchbook/libraries/PCF8523" ]; then
     echo "PCF8523 Library exists - skipping..."
 else
     echo "Installing PCF8523 Library..."
@@ -287,7 +287,7 @@ else
 fi
 
 
-if [ -d "/home/pi/sketchbook/libraries/PinChangeInt" ]; then
+if [ -d "/home/rover/sketchbook/libraries/PinChangeInt" ]; then
     echo "PinChangeInt Library exists - skipping..."
 else
     echo "Installing PinChangeInt Library..."
