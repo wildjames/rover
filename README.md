@@ -30,9 +30,7 @@ This [4G base station](https://www.waveshare.com/product/sim7600g-h-4g-dtu.htm) 
 - Operating current
   - idle: 10~30mA @12V
   - transmit: 80~450mA @12V (depending on the network condition)
-If I'm running off a LiPo bank, the voltage won't be an issue, but drawing 30mA even when idle might be a bit much. Not really a way around it though! When powered down at least, I can cut the power to it completely.
-
-It might be fun to have a LoRa modem as well, as a backup in case I drive somewhere that means I lose signal. That way, so long as I know its rough coordinates, I can drive out and re-establish communications.
+If I'm running off a LiPo bank, the voltage won't be an issue, but drawing 30mA even when idle might be a bit much. When powered down, I can cut the power to it completely.
 
 I should 100% get some apple air tags and fuse them to the chassis somehow, as a backup.
 
@@ -40,17 +38,13 @@ I should 100% get some apple air tags and fuse them to the chassis somehow, as a
 
 Treads can be [bought](https://www.aliexpress.com/item/32876365731.html) - they're not *cheap*, but they're not overly expensive. I would probably want to fabricate the main body of the rover in the shop. Plastic < metal, probably? More weatherproof. I keep gravitating towards [this one](https://www.aliexpress.com/item/4000187862847.html) ([build doc](https://gitnova.com/#/Robot/FrameChassis/4WDDampingCar/4WDDampingCar))
 
-I think an RC truck might be the way to go - comes with control electronics I can hopefully hijack, but failing that I can just gut it and hook into the hardware directly. [this](https://uk.banggood.com/Eachine-EAT04-1-or-12-2_4G-4WD-RC-Car-Metal-Body-Shell-Desert-Off-road-Truck-7_4V-1500mAH-RTR-Toy-Black-p-1611391.html?cur_warehouse=CN) looks like s decent one, seems ruged and mostly metal. Will need some waterproofing, but I think that's true of anything I buy. Ideally, I would go a bit bigger so I can fit stuff in a bit more easily, but a lighter chassis might mean longer range. [This is a more plasticy version](https://www.aliexpress.com/item/1005005032547831.html), but I think it might be a little bigger?
-
-I lean towards the tank, since I worry about the load capacity of the cars. 
-
-Read [this](https://blog.ampow.com/rc-brushless-motor-size-chart-choose-the-best/) for help choosing a motor. I think I'll want to be running a 6S battery for lower current draw, but that's gonna call for some step-down stuff to run the compute parts from. For motors, I think I want low-Kv and high voltage, so [these](https://www.aliexpress.com/item/1005001702756074.html) would do great. Plus they're slim, which helps. **Waterproofing**? For an ESC, I think I want to err on the high side of current rating. I think buy [these probably overkill](https://www.aliexpress.com/item/32986228623.html) motors, since I don't know much about the chassis
-
-Probably will want some 5010 750kv motors. They're high torque and slim, but I dunno how weatherproof they'll be.
+Hell yes. I bagged a hoverboard for £50, which gives me two high-torque brushless hub motors and a whopping great battery - jackpot. You can pick these up for a pittance, so getting another two motors for the read tyres would be no issue.
 
 ## Power
 
-If I eyeball total power usage (when active) of the compute parts as about 5W for the raspberry pi, 400mA for the modem to give 3.6W while transmitting, call that 4W, and running two motors at about 30W each, I would guess about 40W total power draw while active. A 20W panel would then need to chage for 2 hours to recover that - if I could charge while driving, that gives me a 50% duty cycle on movement - but remember, you can only charge in the daytime, and a solar panel is unlikely to reach its full charging potential. 
+If I eyeball total power usage (when active) of the compute parts as about 5W for the raspberry pi, 400mA for the modem to give 3.6W while transmitting, call that 4W, I estimate around 10W power draw while the computers are all on and communicating. This is less than the 20W of the solar panel, so we will still be able to charge (albeit slowly) while all the computing is running at full tilt. 
+
+However, the motors are 250W *each*, so will drain the battery very quickly. If we go 2-wheel drive, we're looking at a peak output of 500W. Realistically, most of the time won't be running this hard, but take that as a worst-case scenario. A 4Ah lipo battery at 22.7V holds approximately 100Wh of power, which would run this system at full whack for only about 12 minutes. I have plenty of room to add more batteries, but really I don't want to buy more than 4, and that's still only about 45 minutes of hard driving... 
 
 For reference, I can find 20W solar panels on [aliexpress](https://www.aliexpress.com/item/1005004546004726.html) that are specced as `300x145x3MM 20W` and probably around 1kg, so totally doable on the rover. If I splash out and put wings on the thing, I *could* overhang the sides and put two on - but I think it wouldn't be worth it and would be asking for trouble. [Amazon](https://www.amazon.co.uk/Waterproof-Portable-Starter-Monocrystalline-Controller/dp/B0B9T4V3JF/) has [comparable](https://www.amazon.co.uk/Monocrystalline-Waterproof-Maintainer-Motorhomes-Motorcycle/dp/B08QHRWK4M/) things, that are far more likely to be authentic.
 
