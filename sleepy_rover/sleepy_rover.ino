@@ -1,5 +1,5 @@
-// Every 5 minutes, if the Rpi is not powered on, it is given power.
-// If it is no longer running, cut power to it and begin waiting for the next 5 minute interval.
+// Every N minutes, if the Rpi is not powered on, it is given power.
+// If it is no longer running, cut power to it and begin waiting for the next N minute interval.
 
 // **** INCLUDES *****
 #include "SleepyPi2.h"
@@ -21,9 +21,9 @@ int wakeup_min;
 
 // Globals
 // ++++++++++++++++++++ CHANGE ME ++++++++++++++++++
-uint8_t          POWOFF_INTERVAL_MIN        = 5;            // Wake up this often, in minutes.
-uint32_t         RPI_BOOT_ALLOWANCE         = 1000;         // Time to allow for the Pi to boot - milliseconds
-float            RPI_CUTOFF_CURRENT         = 100;          // mA
+uint8_t          POWOFF_INTERVAL_MIN        = 10;           // Wake up this often, in minutes.
+uint32_t         RPI_BOOT_ALLOWANCE         = 30000;        // Time to allow for the Pi to boot - milliseconds
+float            RPI_CUTOFF_CURRENT         = 150;          // mA
 uint32_t         POLL_DELAY_MS              = 10000;        // Check if the Pi is drawing current with this interval while it is on.
 // ++++++++++++++++++++ END CHANGE ME ++++++++++++++++++
 
@@ -82,7 +82,7 @@ void loop()
     wakeup_min;
     
     wakeup_hour = current_time.hour();
-    wakeup_min = (((current_time.minute() / INTERVAL_MIN) + 1) * INTERVAL_MIN) % 60;
+    wakeup_min = (((current_time.minute() / POWOFF_INTERVAL_MIN) + 1) * POWOFF_INTERVAL_MIN) % 60;
 
     if (wakeup_min == 0) {
       wakeup_hour = (wakeup_hour + 1) % 24;
@@ -111,8 +111,9 @@ void loop()
     Serial.print("What is the Pi current draw right now? ");
     Serial.print(SleepyPi.rpiCurrent());
     Serial.println(" mA");
-    
     digitalWrite(LED_PIN,HIGH);    // Switch on LED
+    
+    // Switch on the Pi
     SleepyPi.enablePiPower(true);
     
     Serial.println("I've Just woken up on a Periodic Timer!");
@@ -127,13 +128,16 @@ void loop()
         Serial.println("Rpi is running");
         Serial.println("current_draw ");
         Serial.println(SleepyPi.rpiCurrent());
-                
+        
+        current_time = SleepyPi.readTime();
         wakeup_hour = current_time.hour();
-        wakeup_min = (((current_time.minute() / INTERVAL_MIN) + 1) * INTERVAL_MIN) % 60;
+        wakeup_min = (((current_time.minute() / POWOFF_INTERVAL_MIN) + 1) * POWOFF_INTERVAL_MIN) % 60;
         if (wakeup_min == 0) {
           wakeup_hour = (wakeup_hour + 1) % 24;
         }
 
+        Serial.println("Time is currently: ");
+        printTimeNow();
         Serial.print("Next alarm would be at ");
         Serial.print(wakeup_hour);
         Serial.print(":");
