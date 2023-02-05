@@ -61,7 +61,7 @@ def upload_logs():
     headers = {"content-type": "application/x-www-form-urlencoded"}
     with open(LOGFILE, "rb") as payload:
         resp = requests.post(
-            UPLOAD_ADDRESS, data=payload, verify=False, headers=headers
+            UPLOAD_ADDRESS, data=payload, headers=headers
         )
 
     logger.debug("Response from base station: {}".format(resp.text))
