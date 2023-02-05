@@ -14,6 +14,7 @@ SLEEP_THRESHOLD = 300
 # Enable variable
 ENABLE_SLEEP = False
 
+# This will track which thread is the next timer.
 SLEEP_THREAD = None
 
 last_message = time.time()

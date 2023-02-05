@@ -3,10 +3,14 @@ logger = logging.getLogger(__name__)
 
 # Easy way
 from subprocess import call
+import gpiozero
+
+
+# The raspberry pi must send an "i'm alive" message by setting pin 25 to high.
+im_alive = gpiozero.DigitalOutputDevice(25, initial_value=True)
+
 
 def shutdown():
     logger.critical("Shutting down the computer.")
     call("sudo shutdown -P now", shell=True)
 
-
-    # TODO: Send a signal to the sleepypi to shutdown the raspberry pi.
