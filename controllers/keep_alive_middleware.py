@@ -12,7 +12,7 @@ import threading
 # Time in seconds to go to sleep after inactivity.
 SLEEP_THRESHOLD = 300
 # Enable variable
-ENABLE_SLEEP = False
+ENABLE_SLEEP = True
 
 # This will track which thread is the next timer.
 SLEEP_THREAD = None
