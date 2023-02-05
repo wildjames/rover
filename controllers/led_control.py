@@ -7,7 +7,7 @@ import gpiozero
 
 
 # LED Pin definition
-led_pins = [17, 27, 22]
+led_pins = []
 
 # Set up the pins
 leds: List[gpiozero.LED] = []
