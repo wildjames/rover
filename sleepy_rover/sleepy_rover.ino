@@ -15,16 +15,16 @@ const char *monthName[12] = {
 
 const int LED_PIN = 13;
 
+DateTime current_time;
+int wakeup_hour;
+int wakeup_min;
+
 // Globals
 // ++++++++++++++++++++ CHANGE ME ++++++++++++++++++
-// This is the repeating time interval that the Rpi is powered up.
-// NOTE: ACTUAL CYCLE TIME IS TIMER INTERVAL + HOW LONG RPI AWAKE
-// Thus = 5 minutes = 4 mins + awake of 1 min
-// .. Setup the Periodic Timer
-// .. use either eTB_SECOND or eTB_MINUTE or eTB_HOUR
-eTIMER_TIMEBASE  PeriodicTimer_Timebase     = eTB_MINUTE;   // e.g. Timebase set to seconds. Other options: eTB_MINUTE, eTB_HOUR
-uint8_t          PeriodicTimer_Value        = 5;           // Timer Interval in units of Timebase e.g 5 minutes
-uint32_t         RPI_BOOT_ALLOWANCE         = 60000;        // Time to allow for the Pi to boot - milliseconds
+uint8_t          POWOFF_INTERVAL_MIN        = 5;            // Wake up this often, in minutes.
+uint32_t         RPI_BOOT_ALLOWANCE         = 1000;         // Time to allow for the Pi to boot - milliseconds
+float            RPI_CUTOFF_CURRENT         = 100;          // mA
+uint32_t         POLL_DELAY_MS              = 10000;        // Check if the Pi is drawing current with this interval while it is on.
 // ++++++++++++++++++++ END CHANGE ME ++++++++++++++++++
 
 tmElements_t tm;
@@ -39,6 +39,8 @@ void alarm_isr()
 
 void setup()
 { 
+  delay(500);
+  
   // Configure "Standard" LED pin
   pinMode(LED_PIN, OUTPUT);		
   digitalWrite(LED_PIN,LOW);		// Switch off LED
@@ -54,27 +56,11 @@ void setup()
   // ...get the date and time the compiler was run
   if (getDate(__DATE__) && getTime(__TIME__)) {
       // and configure the RTC with this info
+      Serial.println("Taking time from compilation of this code");
       SleepyPi.setTime(DateTime(F(__DATE__), F(__TIME__)));
   } 
   
   printTimeNow();   
-
-  Serial.print("Periodic Interval Set for: ");
-  Serial.print(PeriodicTimer_Value);
-  switch(PeriodicTimer_Timebase)
-  {
-    case eTB_SECOND:
-      Serial.println(" seconds");
-      break;
-    case eTB_MINUTE:
-      Serial.println(" minutes");
-      break;
-    case eTB_HOUR:
-      Serial.println(" hours");
-    default:
-        Serial.println(" unknown timebase");
-        break;
-  }
 
   Serial.println("Powering on the Pi");
   SleepyPi.enablePiPower(true);
@@ -87,8 +73,28 @@ void loop()
     // Allow wake up alarm to trigger interrupt on falling edge.
     attachInterrupt(0, alarm_isr, FALLING);    // Alarm pin
 
-    // Set the Periodic Timer
-    SleepyPi.setTimer1(PeriodicTimer_Timebase, PeriodicTimer_Value);
+    // Set the alarm
+    SleepyPi.enableWakeupAlarm(true);
+
+    // Read the time
+    current_time = SleepyPi.readTime();
+    wakeup_hour;
+    wakeup_min;
+    
+    wakeup_hour = current_time.hour();
+    wakeup_min = (((current_time.minute() / INTERVAL_MIN) + 1) * INTERVAL_MIN) % 60;
+
+    if (wakeup_min == 0) {
+      wakeup_hour = (wakeup_hour + 1) % 24;
+    }
+
+    Serial.print("Setting alarm for ");
+    Serial.print(wakeup_hour);
+    Serial.print(":");
+    Serial.print(wakeup_min);
+    Serial.println("");
+    
+    SleepyPi.setAlarm(wakeup_hour, wakeup_min);
 
     delay(500);
 
@@ -99,55 +105,55 @@ void loop()
     // Disable external pin interrupt on wake up pin.
     detachInterrupt(0);
     
-    SleepyPi.ackTimer1();
+    SleepyPi.ackAlarm();
 
     // Just a few things to show what's happening
+    Serial.print("What is the Pi current draw right now? ");
+    Serial.print(SleepyPi.rpiCurrent());
+    Serial.println(" mA");
+    
     digitalWrite(LED_PIN,HIGH);    // Switch on LED
     SleepyPi.enablePiPower(true);
     
     Serial.println("I've Just woken up on a Periodic Timer!");
+    
     // Print the time
     printTimeNow();
-    Serial.println("Waiting for RPi to boot");
-    Serial.print("Allowing ");
-    Serial.print(RPI_BOOT_ALLOWANCE);
-    Serial.println(" milliseconds");
-    uint32_t starttime = millis();
-    bool pi_running = false;
-    
-    while ((millis() - starttime) < RPI_BOOT_ALLOWANCE) {
-        pi_running = SleepyPi.checkPiStatus(false);
-        if (pi_running) {
-          Serial.println("Detected an alive signal from the Pi!");
-          break;
-        }
-        Serial.println("No signal from the Pi");
-        delay(1000);
-    }
-    
-    digitalWrite(LED_PIN,LOW);    // Switch off LED  
 
+    delay(RPI_BOOT_ALLOWANCE);
     
-    if (pi_running)
+    while (SleepyPi.rpiCurrent() > RPI_CUTOFF_CURRENT)
     {
         Serial.println("Rpi is running");
-        Serial.println("Leaving Rpi power on");
-    }
-    else
-    {
-        Serial.println("Rpi is not running");
-        Serial.println("Cutting Rpi power");
-
-        for (int i=0; i < 5; i++) {
-            digitalWrite(LED_PIN, LOW);
-            delay(500);
-            digitalWrite(LED_PIN, HIGH);
-            delay(500);
+        Serial.println("current_draw ");
+        Serial.println(SleepyPi.rpiCurrent());
+                
+        wakeup_hour = current_time.hour();
+        wakeup_min = (((current_time.minute() / INTERVAL_MIN) + 1) * INTERVAL_MIN) % 60;
+        if (wakeup_min == 0) {
+          wakeup_hour = (wakeup_hour + 1) % 24;
         }
-        
-        
-        SleepyPi.enablePiPower(false);
+
+        Serial.print("Next alarm would be at ");
+        Serial.print(wakeup_hour);
+        Serial.print(":");
+        Serial.print(wakeup_min);
+        Serial.println("");
+    
+        Serial.println("Leaving Rpi power on");
+        delay(POLL_DELAY_MS);
     }
+    
+    Serial.println("Rpi is not running");
+    Serial.println("Cutting Rpi power");
+    for (int i=0; i < 5; i++) {
+        digitalWrite(LED_PIN, LOW);
+        delay(500);
+        digitalWrite(LED_PIN, HIGH);
+        delay(500);
+    }
+    
+    SleepyPi.enablePiPower(false);
 }
 
 // **********************************************************************
