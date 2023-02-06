@@ -104,9 +104,9 @@ void loop()
     Serial.println("Rpi is not running");
     Serial.println("Cutting Rpi power");
     for (int i=0; i < 5; i++) {
-        digitalWrite(LED_PIN, LOW);
-        delay(500);
         digitalWrite(LED_PIN, HIGH);
+        delay(500);
+        digitalWrite(LED_PIN, LOW);
         delay(500);
     }
     
