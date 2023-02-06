@@ -54,6 +54,8 @@ void setup()
 
   Serial.println("Powering on the Pi");
   SleepyPi.enablePiPower(true);
+
+  delay(RPI_BOOT_ALLOWANCE);
 }
 
 void loop() 
