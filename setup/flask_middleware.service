@@ -1,6 +1,6 @@
 [Unit]
 Description=Rover Flask Middleware Service
-After=network.target
+After=hardware_controller.service
 StartLimitIntervalSec=0
 
 [Service]
