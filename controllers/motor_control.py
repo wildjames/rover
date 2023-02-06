@@ -11,13 +11,13 @@ from typing import List, Dict, Any
 
 # Motor configuration
 ESC_CONFIGURATIONS: Dict[str, Dict[str, Any]] = {
-    # "fr": {
-    #     "pin": 12,
-    #     "min_pulse_width": 1000,
-    #     "max_pulse_width": 2000,
-    #     "start_now": True,
-    #     "frequency": 50,
-    # },
+    "fr": {
+        "pin": 12,
+        "min_pulse_width": 1000,
+        "max_pulse_width": 2000,
+        "start_now": True,
+        "frequency": 50,
+    },
 }
 
 ESC_CONTROLLERS: Dict[str, "ESCController"] = {}
