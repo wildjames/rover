@@ -72,6 +72,8 @@ def system_info():
         },
     }
 
+    logger.debug("Gathered initial system info. Collecting motor configuration...")
+
     # Gather motor data
     payload = []
     for idex, m in motor_control.ESC_CONTROLLERS:
