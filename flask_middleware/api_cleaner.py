@@ -47,8 +47,10 @@ except requests.exceptions.ConnectionError:
 # Necessary variables
 if contact:
     num_leds = system_state["led_data"]["num_leds"]
+    num_relays = system_state["relay_data"]["num_relays"]
 else:
     num_leds = 0
+    num_relays = 0
 
 
 @app.route("/")
@@ -181,6 +183,58 @@ def led_control():
 
     response = requests.post(
         controller_address_base.format("led_command"), json=led_command
+    ).json()
+
+    return response
+
+
+@app.route("/relay_control", methods=["POST"])
+@token_required
+def relay_control():
+    """Set the relay states to the defined states in the request JSON.
+
+    This passes the command on to the controller, but since the controller has to run as root I don't
+    want to expose it to the internet. This checks the request for validity and sensibleness, then passes on
+    only the command part of the request.
+
+    Request JSON format:
+    {
+        "states": list of pairs, (index, state)
+    }
+
+    Response JSON format:
+    {
+        "message": "success" | "failure"
+    }
+    """
+    data: Dict = request.json
+    logger.debug(f"Rover received relay command: {data}")
+
+    if "states" not in data.keys():
+        logger.error(f"relay command is invalid.")
+        return {"message": "failure: No states in command JSON"}
+
+    relay_command = data["states"]
+
+    for pair in data["states"]:
+        if not isinstance(pair, list):
+            logger.error(f"relay command is invalid: {relay_command}")
+            return {"message": "failure: Bad relay command"}
+
+        if len(pair) != 2:
+            logger.error(f"relay command is invalid: {relay_command}")
+            return {"message": "failure: Bad relay command"}
+
+        if pair[0] >= num_relays or pair[0] < 0:
+            logger.error(f"relay index for {pair} is out of range.")
+            return {"message": "failure: relay index out of range"}
+
+        if pair[1] not in [0, 1]:
+            logger.error(f"relay state for {pair} is invalid.")
+            return {"message": "failure: Bad relay state"}
+
+    response = requests.post(
+        controller_address_base.format("relay_command"), json=relay_command
     ).json()
 
     return response
