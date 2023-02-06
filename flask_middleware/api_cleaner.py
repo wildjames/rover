@@ -9,6 +9,7 @@ from auth_middleware import token_required
 from flask import Flask, render_template, request
 from flask_cors import CORS
 import os
+import time
 
 
 logger.info("Loading flask script")
@@ -36,13 +37,19 @@ CORS(app)
 
 
 logger.info("Rover API server getting basic info.")
-try:
-    # # system configuration information gathering
-    system_state = requests.get(controller_address_base.format("system_info")).json()
-    contact = True
-except requests.exceptions.ConnectionError:
-    logger.warning("Rover API server could not connect to controller.")
-    contact = False
+t0 = time.time()
+while time.time() - t0 < 10:
+    try:
+        # # system configuration information gathering
+        system_state = requests.get(controller_address_base.format("system_info")).json()
+        contact = True
+    except requests.exceptions.ConnectionError:
+        logger.warning("Rover API server could not connect to controller.")
+        contact = False
+    
+    if contact:
+        break
+    time.sleep(1)
 
 # Necessary variables
 if contact:
