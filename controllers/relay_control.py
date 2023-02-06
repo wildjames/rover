@@ -19,6 +19,8 @@ for pin in relay_pins:
 
 def set_relay_state(index, state):
     """Sets the state of the relay at the given index."""
+    global relays
+    
     if index >= len(relays):
         return False
     try:
