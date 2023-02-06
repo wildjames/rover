@@ -40,13 +40,15 @@ logger.info("Rover API server getting basic info.")
 t0 = time.time()
 while time.time() - t0 < 10:
     try:
-        # # system configuration information gathering
-        system_state = requests.get(controller_address_base.format("system_info")).json()
+        # System configuration information gathering
+        system_state = requests.get(
+            controller_address_base.format("system_info")
+        ).json()
         contact = True
     except requests.exceptions.ConnectionError:
         logger.warning("Rover API server could not connect to controller.")
         contact = False
-    
+
     if contact:
         break
     time.sleep(1)
@@ -130,7 +132,7 @@ def config():
             if not (value == 0 or value == 1):
                 logger.error(f"Enable sleep value {value} is not 0 or 1.")
                 return {"message": "failure: Enable sleep value is not 0 or 1."}
-            
+
             payload["sleep_enable"] = value
 
     logger.debug("Passing forward payload: {}".format(payload))
@@ -140,7 +142,6 @@ def config():
     ).json()
 
     return response
-    
 
 
 @app.route("/led_control", methods=["POST"])
