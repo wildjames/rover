@@ -7,7 +7,7 @@ import gpiozero
 
 
 # The raspberry pi must send an "i'm alive" message by setting pin 25 to high.
-logger.debug("Setting up the 'i'm alive' pin.")
+logger.info("Setting up the 'i'm alive' pin.")
 isalive = gpiozero.DigitalOutputDevice(25, initial_value=True)
 
 

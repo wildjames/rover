@@ -14,6 +14,7 @@ from typing import Dict
 
 import os
 
+import relay_control
 import led_control
 import motor_control
 import keep_alive_middleware
@@ -51,6 +52,10 @@ def system_info():
         "led_data": {
             "num_leds": len(led_control.leds),
             "led_states": led_control.get_led_state(),
+        },
+        "relay_data": {
+            "num_relays": len(relay_control.relays),
+            "relay_states": relay_control.get_relay_state(),
         },
         "motor_data": {
             "num_motors": len(motor_control.ESC_CONTROLLERS),
@@ -201,6 +206,20 @@ def led_command():
     for led, state in req_obj:
         if not led_control.set_led_state(led, state):
             return {"message": "failure: Controller could not set LED state"}
+
+    return {"message": "success"}
+
+
+@app.route("/relay_command", methods=["POST"])
+@keep_alive_middleware.keep_alive
+def relay_command():
+    req_obj = request.json
+
+    logger.info("Received relay command pairs (index, state): {}".format(req_obj))
+
+    for relay, state in req_obj:
+        if not relay_control.set_relay_state(relay, state):
+            return {"message": "failure: Controller could not set relay state"}
 
     return {"message": "success"}
 
