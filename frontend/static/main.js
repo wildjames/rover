@@ -13,9 +13,9 @@
         var api_token = "";
         var valid_api_token = false;
 
-        var led0 = document.getElementById('led0');
-        var led1 = document.getElementById('led1');
-        var led2 = document.getElementById('led2');
+        var relay0 = document.getElementById('relay0');
+        var relay1 = document.getElementById('relay1');
+        var relay2 = document.getElementById('relay2');
 
         var throttle_slider = document.getElementById("throttle_slider");
         var throttle_text = document.getElementById("throttle_value");
@@ -30,9 +30,9 @@
 
         function clear_button_styles() {
             // Sets the buttons to their default styles
-            led0.style = null;
-            led1.style = null;
-            led2.style = null;
+            relay0.style = null;
+            relay1.style = null;
+            relay2.style = null;
 
             motor_init.style = null;
             throttle_slider.value = 0
@@ -101,30 +101,30 @@
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
-                    var ledStates = response.led_data.led_states;
+                    var relayStates = response.relay_data.relay_states;
 
-                    // Update the color of the LEDs
-                    var leds = [led0, led1, led2];
-                    for (var i = 0; i < leds.length; i++) {
-                        var led = leds[i];
+                    // Update the color of the relays
+                    var relays = [relay0, relay1, relay2];
+                    for (var i = 0; i < relays.length; i++) {
+                        var relay = relays[i];
 
 
                         var mystate = -1;
-                        for (var j = 0; j < ledStates.length; j++) {
-                            if (parseInt(ledStates[j][0]) === i) {
-                                mystate = parseInt(ledStates[j][1]);
+                        for (var j = 0; j < relayStates.length; j++) {
+                            if (parseInt(relayStates[j][0]) === i) {
+                                mystate = parseInt(relayStates[j][1]);
                                 break;
                             }
                         }
 
-                        led.setAttribute('data-state', mystate);
+                        relay.setAttribute('data-state', mystate);
 
                         if (mystate === 1) {
-                            led.style.backgroundColor = 'red';
+                            relay.style.backgroundColor = 'red';
                         } else if (mystate === 0) {
-                            led.style.backgroundColor = 'black';
+                            relay.style.backgroundColor = 'black';
                         } else {
-                            led.style.backgroundColor = 'gray';
+                            relay.style.backgroundColor = 'gray';
                         }
                     }
 
@@ -227,22 +227,22 @@
         });
 
 
-        function toggleLed() {
-            // I need to send a toggle message to the server. First, get the state of the LED
+        function toggleRelay() {
+            // I need to send a toggle message to the server. First, get the state of the relay
             var state = this.getAttribute('data-state');
             state = parseInt(state);
 
-            // the LED index is the last character of the id
-            var ledIndex = this.id[this.id.length - 1];
-            ledIndex = parseInt(ledIndex);
+            // the relay index is the last character of the id
+            var relayIndex = this.id[this.id.length - 1];
+            relayIndex = parseInt(relayIndex);
 
             var newState = state === 1 ? 0 : 1;
-            console.log("LED " + ledIndex + ". Old state: " + state + ", new state: " + newState);
+            console.log("relay " + relayIndex + ". Old state: " + state + ", new state: " + newState);
 
             // The json payload is of the form {"states": [[1, newstate]]}
             var payload = JSON.stringify({
                 "states": [
-                    [ledIndex, newState]
+                    [relayIndex, newState]
                 ]
             });
             console.log("Sending payload: " + payload);
@@ -257,15 +257,15 @@
             var xhr = new XMLHttpRequest();
 
             // Make the post request asynchronously
-            xhr.open('POST', './api/led_control', true);
+            xhr.open('POST', './api/relay_control', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(payload);
         }
 
-        led0.addEventListener('click', toggleLed, false);
-        led1.addEventListener('click', toggleLed, false);
-        led2.addEventListener('click', toggleLed, false);
+        relay0.addEventListener('click', toggleRelay, false);
+        relay1.addEventListener('click', toggleRelay, false);
+        relay2.addEventListener('click', toggleRelay, false);
 
         stream_toggle.addEventListener('click', function(e) {
             // This is the IP of the server running the camera stream.
@@ -346,39 +346,6 @@
                 ctx.drawImage(video, 0, 0, w, h);
             }, 33);
         }, false);
-
-        function submit_sleep_config() {
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var packet = JSON.stringify({
-                "enable_sleep": sleep_toggle.getAttribute("data-state"),
-                "sleep_threshold": sleep_time.value
-            });
-            console.log("sending json:");
-            console.log(packet);
-
-            // Send a POST request to the controller server /api/configure_sleep endpoint
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', './api/configure_sleep', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(packet);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Server responded to that API token!")
-                    var response = JSON.parse(xhr.responseText);
-                    console.log("Response: " + response);
-                    valid_api_token = true;
-                } else if (xhr.readyState === 4 && xhr.status != 200) {
-                    console.log("Could not access API with that token");
-                    valid_api_token = false;
-                }
-            }
-        }
 
         // // Should detect gamepad connection and disconnection
         // const gamepads = {};
