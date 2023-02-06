@@ -38,19 +38,19 @@ CORS(app)
 
 logger.info("Rover API server getting basic info.")
 t0 = time.time()
-while time.time() - t0 < 10:
+contact = True
+while time.time() - t0 < 30:
     try:
         # System configuration information gathering
         system_state = requests.get(
             controller_address_base.format("system_info")
         ).json()
         contact = True
+        break
     except requests.exceptions.ConnectionError:
         logger.warning("Rover API server could not connect to controller.")
         contact = False
 
-    if contact:
-        break
     time.sleep(1)
 
 # Necessary variables
