@@ -131,7 +131,7 @@ def config():
 
 @app.route("/motor_control", methods=["POST"])
 @keep_alive_middleware.keep_alive
-def motor_control():
+def motor_command():
     """Control motors.
     The JSON payload should contain dictionaries, with at least the key "commnand": <str>,
     followed by any other keys required for the command.
