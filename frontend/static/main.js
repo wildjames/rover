@@ -257,7 +257,7 @@
             var xhr = new XMLHttpRequest();
 
             // Make the post request asynchronously
-            xhr.open('POST', './api/relay_control', true);
+            xhr.open('POST', './api/relay_command', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(payload);
