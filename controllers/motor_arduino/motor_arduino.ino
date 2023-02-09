@@ -1,76 +1,108 @@
-#include "speed_monitor.h"
-// #include "ArduPID.h"
-
-// ArduPID myController;
-
-int throttle_pin = 3;       // Motor throttle PWM pin
-double target_speed = 500;  // Target speed, in cm/s
-double throttle;            // Input PWM (i.e. controller input)
-double cur_speed;           // Current speed, in m/s
-
-// https://pidexplained.com/how-to-tune-a-pid-controller/
-double p = 1;
-double i = 0;
-double d = 0;
+#include "motor_controller.h"
+#include "string.h"
 
 
-int speed_pin = 2;                              // This pin sees a state change as the wheel turns
-unsigned long pulse_timeout = 100000;           // If no pulses for this long, purge the running average (us)
-float wheel_diam = 14.0;                        // cm
-
-SpeedMonitor motor_speed(speed_pin, pulse_timeout, wheel_diam);
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-= User Config -=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+// https://github.com/jackw01/arduino-pid-autotuner
 
 // Printing variables
+int report_period = 10;  // milliseconds
+
+#define NUM_MOTORS 1
+
+// Speed monitoring configurations.
+int speed_pins[NUM_MOTORS] = { 2 };                     // This pin sees a state change as the wheel turns
+unsigned long pulse_timeouts[NUM_MOTORS] = { 100000 };  // If no pulses for this long (us), purge the running average and set frequency to inf
+float wheel_diams[NUM_MOTORS] = { 14.0 };               // cm
+int pulses_per_turns[NUM_MOTORS] = { 90 };              // The number of times the speed pin changes state, per wheel revolution
+
+// Motor control variables
+int throttle_pins[NUM_MOTORS] = { 3 };  // Motor throttle PWM pin
+
+// https://pidexplained.com/how-to-tune-a-pid-controller/
+double p_values[NUM_MOTORS] = { 5.0 };
+double i_values[NUM_MOTORS] = { 0.0 };
+double d_values[NUM_MOTORS] = { 0.0 };
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+/* -=-=-=-=-=-=-=-=-=-=-=- End of User Config -=-=-=-=-=-=-=-=-=-=-=- */
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
+// Array of motor controlling classes
+MotorController* motor_objects[NUM_MOTORS];
+
+// Record last reporting time
 unsigned long last_report_time;
-int report_period = 100; // milliseconds
 
 
-void setup()
-{
-    Serial.begin(115200);
-    // Wait for the serial connection to establish. Hacky, but hey ho.
-    delay(1000);
+void setup() {
+  Serial.begin(115200);
 
-    last_report_time = millis();
+  last_report_time = millis();
 
-    // Start a PID controller
-    myController.begin(&throttle, &cur_speed, &target_speed, p, i, d);
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    // motor_speed_monitors[i] = new SpeedMonitor(speed_pins[i], pulse_timeouts[i], wheel_diams[i]);
 
-    myController.setSampleTime(100);       // OPTIONAL - will ensure at least N ms have past between successful compute() calls
-    myController.setOutputLimits(0, 255);
-    myController.setWindUpLimits(-10, 10); // Groth bounds for the integral term to prevent integral wind-up
+    // These objects will handle all the motor code
+    motor_objects[i] = new MotorController("Motor1",
+                                           speed_pins[i],
+                                           wheel_diams[i],
+                                           pulses_per_turns[i],
+                                           throttle_pins[i],
+                                           p_values[i],
+                                           i_values[i],
+                                           d_values[i]);
+
+    motor_objects[i]->report_period = report_period;
+    motor_objects[i]->speed_monitor->pulse_timeout = pulse_timeouts[i];
+  }
 }
 
 
-void loop()
-{
-    // Poll the motor speed controller
-    motor_speed.monitor();
-
-    // If enough time has passed, report the current motor speed
-    if (millis() - last_report_time > report_period) 
-    {
-        Serial.print("Target Speed: ");
-        Serial.print(target_speed);
-        Serial.println(" cm/s");
-        Serial.print("Pulse Frequency: ");
-        Serial.print(motor_speed.frequency());
-        Serial.println(" Hz");
-        Serial.print("Speed: ");
-        Serial.print(motor_speed.speed());
-        Serial.println(" cm/s");
-        Serial.println("");
-        last_report_time = millis();
+void check_serial() {
+  // Checks for a command on the Serial connection
+  // Commands follow the format:
+  // "<motor ID>:<speed>"
+  // Multiple commands can be given, delimited by an "&", e.g.
+  // "<motor ID>:<speed>&<motor ID>:<speed>"
+  // Up to 32 characters can be recieved at once. ID: 1 char, ":": 1 char, speed: 5 chars, "&": 1 char.
+  if (Serial.available() > 0) {
+    char input[32];
+    int available_bytes = Serial.available();
+    for (int i = 0; i < available_bytes; i++) {
+      input[i] = Serial.read();
     }
 
-    myController.compute();
-    myController.debug(&Serial, "myController", PRINT_INPUT    | // Can include or comment out any of these terms to print
-                                                PRINT_OUTPUT   | // in the Serial plotter
-                                                PRINT_SETPOINT |
-                                                PRINT_BIAS     |
-                                                PRINT_P        |
-                                                PRINT_I        |
-                                                PRINT_D);
+    // Read each command pair
+    char* command = strtok(input, "&");
+    while (command != 0) {
+      // Split the command in two values
+      char* separator = strchr(command, ':');
+      if (separator != 0) {
+        // Actually split the string in 2: replace ':' with 0
+        *separator = 0;
+        int motorId = atoi(command);
+        ++separator;
+        int position = atoi(separator);
 
-    analogWrite(3, throttle); // Replace with plant control signal
+        motor_objects[motorId]->target_speed = position;
+      }
+      // Find the next command in input string
+      command = strtok(0, "&");
+    }
+  }
+}
+
+
+void loop() {
+  // Update the motors
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    motor_objects[i]->loop();
+  }
+
+  // Check for commands
+  check_serial();
 }

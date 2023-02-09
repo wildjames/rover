@@ -1,0 +1,83 @@
+#include "motor_controller.h"
+#include "ArduPID.h"
+#include "Strings.h"
+// #include <RP2040_PWM.h>
+
+
+MotorController::MotorController(char* name,
+                                 int speed_pin,
+                                 float wheel_diameter_cm,
+                                 int pulses_per_turn,
+                                 int throttle_pin,
+                                 const double& p,
+                                 const double& i,
+                                 const double& d) {
+
+  _name = name;
+
+  // Create the speed monitor object
+  speed_monitor = new SpeedMonitor(speed_pin, wheel_diameter_cm, pulses_per_turn);
+
+  // Create the PID controller
+  PID = new ArduPID();
+  PID->begin(&cur_speed, &throttle, &target_speed, p, i, d);
+
+  // PID controller config.
+  PID->setSampleTime(5);          // OPTIONAL - will ensure at least N ms have past between successful compute() calls
+  PID->setOutputLimits(0, 255);   // Impose limits on the output values. PWM duty cycle
+  // PID->setWindUpLimits(-0.5, 0.5);  // Groth bounds for the integral term to prevent integral wind-up
+
+  // The PID needs to be started before compute does anything
+  PID->start();
+
+  // PWM output
+  _throttle_pin = throttle_pin;
+  
+  pinMode(_throttle_pin, OUTPUT);
+  analogWrite(_throttle_pin, 0);
+
+  // throttle_pwm = new RP2040_PWM(_throttle_pin, 50, 0);
+
+  // Some times to be tracked
+  last_report_time = millis();
+  last_speed_update = millis();
+};
+
+
+void MotorController::loop() {
+  speed_monitor->monitor();
+
+  if (millis() - last_speed_update > speed_poll_time) {
+    cur_speed = speed_monitor->speed();
+    last_speed_update = millis();
+  }
+
+  // This has a built-in timer
+  PID->compute();
+
+  // Update the pin on each loop, it is fast
+  // throttle_pwm->setPWM(_throttle_pin, 50, throttle);
+  analogWrite(_throttle_pin, throttle);
+
+  // If enough time has passed, report the current motor speed
+  if (millis() - last_report_time > report_period) {
+    // PID->debug(&Serial, _name, PRINT_INPUT | PRINT_OUTPUT | PRINT_SETPOINT);
+    // Serial.print("Target: ");
+    Serial.print(target_speed);
+    Serial.print("\t");
+    // Serial.print("Current: ");
+    Serial.print(speed_monitor->speed());
+    Serial.print("\t");
+    // Serial.print("Throttle: ");
+    Serial.print(throttle);
+    Serial.println("");
+
+
+    last_report_time = millis();
+  }
+}
+
+
+float MotorController::speed() {
+  return speed_monitor->speed();
+}
