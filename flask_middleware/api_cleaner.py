@@ -252,10 +252,13 @@ def relay_control():
 @token_required
 def motor_command():
     logger.info("Recieved motor command")
-    
-    response = requests.post(
-        controller_address_base.format("motor_command"), json=request.json
-    ).json()
+
+    target = controller_address_base.format("motor_command")
+    payload = request.json
+
+    logger.debug(f"Making a request to: {target} with payload: {payload}")
+
+    response = requests.post(target, json=payload)
 
     return response
 
