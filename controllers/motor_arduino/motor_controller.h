@@ -11,6 +11,8 @@ public:
   MotorController(
     char* name,
     int speed_pin,
+    int brake_pin,
+    int dir_pin,
     float wheel_diameter_cm,
     int pulses_per_turn,
     int throttle_pin,
@@ -21,13 +23,22 @@ public:
   void loop();
   float speed();
 
+  void reverse(int enabled);
+  void brake(int enabled);
 
-  double target_speed = 0;  // Target speed, in cm/s
+  int brake_state = 1;
+  int reverse_state = 0;
 
-  int speed_poll_time = 100;   // Speed we be recalculated every N ms
-  int report_period = 10000;  // milliseconds
+  double target_speed = 0;    // Target speed, in cm/s
+  int speed_poll_time = 10;   // Speed we be recalculated every N ms
+  int PID_sample_time = 25;   // ms
+  int report_period = 10000;  // ms
 
-  // Class functions
+  // If this is enabled, then whenever the actual speed is higher 
+  // than the target speed, the brakes will be applied.
+  bool active_deceleration = false;
+
+  // My speed monitor object
   SpeedMonitor* speed_monitor;
 
 private:
@@ -39,7 +50,8 @@ private:
   double cur_speed = 0;  // The current speed.
 
   int _throttle_pin;
-  // RP2040_PWM* throttle_pwm;
+  int _brake_pin;
+  int _dir_pin;
 
   int last_speed_update;
 

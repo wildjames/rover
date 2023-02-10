@@ -8,28 +8,45 @@
 // https://github.com/jackw01/arduino-pid-autotuner
 
 // Printing variables
-int report_period = 10;  // milliseconds
+int report_period = 1000;  // milliseconds
 
 #define NUM_MOTORS 1
 
 // Speed monitoring configurations.
-int speed_pins[NUM_MOTORS] = { 2 };                     // This pin sees a state change as the wheel turns
+int speed_pins[NUM_MOTORS] = { 20 };                    // This pin sees a state change as the wheel turns
 unsigned long pulse_timeouts[NUM_MOTORS] = { 100000 };  // If no pulses for this long (us), purge the running average and set frequency to inf
-float wheel_diams[NUM_MOTORS] = { 14.0 };               // cm
+float wheel_diams[NUM_MOTORS] = { 16.0 };               // cm
 int pulses_per_turns[NUM_MOTORS] = { 90 };              // The number of times the speed pin changes state, per wheel revolution
 
+
 // Motor control variables
-int throttle_pins[NUM_MOTORS] = { 3 };  // Motor throttle PWM pin
+int throttle_pins[NUM_MOTORS] = { 19 };  // Motor throttle PWM pin
+int brake_pins[NUM_MOTORS] = { 17 };
+int dir_pins[NUM_MOTORS] = { 16 };
 
-// https://pidexplained.com/how-to-tune-a-pid-controller/
-double p_values[NUM_MOTORS] = { 5.0 };
-double i_values[NUM_MOTORS] = { 0.0 };
-double d_values[NUM_MOTORS] = { 0.0 };
+// Motor controllers need to be level shifted. These are the reference voltage pins
+int ref_voltage_pins[NUM_MOTORS] = { 18 };
 
+// manually tuned. Works with PID update times of 25ms
+double p_values[NUM_MOTORS] = { 0.3 };
+double i_values[NUM_MOTORS] = { 5.0 };
+double d_values[NUM_MOTORS] = { 0.1 };
+
+// // Testing values. 25ms PID intervals
+// double p_values[NUM_MOTORS] = { 2.5 };
+// double i_values[NUM_MOTORS] = { 2.0 };
+// double d_values[NUM_MOTORS] = { 0.1 };
+
+
+int led_toggle_time = 200;
+int last_led_change;
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
 /* -=-=-=-=-=-=-=-=-=-=-=- End of User Config -=-=-=-=-=-=-=-=-=-=-=- */
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= */
+
+// Builtin LED pin
+#define LED_BUILTIN 25
 
 // Array of motor controlling classes
 MotorController* motor_objects[NUM_MOTORS];
@@ -39,16 +56,22 @@ unsigned long last_report_time;
 
 
 void setup() {
-  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  last_led_change = millis();
 
+
+  Serial.begin(115200);
   last_report_time = millis();
 
   for (int i = 0; i < NUM_MOTORS; i++) {
-    // motor_speed_monitors[i] = new SpeedMonitor(speed_pins[i], pulse_timeouts[i], wheel_diams[i]);
+    digitalWrite(ref_voltage_pins[i], HIGH);
 
     // These objects will handle all the motor code
     motor_objects[i] = new MotorController("Motor1",
                                            speed_pins[i],
+                                           brake_pins[i],
+                                           dir_pins[i],
                                            wheel_diams[i],
                                            pulses_per_turns[i],
                                            throttle_pins[i],
@@ -86,9 +109,21 @@ void check_serial() {
         *separator = 0;
         int motorId = atoi(command);
         ++separator;
-        int position = atoi(separator);
+        int target_speed = atoi(separator);
 
-        motor_objects[motorId]->target_speed = position;
+        // Parse out the brake/direction situation
+        if (target_speed < 0)
+          motor_objects[motorId]->reverse(1);
+        else if (target_speed == 0)
+          motor_objects[motorId]->brake(1);
+        else
+          motor_objects[motorId]->reverse(0);
+
+        if ((motor_objects[motorId]->brake_state) && (target_speed != 0))
+          motor_objects[motorId]->brake(0);
+
+        // Set the actual speed
+        motor_objects[motorId]->target_speed = abs(target_speed);
       }
       // Find the next command in input string
       command = strtok(0, "&");
@@ -98,6 +133,12 @@ void check_serial() {
 
 
 void loop() {
+  // Handle the LED. If it stops blinking, we're dead!
+  if (millis() - last_led_change > led_toggle_time) {
+    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+    last_led_change = millis();
+  }
+
   // Update the motors
   for (int i = 0; i < NUM_MOTORS; i++) {
     motor_objects[i]->loop();

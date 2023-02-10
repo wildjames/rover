@@ -16,7 +16,7 @@ class SpeedMonitor {
 
 public:
   SpeedMonitor(int speed_input_pin, float wheel_diameter, int pulses_per_turn);
-
+  
   void monitor();
 
   double average_pulse_duration();
@@ -27,7 +27,7 @@ public:
   unsigned long pulse_count = 0;
 
 private:
-  int _speed_pin;         // This pin sees a state change as the wheel turns
+  int _speed_pin;      // This pin sees a state change as the wheel turns
   float _wheel_diameter;  // The diameter of the wheel, duh
   int _pulses_per_turn;
 
