@@ -248,38 +248,6 @@ def relay_control():
     return response
 
 
-@app.route("/motor_init", methods=["POST"])
-@token_required
-def motor_init():
-    """Initializes the motors."""
-    response = requests.post(controller_address_base.format("motor_init")).json()
-    return response
-
-
-@app.route("/motor_close", methods=["POST"])
-@token_required
-def motor_close():
-    """Closes the motors."""
-    response = requests.post(controller_address_base.format("motor_close")).json()
-    return response
-
-
-@app.route("/motor_arm", methods=["POST"])
-@token_required
-def motor_arm():
-    """Arms the motors."""
-    response = requests.post(controller_address_base.format("motor_arm")).json()
-    return response
-
-
-@app.route("/motor_info", methods=["GET"])
-@token_required
-def motor_info():
-    """Returns a JSON object containing motor information."""
-    response = requests.get(controller_address_base.format("motor_info")).json()
-    return response
-
-
 @app.route("/motor_command", methods=["POST"])
 @token_required
 def motor_command():
@@ -287,20 +255,6 @@ def motor_command():
         controller_address_base.format("motor_command"), json=request.json
     ).json()
     return reponse
-
-
-@app.route("/motor_stop", methods=["POST"])
-@token_required
-def motor_stop():
-    response = requests.post(controller_address_base.format("motor_stop")).json()
-    return response
-
-
-@app.route("/motor_panic", methods=["POST"])
-@token_required
-def motor_panic():
-    response = requests.post(controller_address_base.format("motor_panic")).json()
-    return response
 
 
 if __name__ == "__main__":

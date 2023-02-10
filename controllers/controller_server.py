@@ -113,7 +113,7 @@ def config():
     return {"message": "success"}
 
 
-@app.route("/motor_control", methods=["POST"])
+@app.route("/motor_command", methods=["POST"])
 @keep_alive_middleware.keep_alive
 def motor_command():
     """Control motors.
