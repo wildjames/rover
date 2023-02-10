@@ -260,7 +260,9 @@ def motor_command():
 
     response = requests.post(target, json=payload)
 
-    return response
+    logger.debug("Got response: {}".format(response))
+
+    return response.json()
 
 
 if __name__ == "__main__":
