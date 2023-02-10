@@ -128,26 +128,6 @@
                         }
                     }
 
-                    // By default, assume the motor is not initialized
-                    motor_init.style.backgroundColor = 'black';
-                    motor_init.textContent = 'Enable Motor';
-                    motor_init.setAttribute('data-state', 0);
-
-                    // Update the motor init button
-                    var num_motors = response.motor_data.num_motors;
-                    if (num_motors > 0) {
-                        var motor = response.motor_data.motor_states[0];
-
-                        if (motor.started) {
-                            motor_init.style.backgroundColor = 'red';
-                            motor_init.textContent = 'Disable Motor';
-                            motor_init.setAttribute('data-state', motor.started ? 1 : 0);
-                        }
-                    } else {
-                        throttle_slider.value = 0
-                        throttle_text.innerHTML = 0
-                    }
-
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
                     clear_button_styles()
                     return;
@@ -173,11 +153,13 @@
                 payload = JSON.stringify({
                     "command": "init_motors",
                 });
+                this.setAttribute("data-state", 1);
             } else {
                 console.log("Sending close");
                 payload = JSON.stringify({
                     "command": "close_motors",
                 });
+                this.setAttribute("data-state", 0);
             }
             xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
