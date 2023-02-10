@@ -191,7 +191,7 @@
                 return;
             }
 
-            var value = parseFloat(this.value) / 100.0;
+            var value = parseFloat(this.value);
             console.log("Sending throttle value: " + value);
 
             // Make a POST request to the controller server
