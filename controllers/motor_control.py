@@ -13,45 +13,81 @@ motor_controller_address = "/dev/tty.usbmodem1101"
 motor_controller_baudrate = 115200
 
 motor_conn = None
+motor_listener_thread = None
+stop_listener = False
 
-MOTOR_KEYS = ["fr", "fl", "br", "bl"]
+MOTOR_KEYS = ["fr"]
+
+motor_actual_speeds = [0] * len(MOTOR_KEYS)
+motor_target_speeds = [0] * len(MOTOR_KEYS)
+motor_throttles = [0] * len(MOTOR_KEYS)
 
 
 def watch_motor_responses():
-    if motor_conn is None:
+    """Listen to, and parse, messages from the motor controller"""
+
+    if motor_conn is None or stop_listener:
         return
 
-    while motor_conn.is_open:
-        try:
-            response = motor_conn.readline().decode("utf-8")
-            print(f"Motor controller response: {response}")
-            # TODO: Do something with this
+    try:
+        response = motor_conn.readline().decode("utf-8")
+        print(f"{response}")
+        # TODO: Do something with this
 
-        except Exception as e:
-            logger.error(f"Error reading motor controller response: {e}")
-            break
+    except Exception as e:
+        logger.error(f"Error reading motor controller response: {e}")
+    
+    threading.Timer(interval=0.1, target=watch_motor_responses).start()
 
 
 def init_motor_controller():
-    """Initialize the motor controller"""
+    """Initialize the serial connection to the motor controller"""
 
     global motor_conn
+    global motor_listener_thread
+    global stop_listener
 
     logger.info("Initializing motor controller")
 
     motor_conn = serial.Serial(motor_controller_address, motor_controller_baudrate)
-
-    # Wait for the motor controller to boot up
-    time.sleep(2)
 
     # Check if the connection is open
     if not motor_conn.is_open:
         return {"message": "Motor controller connection failed"}
 
     # Open a watchdog that will parse incoming data from the motor controller
-    threading.Thread(target=watch_motor_responses).start()
+    motor_listener_thread = threading.Timer(interval=0.1, target=watch_motor_responses)
+    motor_listener_thread.daemon = True
+
+    # Ensure it doesn't immediately terminate
+    stop_listener = False
+    motor_listener_thread.start()
 
     return {"message": "Motor controller communication initialized"}
+
+
+def close_motor_controller():
+    """Close the serial connection to the motor controller"""
+
+    global motor_conn
+    global motor_listener_thread
+    global stop_listener
+
+    logger.info("Closing motor controller")
+
+    if motor_conn is None:
+        return {"message": "Motor controller not initialized"}
+
+    if not motor_conn.is_open:
+        return {"message": "Motor controller connection already closed"}
+
+    # Kill the listener thread
+    stop_listener = True
+
+    motor_conn.close()
+    motor_conn = None
+
+    return {"message": "Motor controller connection closed"}
 
 
 def set_motor_speed(payload: Dict[str, Any]):
@@ -92,24 +128,20 @@ def execute_command(data: Dict[str, Any]):
         Structure:
         {
             "command": "init_motors",
-            "payload:" ["fr", "fl", "br", "bl"],
         }
 
-    - set_motor_config: Set the configuration for the motors.
+    - close_motors: Close the serial connection to the motor controller
         Structure:
         {
-            "command": "set_motor_config",
-            "payload": {
-                "fr": {...},
-            },
+            "command": "close_motors",
         }
 
     - set_motor_throttle: Set the throttle for the motors.
         Structure:
         {
-            "command": "set_motor_throttle",
+            "command": "set_speed",
             "payload": {
-                "fr": 0.5,
+                "fr": <speed, cm/s>,
             },
         }
 
@@ -120,6 +152,11 @@ def execute_command(data: Dict[str, Any]):
 
     if command == "init_motors":
         status = init_motor_controller()
+        status["command"] = command
+        return status
+
+    elif command == "close_motors":
+        status = close_motor_controller()
         status["command"] = command
         return status
 

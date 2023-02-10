@@ -58,8 +58,10 @@ def system_info():
             "relay_states": relay_control.get_relay_state(),
         },
         "motor_data": {
-            "num_motors": len(motor_control.ESC_CONTROLLERS),
-            "motor_states": [],
+            "num_motors": len(motor_control.MOTOR_KEYS),
+            "motor_actual_speeds": motor_control.motor_actual_speeds,
+            "motor_target_speeds": motor_control.motor_target_speeds,
+            "motor_throttles": motor_control.motor_throttles,
         },
         "sleep_data": {
             "sleep_time": keep_alive_middleware.SLEEP_THRESHOLD,
@@ -71,24 +73,6 @@ def system_info():
             "upload_interval": environment_logger.UPLOAD_INTERVAL,
         },
     }
-
-    logger.debug("Gathered initial system info. Collecting motor configuration...")
-
-    # Gather motor data
-    payload = []
-    for idex, m in motor_control.ESC_CONTROLLERS:
-        payload.append(
-            {
-                "motor": idex,
-                "pin": m.pin,
-                "min_pulse": m.min_pulse_width,
-                "max_pulse": m.max_pulse_width,
-                "throttle": m.throttle,
-                "started": m.started,
-            }
-        )
-
-    info_dict["motor_data"]["motor_states"] = payload
 
     logger.info("Returning system info: {}".format(info_dict))
 
@@ -133,7 +117,7 @@ def config():
 @keep_alive_middleware.keep_alive
 def motor_command():
     """Control motors.
-    The JSON payload should contain dictionaries, with at least the key "commnand": <str>,
+    The JSON payload should contain dictionaries, with at least the key "command": <str>,
     followed by any other keys required for the command.
     Sometimes, this will also include a motor index, one of:
         fr: front right
@@ -142,35 +126,36 @@ def motor_command():
         bl: back left
     If a list of commands is sent, they will be executed in order.
 
-    Commands take a dict with two keys:
-        - command: The command to execute.
-        - payload: The payload for the command.
+    Returns a response message for each command, something like:
+        {
+            "command": str,
+            "message": str,
+        }
+
+    Command options:
 
     - init_motors: Initialize the motors, using the set configuration.
         Structure:
         {
             "command": "init_motors",
-            "payload:" ["fr", "fl", "br", "bl"],
         }
 
-    - set_motor_config: Set the configuration for the motors.
+    - close_motors: Close the serial connection to the motor controller
         Structure:
         {
-            "command": "set_motor_config",
-            "payload": {
-                "fr": {...},
-            },
+            "command": "close_motors",
         }
 
     - set_motor_throttle: Set the throttle for the motors.
         Structure:
         {
-            "command": "set_motor_throttle",
+            "command": "set_speed",
             "payload": {
-                "fr": 0.5,
+                "fr": <speed, cm/s>,
             },
         }
     """
+
     logger.info("Received motor control request")
     logger.debug("Request data: {}".format(request.json))
 
