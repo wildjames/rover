@@ -163,7 +163,7 @@
             }
             xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send();
+            xhr.send(payload);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
