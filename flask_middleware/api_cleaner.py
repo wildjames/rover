@@ -258,8 +258,7 @@ def motor_command():
     try:
         payload = request.json
     except Exception as e:
-        logger.debug("No payload")
-        payload = {}
+        return {"message": "failure: No payload"}
 
     logger.debug(f"Making a request to: {target} with payload: {payload}")
 
