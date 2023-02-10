@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 
 
 # motor_controller_address = "/dev/ttyACM0"
-motor_controller_address = "/dev/tty.usbmodem1101"
+motor_controller_address = "/dev/ttyACM0"
 motor_controller_baudrate = 115200
 
 motor_conn = None
