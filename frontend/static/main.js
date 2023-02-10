@@ -148,22 +148,29 @@
             }
 
             var xhr = new XMLHttpRequest();
+            var payload = {
+                "command": "",
+            };
+
             if (state == 0) {
                 console.log("Sending init");
-                var payload = JSON.stringify({
-                    "command": "init_motors",
-                });
+                payload.command = "init_motors";
+
                 this.setAttribute("data-state", 1);
             } else {
                 console.log("Sending close");
-                var payload = JSON.stringify({
-                    "command": "close_motors",
-                });
+                payload.command = "close_motors";
+
                 this.setAttribute("data-state", 0);
             }
+
+            var sendme = JSON.stringify(payload);
+
+            console.log("Sending motor command: " + sendme);
+
             xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(payload);
+            xhr.send(sendme);
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
