@@ -254,9 +254,11 @@ def motor_command():
     logger.info("Recieved motor command")
 
     target = controller_address_base.format("motor_command")
+    logger.info("Making request to {}".format(target))
     try:
         payload = request.json
     except Exception as e:
+        logger.debug("No payload")
         payload = {}
 
     logger.debug(f"Making a request to: {target} with payload: {payload}")
