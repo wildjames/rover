@@ -168,7 +168,8 @@
 
             console.log("Sending motor command: " + sendme);
 
-            xhr.open('POST', './api/motor_command', true);
+            xhr.open('POST', './api/motor_command', true); 
+            xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(sendme);
 
