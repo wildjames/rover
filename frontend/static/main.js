@@ -197,9 +197,9 @@
             // Make a POST request to the controller server
             var payload = JSON.stringify({
                 "command": "set_speed",
-                "payload": [
-                    ["fr", value]
-                ]
+                "payload": {
+                    "fr": value,
+                }
             });
             console.log("Throttle sending payload: " + payload);
 

@@ -57,6 +57,8 @@ def init_motor_controller():
     if not motor_conn.is_open:
         return {"message": "Motor controller connection failed"}
 
+    logger.info("Starting motor controller listener thread")
+
     # Open a watchdog that will parse incoming data from the motor controller
     motor_listener_thread = threading.Timer(interval=0.1, target=watch_motor_responses)
     motor_listener_thread.daemon = True
@@ -64,6 +66,8 @@ def init_motor_controller():
     # Ensure it doesn't immediately terminate
     stop_listener = False
     motor_listener_thread.start()
+
+    logger.info("OK")
 
     return {"message": "Motor controller communication initialized"}
 
@@ -158,17 +162,16 @@ def execute_command(data: Dict[str, Any]):
     if command == "init_motors":
         status = init_motor_controller()
         status["command"] = command
-        return status
 
     elif command == "close_motors":
         status = close_motor_controller()
         status["command"] = command
-        return status
 
     elif command == "set_speed":
         status = set_motor_speed(payload)
         status["command"] = command
-        return status
 
     else:
-        return {"command": command, "message": "Unknown command"}
+        status = {"command": command, "message": "Unknown command"}
+
+    return status
