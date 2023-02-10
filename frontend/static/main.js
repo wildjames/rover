@@ -211,7 +211,7 @@
                     ["fr", value]
                 ]
             });
-            console.log("Sending payload: " + payload);
+            console.log("Throttle sending payload: " + payload);
 
             // All API requests need to authenticated with a bearer token in the header
             if (!valid_api_token) {
