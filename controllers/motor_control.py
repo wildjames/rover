@@ -31,7 +31,7 @@ def watch_motor_responses():
 
     try:
         response = motor_conn.readline().decode("utf-8")
-        print(f"{response}")
+        logger.info(f"Motor: {response}")
         # TODO: Do something with this
 
     except Exception as e:
@@ -47,9 +47,11 @@ def init_motor_controller():
     global motor_listener_thread
     global stop_listener
 
-    logger.info("Initializing motor controller")
+    logger.info(f"Initializing motor controller on serial address: {motor_controller_address}")
 
     motor_conn = serial.Serial(motor_controller_address, motor_controller_baudrate)
+
+    logger.info("OK")
 
     # Check if the connection is open
     if not motor_conn.is_open:
