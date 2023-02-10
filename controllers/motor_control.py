@@ -150,6 +150,9 @@ def execute_command(data: Dict[str, Any]):
     command = data["command"]
     payload = data.get("payload", {})
 
+    logger.info(f"Executing motor command: {command}")
+    logger.info(f"Payload: {payload}")
+
     if command == "init_motors":
         status = init_motor_controller()
         status["command"] = command

@@ -172,6 +172,7 @@ def motor_command():
 
     elif isinstance(data, dict):
         logger.info("Received single command")
+        logger.debug("Command: {}".format(data))
         is_ok = motor_control.execute_command(data)
         response["command_status"].append(is_ok)
 
