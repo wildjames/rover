@@ -59,13 +59,16 @@ def init_motor_controller():
 
     logger.info("Starting motor controller listener thread")
 
-    # Open a watchdog that will parse incoming data from the motor controller
-    motor_listener_thread = threading.Timer(interval=0.1, target=watch_motor_responses)
-    motor_listener_thread.daemon = True
+    try:
+        # Open a watchdog that will parse incoming data from the motor controller
+        motor_listener_thread = threading.Timer(interval=0.1, target=watch_motor_responses)
+        motor_listener_thread.daemon = True
 
-    # Ensure it doesn't immediately terminate
-    stop_listener = False
-    motor_listener_thread.start()
+        # Ensure it doesn't immediately terminate
+        stop_listener = False
+        motor_listener_thread.start()
+    except Exception as e:
+        logger.error(f"Error starting motor controller listener thread: {e}")
 
     logger.info("OK")
 
