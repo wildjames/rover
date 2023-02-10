@@ -251,10 +251,12 @@ def relay_control():
 @app.route("/motor_command", methods=["POST"])
 @token_required
 def motor_command():
-    reponse = requests.post(
-        controller_address_base.format("motor_command"), json=request.json
-    ).json()
-    return reponse
+    # response = requests.post(
+    #     controller_address_base.format("motor_command"), json=request.json
+    # ).json()
+    logger.info("Recieved motor command")
+    response = {"Contact": "OK"}
+    return response
 
 
 if __name__ == "__main__":
