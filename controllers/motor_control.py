@@ -37,7 +37,7 @@ def watch_motor_responses():
     except Exception as e:
         logger.error(f"Error reading motor controller response: {e}")
     
-    threading.Timer(interval=0.1, target=watch_motor_responses).start()
+    threading.Timer(interval=0.1, function=watch_motor_responses).start()
 
 
 def init_motor_controller():
@@ -59,16 +59,13 @@ def init_motor_controller():
 
     logger.info("Starting motor controller listener thread")
 
-    try:
-        # Open a watchdog that will parse incoming data from the motor controller
-        motor_listener_thread = threading.Timer(interval=0.1, function=watch_motor_responses)
-        motor_listener_thread.daemon = True
+    # Open a watchdog that will parse incoming data from the motor controller
+    motor_listener_thread = threading.Timer(interval=0.1, function=watch_motor_responses)
+    motor_listener_thread.daemon = True
 
-        # Ensure it doesn't immediately terminate
-        stop_listener = False
-        motor_listener_thread.start()
-    except Exception as e:
-        logger.error(f"Error starting motor controller listener thread: {e}")
+    # Ensure it doesn't immediately terminate
+    stop_listener = False
+    motor_listener_thread.start()
 
     logger.info("OK")
 
@@ -115,7 +112,10 @@ def set_motor_speed(payload: Dict[str, Any]):
 
         cmd += f"{MOTOR_KEYS.index(key)}:{value}&"
 
-    motor_conn.write(cmd.encode("utf-8"))
+    sendme = cmd.encode("utf-8")
+    logger.info(f"Sending motor command: {cmd}")
+    motor_conn.write(sendme)
+    logger.info("OK")
 
     return {"message": "Motor speed set"}
 
