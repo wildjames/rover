@@ -134,7 +134,7 @@
                 };
             }
 
-        }, 10000);
+        }, 100);
 
         motor_init.addEventListener('click', function (e) {
             // I need to send a toggle message to the server. First, get the state of the motor
