@@ -150,13 +150,13 @@
             var xhr = new XMLHttpRequest();
             if (state == 0) {
                 console.log("Sending init");
-                payload = JSON.stringify({
+                var payload = JSON.stringify({
                     "command": "init_motors",
                 });
                 this.setAttribute("data-state", 1);
             } else {
                 console.log("Sending close");
-                payload = JSON.stringify({
+                var payload = JSON.stringify({
                     "command": "close_motors",
                 });
                 this.setAttribute("data-state", 0);

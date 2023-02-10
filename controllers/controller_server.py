@@ -58,6 +58,7 @@ def system_info():
             "relay_states": relay_control.get_relay_state(),
         },
         "motor_data": {
+            "motors_running": motor_control.motor_conn is not None,
             "num_motors": len(motor_control.MOTOR_KEYS),
             "motor_actual_speeds": motor_control.motor_actual_speeds,
             "motor_target_speeds": motor_control.motor_target_speeds,
