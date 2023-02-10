@@ -61,7 +61,7 @@ def init_motor_controller():
 
     try:
         # Open a watchdog that will parse incoming data from the motor controller
-        motor_listener_thread = threading.Timer(interval=0.1, target=watch_motor_responses)
+        motor_listener_thread = threading.Timer(interval=0.1, function=watch_motor_responses)
         motor_listener_thread.daemon = True
 
         # Ensure it doesn't immediately terminate
