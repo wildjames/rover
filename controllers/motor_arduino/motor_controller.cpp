@@ -75,6 +75,8 @@ void MotorController::loop() {
   if (millis() - last_report_time > report_period) {
     // PID->debug(&Serial, _name, PRINT_INPUT | PRINT_OUTPUT | PRINT_SETPOINT);
     // Serial.print("Target: ");
+    Serial.print(_name);
+    Serial.print("\t");
     Serial.print(target_speed);
     Serial.print("\t");
     // Serial.print("Current: ");

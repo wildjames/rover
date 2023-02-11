@@ -18,6 +18,8 @@ unsigned long pulse_timeouts[NUM_MOTORS] = { 100000 };  // If no pulses for this
 float wheel_diams[NUM_MOTORS] = { 16.0 };               // cm
 int pulses_per_turns[NUM_MOTORS] = { 90 };              // The number of times the speed pin changes state, per wheel revolution
 
+// Motor labels
+char* labels[NUM_MOTORS] = { "fr" };
 
 // Motor control variables
 int throttle_pins[NUM_MOTORS] = { 19 };  // Motor throttle PWM pin
@@ -68,7 +70,7 @@ void setup() {
     digitalWrite(ref_voltage_pins[i], HIGH);
 
     // These objects will handle all the motor code
-    motor_objects[i] = new MotorController("Motor1",
+    motor_objects[i] = new MotorController(labels[i],
                                            speed_pins[i],
                                            brake_pins[i],
                                            dir_pins[i],
