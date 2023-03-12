@@ -1,7 +1,7 @@
-(function () {
+(function() {
     var signalObj = null;
 
-    window.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('DOMContentLoaded', function() {
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
@@ -24,7 +24,7 @@
         throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
 
         // Update the current slider value (each time you drag the slider handle)
-        throttle_slider.oninput = function () {
+        throttle_slider.oninput = function() {
             throttle_text.innerHTML = this.value;
         }
 
@@ -48,7 +48,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
@@ -61,7 +61,7 @@
         };
 
         // Execute a function when the user presses a key on the keyboard
-        token_input.addEventListener("keypress", function (event) {
+        token_input.addEventListener("keypress", function(event) {
             // If the user presses the "Enter" key on the keyboard
             if (event.key === "Enter") {
                 // Cancel the default action
@@ -73,7 +73,7 @@
         });
 
         // I periodically get the system state from the server
-        setInterval(function () {
+        setInterval(function() {
             // If I'm streaming, set the button text to reflect that
             if (isStreaming) {
                 stream_toggle.textContent = "Stop Streaming";
@@ -97,7 +97,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
@@ -136,7 +136,7 @@
 
         }, 100);
 
-        motor_init.addEventListener('click', function (e) {
+        motor_init.addEventListener('click', function(e) {
             // I need to send a toggle message to the server. First, get the state of the motor
             var state = this.getAttribute('data-state');
             state = parseInt(state);
@@ -168,12 +168,12 @@
 
             console.log("Sending motor command: " + sendme);
 
-            xhr.open('POST', './api/motor_command', true); 
+            xhr.open('POST', './api/motor_command', true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send(sendme);
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log(xhr.responseText);
                 }
@@ -183,7 +183,7 @@
         });
 
         // When a click is released from the slider, I need to send a message to the control server
-        throttle_slider.addEventListener('mouseup', function (e) {
+        throttle_slider.addEventListener('mouseup', function(e) {
             // If the motor is not initialized, do nothing
             var state = motor_init.getAttribute('data-state');
             state = parseInt(state);
@@ -194,11 +194,16 @@
             var value = parseFloat(this.value);
             console.log("Sending throttle value: " + value);
 
+            setMotorState(value, value);
+        });
+
+        function setMotorState(fr, fl) {
             // Make a POST request to the controller server
             var payload = JSON.stringify({
                 "command": "set_speed",
                 "payload": {
-                    "fr": value,
+                    "fr": fr,
+                    "fl": fl,
                 }
             });
             console.log("Throttle sending payload: " + payload);
@@ -217,7 +222,7 @@
             xhr.send(payload);
 
             // print the response to the console
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Response: " + xhr.responseText);
                 } else if (xhr.readyState === 4 && xhr.status === 403) {
@@ -225,7 +230,7 @@
                     return;
                 };
             }
-        });
+        }
 
 
         function toggleRelay() {
@@ -268,7 +273,7 @@
         relay1.addEventListener('click', toggleRelay, false);
         relay2.addEventListener('click', toggleRelay, false);
 
-        stream_toggle.addEventListener('click', function (e) {
+        stream_toggle.addEventListener('click', function(e) {
             // This is the IP of the server running the camera stream.
             var address = location.hostname + location.pathname + '/video';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
@@ -281,7 +286,7 @@
                 canvas.style.cursor = 'progress';
 
                 signalObj = new signal(wsurl,
-                    function (stream) {
+                    function(stream) {
                         console.log('got a stream!');
 
                         // Play the stream in browser. Need to handle promises properly.
@@ -290,27 +295,27 @@
 
                         if (playPromise !== undefined) {
                             playPromise.then(_ => {
-                                // Automatic playback started!
-                                // Show playing UI.
-                            })
+                                    // Automatic playback started!
+                                    // Show playing UI.
+                                })
                                 .catch(error => {
                                     // Auto-play was prevented
                                     // Show paused UI.
                                 });
                         }
                     },
-                    function (error) {
+                    function(error) {
                         canvas.style.cursor = "default";
                         alert(error);
                     },
-                    function () {
+                    function() {
                         console.log('websocket closed. bye bye!');
                         video.srcObject = null;
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         isStreaming = false;
                         canvas.style.cursor = "default";
                     },
-                    function (message) {
+                    function(message) {
                         canvas.style.cursor = "default";
                         alert(message);
                     }
@@ -325,7 +330,7 @@
         }, false);
 
         // Wait until the video stream can play
-        video.addEventListener('canplay', function (e) {
+        video.addEventListener('canplay', function(e) {
             if (!isStreaming) {
                 canvas.setAttribute('width', video.videoWidth);
                 canvas.setAttribute('height', video.videoHeight);
@@ -335,9 +340,9 @@
         }, false);
 
         // Wait for the video to start to play
-        video.addEventListener('play', function () {
+        video.addEventListener('play', function() {
             // Every 33 milliseconds copy the video image to the canvas
-            setInterval(function () {
+            setInterval(function() {
                 if (video.paused || video.ended) {
                     return;
                 }
@@ -348,29 +353,51 @@
             }, 33);
         }, false);
 
-        // // Should detect gamepad connection and disconnection
-        // const gamepads = {};
+        // Should detect gamepad connection and disconnection
+        const gamepads = {};
 
-        // function gamepadHandler(event, connecting) {
-        //     const gamepad = event.gamepad;
-        //     // Note:
-        //     // gamepad === navigator.getGamepads()[gamepad.index]
+        function gamepadHandler(event, connecting) {
+            const gamepad = event.gamepad;
+            // Note:
+            // gamepad === navigator.getGamepads()[gamepad.index]
 
-        //     if (connecting) {
-        //         gamepads[gamepad.index] = gamepad;
-        //     } else {
-        //         delete gamepads[gamepad.index];
-        //     }
-        // }
+            if (connecting) {
+                gamepads[gamepad.index] = gamepad;
+            } else {
+                delete gamepads[gamepad.index];
+            }
+        }
 
-        // window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
-        // window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+        function pollGamepads() {
+            // Get controller
+            const [gp] = navigator.getGamepads();
+            if (!gp) {
+                return;
+            }
 
-        // window.addEventListener("gamepadconnected", (e) => {
-        //     const gp = navigator.getGamepads()[e.gamepad.index];
-        //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-        //         gp.index, gp.id,
-        //         gp.buttons.length, gp.axes.length);
-        // });
+            var left_speed = (gp.axes[1] * -200.0);
+            if ((left_speed < 20) && (left_speed > -20)) {
+                left_speed = 0;
+            }
+
+            var right_speed = (gp.axes[3] * -200.0);
+            if ((right_speed < 20) && (right_speed > -20)) {
+                right_speed = 0;
+            }
+
+            setMotorState(right_speed, left_speed);
+        }
+
+        setInterval(pollGamepads, 50);
+
+        window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
+        window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+
+        window.addEventListener("gamepadconnected", (e) => {
+            const gp = navigator.getGamepads()[e.gamepad.index];
+            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                gp.index, gp.id,
+                gp.buttons.length, gp.axes.length);
+        });
     });
 })();
