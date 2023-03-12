@@ -3,8 +3,7 @@
 <head>
     <title>Rover Web Interface</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./static/style.css">
     <link rel="icon" type="image/x-icon" href="./static/favicon.ico">
 
@@ -15,13 +14,13 @@
         var Module = {
             preRun: [],
             postRun: [],
-            print: (function () {
-                return function (text) {
+            print: (function() {
+                return function(text) {
                     text = Array.prototype.slice.call(arguments).join(' ');
                     console.log(text);
                 };
             })(),
-            printErr: function (text) {
+            printErr: function(text) {
                 text = Array.prototype.slice.call(arguments).join(' ');
                 console.error(text);
             }
@@ -35,14 +34,13 @@
         <h1 class="center">Rover control interface</h1>
         <div class="center">
             <div>
-                <form class="center" id="token_form" name="API_Token"> 
+                <form class="center" id="token_form" name="API_Token">
                     <label for="api_token">API Token: </label>
-                    <input type=password id="api_token" placeholder="API Token"/>
+                    <input type=password id="api_token" placeholder="API Token" />
                 </form>
                 <div class="horizontal_gap" style="height:15px"></div>
                 <div class="button-panel">
-                    <button id='streaming_toggle'
-                        title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start
+                    <button id='streaming_toggle' title="If you do not see any video stream, make sure your browser supports the codec used within this demo (see the source code for details, or try Firefox or Chrome)">Start
                         Streaming</button>
                     <button id="motor_toggle" data-state=0>Enable Motor</button>
                 </div>
