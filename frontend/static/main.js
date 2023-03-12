@@ -17,16 +17,8 @@
         var relay1 = document.getElementById('relay1');
         var relay2 = document.getElementById('relay2');
 
-        var throttle_slider = document.getElementById("throttle_slider");
-        var throttle_text = document.getElementById("throttle_value");
         var motor_init = document.getElementById("motor_toggle");
 
-        throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
-
-        // Update the current slider value (each time you drag the slider handle)
-        throttle_slider.oninput = function() {
-            throttle_text.innerHTML = this.value;
-        }
 
         function clear_button_styles() {
             // Sets the buttons to their default styles
@@ -35,9 +27,8 @@
             relay2.style = null;
 
             motor_init.style = null;
-            throttle_slider.value = 0
-            throttle_text.innerHTML = 0
         };
+
 
         function pingRover() {
             // Send a GET request to the controller server root
@@ -60,6 +51,7 @@
             }
         };
 
+
         // Execute a function when the user presses a key on the keyboard
         token_input.addEventListener("keypress", function(event) {
             // If the user presses the "Enter" key on the keyboard
@@ -71,6 +63,7 @@
                 pingRover();
             }
         });
+
 
         // I periodically get the system state from the server
         setInterval(function() {
@@ -108,7 +101,6 @@
                     for (var i = 0; i < relays.length; i++) {
                         var relay = relays[i];
 
-
                         var mystate = -1;
                         for (var j = 0; j < relayStates.length; j++) {
                             if (parseInt(relayStates[j][0]) === i) {
@@ -133,105 +125,11 @@
                     return;
                 };
             }
-
         }, 100);
 
-        motor_init.addEventListener('click', function(e) {
-            // I need to send a toggle message to the server. First, get the state of the motor
-            var state = this.getAttribute('data-state');
-            state = parseInt(state);
-
-            // All API requests need to authenticated with a bearer token in the header
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var xhr = new XMLHttpRequest();
-            var payload = {
-                "command": "",
-            };
-
-            if (state == 0) {
-                console.log("Sending init");
-                payload.command = "init_motors";
-
-                this.setAttribute("data-state", 1);
-            } else {
-                console.log("Sending close");
-                payload.command = "close_motors";
-
-                this.setAttribute("data-state", 0);
-            }
-
-            var sendme = JSON.stringify(payload);
-
-            console.log("Sending motor command: " + sendme);
-
-            xhr.open('POST', './api/motor_command', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(sendme);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                }
-            };
-
-
-        });
-
-        // When a click is released from the slider, I need to send a message to the control server
-        throttle_slider.addEventListener('mouseup', function(e) {
-            // If the motor is not initialized, do nothing
-            var state = motor_init.getAttribute('data-state');
-            state = parseInt(state);
-            if (state === 0) {
-                return;
-            }
-
-            var value = parseFloat(this.value);
-            console.log("Sending throttle value: " + value);
-
-            setMotorState(value, value);
-        });
-
-        function setMotorState(fr, fl) {
-            // Make a POST request to the controller server
-            var payload = JSON.stringify({
-                "command": "set_speed",
-                "payload": {
-                    "fr": fr,
-                    "fl": fl,
-                }
-            });
-            console.log("Throttle sending payload: " + payload);
-
-            // All API requests need to authenticated with a bearer token in the header
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.open('POST', './api/motor_command', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(payload);
-
-            // print the response to the console
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Response: " + xhr.responseText);
-                } else if (xhr.readyState === 4 && xhr.status === 403) {
-                    clear_button_styles()
-                    return;
-                };
-            }
-        }
-
+        //
+        // Relay Functions
+        //
 
         function toggleRelay() {
             // I need to send a toggle message to the server. First, get the state of the relay
@@ -272,6 +170,10 @@
         relay0.addEventListener('click', toggleRelay, false);
         relay1.addEventListener('click', toggleRelay, false);
         relay2.addEventListener('click', toggleRelay, false);
+
+        //
+        // Video streaming functions
+        //
 
         stream_toggle.addEventListener('click', function(e) {
             // This is the IP of the server running the camera stream.
@@ -353,13 +255,98 @@
             }, 33);
         }, false);
 
+        //
+        // Motor Functions
+        //
+
+        motor_init.addEventListener('click', function(e) {
+            // I need to send a toggle message to the server. First, get the state of the motor
+            var state = this.getAttribute('data-state');
+            state = parseInt(state);
+
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            var payload = {
+                "command": "",
+            };
+
+            if (state == 0) {
+                console.log("Sending init");
+                payload.command = "init_motors";
+
+                this.setAttribute("data-state", 1);
+            } else {
+                console.log("Sending close");
+                payload.command = "close_motors";
+
+                this.setAttribute("data-state", 0);
+            }
+
+            var sendme = JSON.stringify(payload);
+
+            console.log("Sending motor command: " + sendme);
+
+            xhr.open('POST', './api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(sendme);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+        });
+
+        function setMotorState(fr, fl) {
+            // Make a POST request to the controller server
+            var payload = JSON.stringify({
+                "command": "set_speed",
+                "payload": {
+                    "fl": fl,
+                    "fr": fr,
+                }
+            });
+            console.log("Throttle sending payload: " + payload);
+
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', './api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(payload);
+
+            // print the response to the console
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Response: " + xhr.responseText);
+                } else if (xhr.readyState === 4 && xhr.status === 403) {
+                    clear_button_styles()
+                    return;
+                };
+            }
+        }
+
+        //
+        // Gamepad functions
+        //
+
         // Should detect gamepad connection and disconnection
         const gamepads = {};
 
         function gamepadHandler(event, connecting) {
             const gamepad = event.gamepad;
-            // Note:
-            // gamepad === navigator.getGamepads()[gamepad.index]
 
             if (connecting) {
                 gamepads[gamepad.index] = gamepad;
@@ -385,7 +372,7 @@
                 right_speed = 0;
             }
 
-            setMotorState(right_speed, left_speed);
+            setMotorState(Math.round(right_speed), Math.round(left_speed));
         }
 
         setInterval(pollGamepads, 50);
