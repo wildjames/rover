@@ -35,9 +35,11 @@ def watch_motor_responses():
         # TODO: Do something with this
         label, target_speed, actual_speed, throttle = response.split("\t")
 
-        motor_actual_speeds[MOTOR_KEYS.index(label)] = actual_speed
-        motor_target_speeds[MOTOR_KEYS.index(label)] = target_speed
-        motor_throttles[MOTOR_KEYS.index(label)] = throttle
+        idex = MOTOR_KEYS.index(label)
+
+        motor_actual_speeds[idex] = actual_speed
+        motor_target_speeds[idex] = target_speed
+        motor_throttles[idex] = throttle
 
     except Exception as e:
         logger.error(f"Error reading motor controller response: {e}")
