@@ -23,11 +23,14 @@ import environment_logger
 from flask import Flask, request
 
 
+ENV_LOGGING_ENABLED = False
+
+
 # Flask app setup
 app = Flask(__name__)
 
 # Run the activity monitor if we are NOT in the main thread, if the reloader is enabled.
-if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+if (not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true") and ENV_LOGGING_ENABLED:
     keep_alive_middleware.check_inactivity()
 
     environment_logger.log_environment()
