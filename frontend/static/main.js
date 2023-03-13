@@ -2,6 +2,8 @@
     var signalObj = null;
 
     window.addEventListener('DOMContentLoaded', function() {
+        var statusPollRate = 1000; // ms
+
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
@@ -127,7 +129,7 @@
                     return;
                 };
             }
-        }, 100);
+        }, statusPollRate);
 
         //
         // Relay Functions
