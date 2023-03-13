@@ -113,18 +113,18 @@ void check_serial() {
       if (separator != 0) {
         // Actually split the string in 2: replace ':' with 0
         *separator = 0;
-        Serial.println(command);
+        // Serial.println(command);
         int motorId = 0;
         for (motorId = 0; motorId <= NUM_MOTORS; motorId++) {
           if (motorId == NUM_MOTORS) {
             // Invalid command
-            Serial.print(command);
-            Serial.println(" is not a valid motor index!!");
+            // Serial.print(command);
+            // Serial.println(" is not a valid motor index!!");
             return;
           }
           if (strcmp(labels[motorId], command) == 0) {
-            Serial.print("Match to ");
-            Serial.println(labels[motorId]);
+            // Serial.print("Match to ");
+            // Serial.println(labels[motorId]);
             break;
           }
         }
@@ -133,8 +133,8 @@ void check_serial() {
         ++separator;
         int target_speed = atoi(separator);
 
-        Serial.print("Motor: ");
-        Serial.println(motorId);
+        // Serial.print("Motor: ");
+        // Serial.println(motorId);
 
         // Parse out the brake/direction situation
         if (target_speed < 0)
