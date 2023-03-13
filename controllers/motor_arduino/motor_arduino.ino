@@ -98,6 +98,7 @@ void check_serial() {
   // Multiple commands can be given, delimited by an "&", e.g.
   // "<motor ID>:<speed>&<motor ID>:<speed>"
   // Up to 32 characters can be recieved at once. ID: 1 char, ":": 1 char, speed: 5 chars, "&": 1 char.
+  
   if (Serial.available() > 0) {
     char input[32];
     int available_bytes = Serial.available();
@@ -113,18 +114,15 @@ void check_serial() {
       if (separator != 0) {
         // Actually split the string in 2: replace ':' with 0
         *separator = 0;
-        // Serial.println(command);
+
+        // This code indexed the motor with the name, rather than the straight up index
         int motorId = 0;
         for (motorId = 0; motorId <= NUM_MOTORS; motorId++) {
           if (motorId == NUM_MOTORS) {
             // Invalid command
-            // Serial.print(command);
-            // Serial.println(" is not a valid motor index!!");
             return;
           }
           if (strcmp(labels[motorId], command) == 0) {
-            // Serial.print("Match to ");
-            // Serial.println(labels[motorId]);
             break;
           }
         }
@@ -132,9 +130,6 @@ void check_serial() {
 
         ++separator;
         int target_speed = atoi(separator);
-
-        // Serial.print("Motor: ");
-        // Serial.println(motorId);
 
         // Parse out the brake/direction situation
         if (target_speed < 0)

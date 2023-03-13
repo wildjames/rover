@@ -119,7 +119,10 @@ def set_motor_speed(payload: Dict[str, Any]):
         if key not in MOTOR_KEYS:
             continue
 
-        cmd += f"{MOTOR_KEYS.index(key)}:{value}&"
+        # Index motors by number
+        # cmd += f"{MOTOR_KEYS.index(key)}:{value}&"
+        # Index motors by name
+        cmd += f"{key}:{value}&"
 
     sendme = cmd.encode("utf-8")
     logger.info(f"Sending motor command: {cmd}")
