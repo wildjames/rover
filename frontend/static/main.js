@@ -1,7 +1,7 @@
-(function () {
+(function() {
     var signalObj = null;
 
-    window.addEventListener('DOMContentLoaded', function () {
+    window.addEventListener('DOMContentLoaded', function() {
         var canvas = document.getElementById('canvas');
         var video = document.getElementById('video');
         var ctx = canvas.getContext('2d');
@@ -17,16 +17,8 @@
         var relay1 = document.getElementById('relay1');
         var relay2 = document.getElementById('relay2');
 
-        var throttle_slider = document.getElementById("throttle_slider");
-        var throttle_text = document.getElementById("throttle_value");
         var motor_init = document.getElementById("motor_toggle");
 
-        throttle_text.innerHTML = throttle_slider.value; // Display the default slider value
-
-        // Update the current slider value (each time you drag the slider handle)
-        throttle_slider.oninput = function () {
-            throttle_text.innerHTML = this.value;
-        }
 
         function clear_button_styles() {
             // Sets the buttons to their default styles
@@ -35,9 +27,8 @@
             relay2.style = null;
 
             motor_init.style = null;
-            throttle_slider.value = 0
-            throttle_text.innerHTML = 0
         };
+
 
         function pingRover() {
             // Send a GET request to the controller server root
@@ -48,7 +39,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     console.log("Server responded to that API token!")
                     valid_api_token = true;
@@ -60,8 +51,9 @@
             }
         };
 
+
         // Execute a function when the user presses a key on the keyboard
-        token_input.addEventListener("keypress", function (event) {
+        token_input.addEventListener("keypress", function(event) {
             // If the user presses the "Enter" key on the keyboard
             if (event.key === "Enter") {
                 // Cancel the default action
@@ -72,8 +64,9 @@
             }
         });
 
+
         // I periodically get the system state from the server
-        setInterval(function () {
+        setInterval(function() {
             // If I'm streaming, set the button text to reflect that
             if (isStreaming) {
                 stream_toggle.textContent = "Stop Streaming";
@@ -97,7 +90,7 @@
             xhr.setRequestHeader("Authorization", "Bearer " + api_token);
             xhr.send();
 
-            xhr.onreadystatechange = function () {
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
 
@@ -107,7 +100,6 @@
                     var relays = [relay0, relay1, relay2];
                     for (var i = 0; i < relays.length; i++) {
                         var relay = relays[i];
-
 
                         var mystate = -1;
                         for (var j = 0; j < relayStates.length; j++) {
@@ -133,100 +125,11 @@
                     return;
                 };
             }
-
         }, 100);
 
-        motor_init.addEventListener('click', function (e) {
-            // I need to send a toggle message to the server. First, get the state of the motor
-            var state = this.getAttribute('data-state');
-            state = parseInt(state);
-
-            // All API requests need to authenticated with a bearer token in the header
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var xhr = new XMLHttpRequest();
-            var payload = {
-                "command": "",
-            };
-
-            if (state == 0) {
-                console.log("Sending init");
-                payload.command = "init_motors";
-
-                this.setAttribute("data-state", 1);
-            } else {
-                console.log("Sending close");
-                payload.command = "close_motors";
-
-                this.setAttribute("data-state", 0);
-            }
-
-            var sendme = JSON.stringify(payload);
-
-            console.log("Sending motor command: " + sendme);
-
-            xhr.open('POST', './api/motor_command', true); 
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(sendme);
-
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                }
-            };
-
-
-        });
-
-        // When a click is released from the slider, I need to send a message to the control server
-        throttle_slider.addEventListener('mouseup', function (e) {
-            // If the motor is not initialized, do nothing
-            var state = motor_init.getAttribute('data-state');
-            state = parseInt(state);
-            if (state === 0) {
-                return;
-            }
-
-            var value = parseFloat(this.value);
-            console.log("Sending throttle value: " + value);
-
-            // Make a POST request to the controller server
-            var payload = JSON.stringify({
-                "command": "set_speed",
-                "payload": {
-                    "fr": value,
-                }
-            });
-            console.log("Throttle sending payload: " + payload);
-
-            // All API requests need to authenticated with a bearer token in the header
-            if (!valid_api_token) {
-                clear_button_styles();
-                return;
-            }
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.open('POST', './api/motor_command', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
-            xhr.send(payload);
-
-            // print the response to the console
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log("Response: " + xhr.responseText);
-                } else if (xhr.readyState === 4 && xhr.status === 403) {
-                    clear_button_styles()
-                    return;
-                };
-            }
-        });
-
+        //
+        // Relay Functions
+        //
 
         function toggleRelay() {
             // I need to send a toggle message to the server. First, get the state of the relay
@@ -268,7 +171,11 @@
         relay1.addEventListener('click', toggleRelay, false);
         relay2.addEventListener('click', toggleRelay, false);
 
-        stream_toggle.addEventListener('click', function (e) {
+        //
+        // Video streaming functions
+        //
+
+        stream_toggle.addEventListener('click', function(e) {
             // This is the IP of the server running the camera stream.
             var address = location.hostname + location.pathname + '/video';
             var protocol = location.protocol === "https:" ? "wss:" : "ws:";
@@ -281,7 +188,7 @@
                 canvas.style.cursor = 'progress';
 
                 signalObj = new signal(wsurl,
-                    function (stream) {
+                    function(stream) {
                         console.log('got a stream!');
 
                         // Play the stream in browser. Need to handle promises properly.
@@ -290,27 +197,27 @@
 
                         if (playPromise !== undefined) {
                             playPromise.then(_ => {
-                                // Automatic playback started!
-                                // Show playing UI.
-                            })
+                                    // Automatic playback started!
+                                    // Show playing UI.
+                                })
                                 .catch(error => {
                                     // Auto-play was prevented
                                     // Show paused UI.
                                 });
                         }
                     },
-                    function (error) {
+                    function(error) {
                         canvas.style.cursor = "default";
                         alert(error);
                     },
-                    function () {
+                    function() {
                         console.log('websocket closed. bye bye!');
                         video.srcObject = null;
                         ctx.clearRect(0, 0, canvas.width, canvas.height);
                         isStreaming = false;
                         canvas.style.cursor = "default";
                     },
-                    function (message) {
+                    function(message) {
                         canvas.style.cursor = "default";
                         alert(message);
                     }
@@ -325,7 +232,7 @@
         }, false);
 
         // Wait until the video stream can play
-        video.addEventListener('canplay', function (e) {
+        video.addEventListener('canplay', function(e) {
             if (!isStreaming) {
                 canvas.setAttribute('width', video.videoWidth);
                 canvas.setAttribute('height', video.videoHeight);
@@ -335,9 +242,9 @@
         }, false);
 
         // Wait for the video to start to play
-        video.addEventListener('play', function () {
+        video.addEventListener('play', function() {
             // Every 33 milliseconds copy the video image to the canvas
-            setInterval(function () {
+            setInterval(function() {
                 if (video.paused || video.ended) {
                     return;
                 }
@@ -348,29 +255,136 @@
             }, 33);
         }, false);
 
-        // // Should detect gamepad connection and disconnection
-        // const gamepads = {};
+        //
+        // Motor Functions
+        //
 
-        // function gamepadHandler(event, connecting) {
-        //     const gamepad = event.gamepad;
-        //     // Note:
-        //     // gamepad === navigator.getGamepads()[gamepad.index]
+        motor_init.addEventListener('click', function(e) {
+            // I need to send a toggle message to the server. First, get the state of the motor
+            var state = this.getAttribute('data-state');
+            state = parseInt(state);
 
-        //     if (connecting) {
-        //         gamepads[gamepad.index] = gamepad;
-        //     } else {
-        //         delete gamepads[gamepad.index];
-        //     }
-        // }
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
 
-        // window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
-        // window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+            var xhr = new XMLHttpRequest();
+            var payload = {
+                "command": "",
+            };
 
-        // window.addEventListener("gamepadconnected", (e) => {
-        //     const gp = navigator.getGamepads()[e.gamepad.index];
-        //     console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
-        //         gp.index, gp.id,
-        //         gp.buttons.length, gp.axes.length);
-        // });
+            if (state == 0) {
+                console.log("Sending init");
+                payload.command = "init_motors";
+
+                this.setAttribute("data-state", 1);
+            } else {
+                console.log("Sending close");
+                payload.command = "close_motors";
+
+                this.setAttribute("data-state", 0);
+            }
+
+            var sendme = JSON.stringify(payload);
+
+            console.log("Sending motor command: " + sendme);
+
+            xhr.open('POST', './api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(sendme);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+        });
+
+        function setMotorState(fr, fl) {
+            // Make a POST request to the controller server
+            var payload = JSON.stringify({
+                "command": "set_speed",
+                "payload": {
+                    "fl": fl,
+                    "fr": fr,
+                }
+            });
+            console.log("Throttle sending payload: " + payload);
+
+            // All API requests need to authenticated with a bearer token in the header
+            if (!valid_api_token) {
+                clear_button_styles();
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('POST', './api/motor_command', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader("Authorization", "Bearer " + api_token);
+            xhr.send(payload);
+
+            // print the response to the console
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    console.log("Response: " + xhr.responseText);
+                } else if (xhr.readyState === 4 && xhr.status === 403) {
+                    clear_button_styles()
+                    return;
+                };
+            }
+        }
+
+        //
+        // Gamepad functions
+        //
+
+        // Should detect gamepad connection and disconnection
+        const gamepads = {};
+
+        function gamepadHandler(event, connecting) {
+            const gamepad = event.gamepad;
+
+            if (connecting) {
+                gamepads[gamepad.index] = gamepad;
+            } else {
+                delete gamepads[gamepad.index];
+            }
+        }
+
+        function pollGamepads() {
+            // Get controller
+            const [gp] = navigator.getGamepads();
+            if (!gp) {
+                return;
+            }
+
+            var left_speed = (gp.axes[1] * -200.0);
+            if ((left_speed < 20) && (left_speed > -20)) {
+                left_speed = 0;
+            }
+
+            var right_speed = (gp.axes[3] * -200.0);
+            if ((right_speed < 20) && (right_speed > -20)) {
+                right_speed = 0;
+            }
+
+            setMotorState(Math.round(right_speed), Math.round(left_speed));
+        }
+
+        setInterval(pollGamepads, 50);
+
+        window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
+        window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
+
+        window.addEventListener("gamepadconnected", (e) => {
+            const gp = navigator.getGamepads()[e.gamepad.index];
+            console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+                gp.index, gp.id,
+                gp.buttons.length, gp.axes.length);
+        });
     });
 })();
