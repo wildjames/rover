@@ -30,16 +30,18 @@ def watch_motor_responses():
         return
 
     try:
-        response = motor_conn.readline().decode("utf-8").strip()
-        logger.info(f"Motor: {response}")
-        # TODO: Do something with this
-        label, target_speed, actual_speed, throttle = response.split("\t")
+        lines = motor_conn.readlines()
+        for line in lines:
+            response = line.decode("utf-8").strip()
+            logger.info(f"Motor: {response}")
+            # TODO: Do something with this
+            label, target_speed, actual_speed, throttle = response.split("\t")
 
-        idex = MOTOR_KEYS.index(label)
+            idex = MOTOR_KEYS.index(label)
 
-        motor_actual_speeds[idex] = actual_speed
-        motor_target_speeds[idex] = target_speed
-        motor_throttles[idex] = throttle
+            motor_actual_speeds[idex] = actual_speed
+            motor_target_speeds[idex] = target_speed
+            motor_throttles[idex] = throttle
 
     except Exception as e:
         logger.error(f"Error reading motor controller response: {e}")
