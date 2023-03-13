@@ -18,6 +18,8 @@
         var relay2 = document.getElementById('relay2');
 
         var motor_init = document.getElementById("motor_toggle");
+        var motor_max_speed = 200.0;
+        var controller_deadzone = 20;
 
 
         function clear_button_styles() {
@@ -362,20 +364,20 @@
                 return;
             }
 
-            var left_speed = (gp.axes[1] * -200.0);
-            if ((left_speed < 20) && (left_speed > -20)) {
+            var left_speed = (gp.axes[1] * (-1*motor_max_speed));
+            if ((left_speed < controller_deadzone) && (left_speed > (-1*controller_deadzone))) {
                 left_speed = 0;
             }
 
-            var right_speed = (gp.axes[3] * -200.0);
-            if ((right_speed < 20) && (right_speed > -20)) {
+            var right_speed = (gp.axes[3] * (-1*motor_max_speed));
+            if ((right_speed < controller_deadzone) && (right_speed > (-1*controller_deadzone))) {
                 right_speed = 0;
             }
 
             setMotorState(Math.round(right_speed), Math.round(left_speed));
         }
 
-        setInterval(pollGamepads, 50);
+        setInterval(pollGamepads, 100);
 
         window.addEventListener("gamepadconnected", (e) => { gamepadHandler(e, true); }, false);
         window.addEventListener("gamepaddisconnected", (e) => { gamepadHandler(e, false); }, false);
