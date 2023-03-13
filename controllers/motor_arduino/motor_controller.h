@@ -16,6 +16,7 @@ public:
     float wheel_diameter_cm,
     int pulses_per_turn,
     int throttle_pin,
+    int dir_offset,
     const double& p = 0,
     const double& i = 0,
     const double& d = 0);
@@ -52,6 +53,7 @@ private:
   int _throttle_pin;
   int _brake_pin;
   int _dir_pin;
+  int _dir_offset;
 
   int last_speed_update;
 

@@ -10,29 +10,32 @@
 // Printing variables
 int report_period = 1000;  // milliseconds
 
-#define NUM_MOTORS 1
+#define NUM_MOTORS 2
 
 // Speed monitoring configurations.
-int speed_pins[NUM_MOTORS] = { 20 };                    // This pin sees a state change as the wheel turns
-unsigned long pulse_timeouts[NUM_MOTORS] = { 100000 };  // If no pulses for this long (us), purge the running average and set frequency to inf
-float wheel_diams[NUM_MOTORS] = { 16.0 };               // cm
-int pulses_per_turns[NUM_MOTORS] = { 90 };              // The number of times the speed pin changes state, per wheel revolution
+int speed_pins[NUM_MOTORS] = { 20, 28 };                        // This pin sees a state change as the wheel turns
+unsigned long pulse_timeouts[NUM_MOTORS] = { 100000, 100000 };  // If no pulses for this long (us), purge the running average and set frequency to inf
+float wheel_diams[NUM_MOTORS] = { 16.0, 16.0 };                 // cm
+int pulses_per_turns[NUM_MOTORS] = { 90, 90 };                  // The number of times the speed pin changes state, per wheel revolution
 
 // Motor labels
-char* labels[NUM_MOTORS] = { "fr" };
+char* labels[NUM_MOTORS] = { "fr", "fl" };
+
+// Motors on opposite sides will spin in opposite directions. This accounts for that
+bool dir_offsets[NUM_MOTORS] = { false, true };
 
 // Motor control variables
-int throttle_pins[NUM_MOTORS] = { 19 };  // Motor throttle PWM pin
-int brake_pins[NUM_MOTORS] = { 17 };
-int dir_pins[NUM_MOTORS] = { 16 };
+int throttle_pins[NUM_MOTORS] = { 19, 27 };  // Motor throttle PWM pin
+int brake_pins[NUM_MOTORS] = { 17, 26 };
+int dir_pins[NUM_MOTORS] = { 16, 22 };
 
 // Motor controllers need to be level shifted. These are the reference voltage pins
-int ref_voltage_pins[NUM_MOTORS] = { 18 };
+int ref_voltage_pins[NUM_MOTORS] = { 18, 21 };
 
 // manually tuned. Works with PID update times of 25ms
-double p_values[NUM_MOTORS] = { 0.3 };
-double i_values[NUM_MOTORS] = { 5.0 };
-double d_values[NUM_MOTORS] = { 0.1 };
+double p_values[NUM_MOTORS] = { 0.3, 0.3 };
+double i_values[NUM_MOTORS] = { 5.0, 5.0 };
+double d_values[NUM_MOTORS] = { 0.1, 0.1 };
 
 // // Testing values. 25ms PID intervals
 // double p_values[NUM_MOTORS] = { 2.5 };
@@ -77,6 +80,7 @@ void setup() {
                                            wheel_diams[i],
                                            pulses_per_turns[i],
                                            throttle_pins[i],
+                                           dir_offsets[i],
                                            p_values[i],
                                            i_values[i],
                                            d_values[i]);
@@ -109,9 +113,28 @@ void check_serial() {
       if (separator != 0) {
         // Actually split the string in 2: replace ':' with 0
         *separator = 0;
-        int motorId = atoi(command);
+        Serial.println(command);
+        int motorId = 0;
+        for (motorId = 0; motorId <= NUM_MOTORS; motorId++) {
+          if (motorId == NUM_MOTORS) {
+            // Invalid command
+            Serial.print(command);
+            Serial.println(" is not a valid motor index!!");
+            return;
+          }
+          if (strcmp(labels[motorId], command) == 0) {
+            Serial.print("Match to ");
+            Serial.println(labels[motorId]);
+            break;
+          }
+        }
+        // int motorId = atoi(command);
+
         ++separator;
         int target_speed = atoi(separator);
+
+        Serial.print("Motor: ");
+        Serial.println(motorId);
 
         // Parse out the brake/direction situation
         if (target_speed < 0)

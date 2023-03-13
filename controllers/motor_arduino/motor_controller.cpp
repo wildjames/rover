@@ -10,6 +10,7 @@ MotorController::MotorController(char* name,
                                  float wheel_diameter_cm,
                                  int pulses_per_turn,
                                  int throttle_pin,
+                                 int dir_offset,
                                  const double& p,
                                  const double& i,
                                  const double& d) {
@@ -35,6 +36,7 @@ MotorController::MotorController(char* name,
   _throttle_pin = throttle_pin;
   _brake_pin = brake_pin;
   _dir_pin = dir_pin;
+  _dir_offset = dir_offset;
 
   pinMode(_throttle_pin, OUTPUT);
   analogWrite(_throttle_pin, 0);
@@ -48,6 +50,10 @@ MotorController::MotorController(char* name,
   // Some times to be tracked
   last_report_time = millis();
   last_speed_update = millis();
+
+  if (_dir_offset) {
+    reverse(false);
+  }
 };
 
 
@@ -59,8 +65,7 @@ void MotorController::loop() {
     last_speed_update = millis();
   }
 
-  if (active_deceleration) 
-  {
+  if (active_deceleration) {
     if ((target_speed < cur_speed) && (!brake_state)) brake(1);
     else brake(0);
   }
@@ -94,6 +99,8 @@ void MotorController::loop() {
 void MotorController::reverse(int enabled)
 // Set the direction to forwards or backwards
 {
+  if (_dir_offset) enabled = !enabled;
+
   if (enabled) digitalWrite(_dir_pin, HIGH);
   else digitalWrite(_dir_pin, LOW);
   reverse_state = enabled;

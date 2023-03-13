@@ -16,7 +16,7 @@ motor_conn = None
 motor_listener_thread = None
 stop_listener = False
 
-MOTOR_KEYS = ["fr"]
+MOTOR_KEYS = ["fr", "fl"]
 
 motor_actual_speeds = [0] * len(MOTOR_KEYS)
 motor_target_speeds = [0] * len(MOTOR_KEYS)
