@@ -121,6 +121,7 @@ def set_motor_speed(payload: Dict[str, Any]):
 
         # Index motors by number
         # cmd += f"{MOTOR_KEYS.index(key)}:{value}&"
+        
         # Index motors by name
         cmd += f"{key}:{value}&"
 
